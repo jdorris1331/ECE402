@@ -1,0 +1,11 @@
+
+
+var1 = "var1"
+var2 = "var2"
+
+
+(available operators: lapacian, etc)
+Equation = "var1" @lapacian "var2"
+
+How to solve?
+
