@@ -1,0 +1,32 @@
+    fraMain[0] = new CtrlGui(this);
+    fraMain[1] = new QFrame(this);
+    fraMain[1]->setLayout(new QHBoxLayout);
+    fraGraph = new CtrlGraph(fraMain[1]);
+    fraSliders = new CtrlSliders(fraMain[1]);
+    fraMain[1]->layout()->addWidget(fraGraph);
+    fraMain[1]->layout()->addWidget(fraSliders);
+    fraMain[2] = new CtrlCmd(this);
+    fraMain[1]->setFrameShadow(QFrame::Raised);
+    fraMain[2]->setFrameShadow(QFrame::Raised);
+
+    fraGraph->layout()->update();
+    fraGraph->adjustSize();
+    fraSliders->layout()->update();
+    fraSliders->adjustSize();
+    for (int ct = 0; ct < 3; ct++)
+    {
+        fraMain[ct]->layout()->update();
+        fraMain[ct]->adjustSize();
+        this->layout()->addWidget(fraMain[ct]);
+    }
+
+
+void GUIView::resizeEvent(QResizeEvent *event)
+{
+    //QFrame::resizeEvent(event);
+    mb->adjustSize();
+    for (int ct = 0; ct < 2; ct++) {
+        fraMain[ct]->adjustSize(); }
+    this->layout()->update();
+    //this->updateGeometry();
+}

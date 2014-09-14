@@ -1,0 +1,371 @@
+globals [
+  C_A              ; anterior discrete diffusion parameter
+  C_P              ; posterior discrete diffusion parameter
+  C_alpha          ; segmentation discrete diffusion parameter
+  C                ; axial segmentation clock
+  dC               ; clock derivative
+;  G                ; growth signal
+  C_BAM            ; anterior border discrete diffusion parameter
+  C_BPM            ; posterior border discrete diffusion parmeter
+  recip-e          ; 1 / e
+  recording-movie? ; set if recording a movie
+]
+
+patches-own [
+  A Ap         ; anterior morphogen
+  P Pp         ; posterior morphogen
+  M Mp         ; cell mass
+  S Sp         ; somite concentration
+  T Tp         ; tail cell concentration
+  G Gp         ; growth signal
+  K            ; axial clock signal
+  dK           ; derivative of axial clock signal
+  L            ; peripheral clock signal
+  dL           ; derivative of peripheral clock signal
+  phi          ; firing signal
+  alpha alphap ; segmentation signal
+  rho rhop     ; recovery variable
+  Vx Vy        ; velocity
+  BA BAp       ; anterior border marker
+  BP BPp       ; posterior border marker
+  AB           ; anterior morphogen block
+  BAM BAMp     ; anterior border morphogen
+  BPM BPMp     ; posterior border morphogen
+  ID           ; imaginal disk for limb (called K in user interface)
+  dID          ; derivative of ID density
+  local-density; local S (somite) density
+  edge         ; edge signal
+  LM           ; limb marker concentration
+]
+
+to setup
+  clear-patches
+  compute-diffusion-parameters
+  initialize-head
+  initialize-tailbud
+  ; initialize clock
+  ask patches [ set K 1 set dK 0 set L 1 set dL 1 set G 1 ]
+;  set G 1
+  set recip-e 1 / 2.718281828
+  set recording-movie? false
+  reset-ticks
+end
+
+to default-parameters
+  set delta-s 0.04
+  set delta-t 0.04
+  set tail-length 1
+  set growth-rate 0.3
+  set T_G 30
+  ;
+  set D_A 0.005
+  set T_A 1
+  set K_A 10
+  set A_upb 0.1
+  ;
+  set D_P 0.005
+  set T_P 1
+  set K_P 10
+  set P_upb 0.1
+  ;
+  set D_alpha 0.005
+  set T_alpha 0.6
+  set alpha_lwb 0.1
+  set theta_alpha 0.2
+  ;
+  set omega 1
+  set theta_C 0.9
+  set theta_rho 0.01
+  set T_rho 1
+  set K_S 5
+  ;
+  set theta_BA 0.5
+  set T_BA 1
+  set K_BA 10
+  ;
+  set theta_BP 0.5
+  set T_BP 5
+  set K_BP 10
+  ;
+  set D_BAM 0.005
+  set T_BAM 1
+  set K_BAM 10
+  set BAM_lwb 0.004
+  set BAM_upb 0.03
+  ;
+  set D_BPM 0.005
+  set T_BPM 3
+  set K_BPM 10
+  set BPM_lwb 0.02
+  set BPM_upb 0.09
+  ;
+  set K_ID 1
+  set K_TLM 0.1
+  set theta_LM 0.01
+  ;
+  set T_AB 3
+  set S_upb 0.8
+  set K_phi 1
+  set psi 1
+end
+
+to compute-diffusion-parameters
+  set C_A disc-from-cont-diff D_A
+  set C_P disc-from-cont-diff D_P
+  set C_alpha disc-from-cont-diff D_alpha
+  set C_BAM disc-from-cont-diff D_BAM
+  set C_BPM disc-from-cont-diff D_BPM
+end
+
+to-report disc-from-cont-diff [D]
+  report D * 8 * delta-t / (delta-s * delta-s)
+end
+
+to initialize-head
+  ask patches with [ pxcor <= 25 and abs pycor <= 25 ] [
+    set A 1
+    set M 1
+    set S 1
+  ]
+end
+
+to initialize-tailbud
+  ask patches with [ 25 < pxcor and pxcor <= 50 and abs pycor <= tail-length / delta-s ] [
+    set P 1
+    set M 1
+    set T 1
+  ]
+end
+
+to step
+;  set G G - delta-t * G / T_G ; update growth timer
+  ;
+  ; morphogens diffuse
+  ;
+  diffuse A min list 1 C_A
+  diffuse P min list 1 C_P
+  diffuse alpha min list 1 C_alpha
+  diffuse BAM min list 1 C_BAM
+  diffuse BPM min list 1 C_BPM
+  ;
+  ask patches [ prepare-variables ]
+  ask-concurrent patches with [pxcor > min-pxcor and pxcor < max-pxcor and pycor > min-pycor and pycor < max-pycor ] [ grow ]
+  ask patches [
+    set G G - delta-t * G / T_G ; update growth timer
+    ;
+    ; update sinusoidal clocks
+    ;
+    set dK dK - delta-t * omega * K
+    set K K + delta-t * omega * dK
+    set dL dL - delta-t * psi * L
+    set L L + delta-t * psi * dL
+    ;
+    ; update Anterior and Posterior morphogens
+    ;
+    set Ap A + delta-t * (K_A * S * (1 - A) * unitstep (recip-e - AB) - A / T_A) ; blocked by AB > 1/e
+    set Pp P + delta-t * (K_P * T * (1 - P) - P / T_P)
+    ;
+    ; update cell mass [NEEDS TO BE MODIFIED FOR LIMB GROWTH]
+    ;
+    set Mp min list 1 M + delta-t * (T * growth-rate / tail-length)
+    ;
+    ; density of cell mass that will fire
+    ;
+    set phi M * unitstep (alpha - theta_alpha) * unitstep (theta_rho - rho) * K_phi / delta-t
+    ;
+    ; update refractory period
+    ;
+    set rhop min list 1 (rho + delta-t * (phi - rho / T_rho))
+    ;
+    ; update wavefront excitation [NEEDS TO BE MODIFIED FOR LIMB GROWTH]
+    ;
+    set alphap min list 1 (alpha + delta-t * (phi + T * unitstep (K - theta_C) * unitstep (G - recip-e) - alpha / T_alpha))
+    ;
+    ; update Segmentation signal
+    ;
+    let S-trigger unitstep (alpha - alpha_lwb) * unitstep (A_upb - A) * unitstep (P_upb - P)
+    set Sp S + delta-t * (K_S * S * (1 - S) + S-trigger)
+    ;
+    set AB min list 1 (AB + S-trigger - delta-t * (AB / T_AB)) ; Anterior morphogen Block
+    ;
+    ; Anterior and Posterior Border tussues differentiate
+    ;
+    set BPp BP + delta-t * (K_BP * S * BP * (1 - BP) +
+       unitstep (0.95 * P_upb - P) * unitstep (P - 0.8 * P_upb) * unitstep (alpha - alpha_lwb) - BP / T_BP)
+    set BAp BA + delta-t * (K_BA * S * BA * (1 - BA) +
+       unitstep(0.5 * A_upb - A) * unitstep (A - 0.25 * A_upb) * unitstep (alpha - alpha_lwb) - BA / T_BA)
+    ;
+    ; update Anterior and Posterior Border morphogens
+    ;
+    set BAMp BAM + delta-t * (K_BAM * S * unitstep (BA - theta_BA) * (1 - BAM) - BAM / T_BAM)
+    set BPMp BPM + delta-t * (K_BPM * S * unitstep (BP - theta_BP) * (1 - BPM) - BPM / T_BPM)
+    ;
+    ; Imaginal Disk regions differentiate
+    ;
+    set local-density mean [S] of neighbors
+    set edge unitstep (S_upb - local-density) * K_ID / delta-t
+    set dID unitstep(BAM - BAM_lwb) * unitstep(BAM_upb - BAM) *
+      unitstep(BPM - BPM_lwb) * unitstep(BPM_upb - BPM) * edge * S * (1 - ID)
+    set ID ID + delta-t * dID
+    set LM LM + delta-t * K_LM * unitstep(dID - theta_dID)
+  ]
+  ask patches [ update-variables ]
+  update-display
+  tick-advance delta-t
+  if recording-movie? [movie-grab-view]
+end
+
+to grow ; of terminal cells (T = 1)
+  ; velocity is fixed (to right) for all tail cells
+  let mLM mean [LM] of neighbors4
+  let mT mean [T] of neighbors4
+  ifelse mLM = 0 and mT > 0
+    [ set Vx 1
+      set Vy 0
+      set G [G] of patch-at -1 0
+    ]
+  ; velocity away from axis for foot cells
+  [ if mLM > 0 and mT > 0
+      [ set Vx 0
+        ifelse pycor > 0
+        [set Vy 1]
+        [set Vy -1]
+      ]]
+  ; LM cells differentiate into T cells when sufficient density
+  let LM-trigger delta-t * K_TLM * unitstep (LM - theta_LM)
+  ; flux = tail material per unit area per unit time = growth-rate * T * velocity
+  ; change in tail concentration = - divergence of flux
+  ;   = - growth-rate / delta-s (Delta Tx Vx + T Delta Vx + Delta Ty Vy + T Delta Vy)
+  ; double negative divergence estimate:
+  let neg-div ([T * Vx] of patch-at -1 0) + ([T * Vy] of patch-at 0 -1)
+            - ([T * Vx] of patch-at 1 0) - ([T * Vy] of patch-at 0 1)
+  ;let Delta-Tx T - [T] of patch-at -1 0
+  ;let Delta-Ty T - [T] of patch-at 0 -1
+  ;let Delta-Vx Vx - [Vx] of patch-at -1 0
+  ;let Delta-Vy Vy - [Vy] of patch-at 0 -1
+  ; change in conc. in one time step = - delta-t / delta-s * growth-rate * divergence (if still growing)
+  ;set Tp min list 1 (Tp - delta-t * growth-rate / delta-s *
+  ; (Delta-Tx * Vx + T * Delta-Vx + Delta-Ty * Vy + T * Delta-Vy) * unitstep (G - 1 / 2.712828))
+  set Tp max list 0 (min list 1 (T + delta-t / delta-s * growth-rate * neg-div / 2 * unitstep (G - recip-e) + LM-trigger))
+  ;
+  ; need to update LM like T
+  ;
+  let neg-div-LM ([LM * Vx] of patch-at -1 0) + ([LM * Vy] of patch-at 0 -1)
+               - ([LM * Vx] of patch-at 1 0) - ([LM * Vy] of patch-at 0 1)
+  set LM max list 0 (min list 1 LM + delta-t / delta-s * growth-rate * neg-div-LM / 2 * unitstep (G - recip-e))
+end
+
+to prepare-variables
+  set Ap A
+  set Pp P
+  set Mp M
+  set Sp S
+  set Tp T
+  set Gp G
+;  set Kp K
+  set alphap alpha
+  set rhop rho
+  set BAp BA
+  set BPp BP
+  set BAMp BAM
+  set BPMp BPM
+end
+
+to update-variables
+  set A Ap
+  set P Pp
+  set M Mp
+  set S Sp
+  set T Tp
+;  set G Gp ; Gp is not used
+;  set K Kp
+  set alpha alphap
+  set rho rhop
+  set BA BAp
+  set BP BPp
+  set BAM BAMp
+  set BPM BPMp
+end
+
+to-report unitstep [x]
+  report ifelse-value (x > 0) [1] [0]
+end
+
+to update-display
+  ask patches [
+    let variable 1
+    let hue grey
+    ifelse field-display = "composite" [
+      let variables (list alpha T (1.1 * BP) (1.15 * BA) S A P (0.9 * M))
+      let variable-colors (list red violet cyan lime brown green blue yellow)
+      let dominant argmax variables
+      set variable item dominant variables
+      set hue item dominant variable-colors
+      ] [
+    ifelse field-display = "BAM+BPM+K+L" [
+      let variables (list LM ID BAM BPM)
+      let variable-colors (list magenta grey orange turquoise)
+      let dominant argmax variables
+      set variable item dominant variables
+      set hue item dominant variable-colors
+    ] [
+    ifelse field-display = "BAM+BPM+K+L+alpha" [
+      let variables (list alpha LM ID BAM BPM)
+      let variable-colors (list red magenta grey orange turquoise)
+      let dominant argmax variables
+      set variable item dominant variables
+      set hue item dominant variable-colors
+    ] [
+    ifelse field-display = "A & P" [
+      let variables (list A P)
+      let variable-colors (list green blue)
+      let dominant argmax variables
+      set variable item dominant variables
+      set hue item dominant variable-colors
+    ] [
+    ifelse field-display = "S+A+P+alpha" [
+      let variables (list alpha S A P)
+      let variable-colors (list red brown green blue)
+      let dominant argmax variables
+      set variable item dominant variables
+      set hue item dominant variable-colors
+    ] [
+    ifelse field-display = "alpha" [ set variable alpha set hue orange ] [
+    ifelse field-display = "A" [ set variable A set hue green ] [
+    ifelse field-display = "C" [ set variable (K + 1) / 2 set hue red ] [
+    ifelse field-display = "M" [ set variable M set hue yellow ] [
+    ifelse field-display = "P" [ set variable P set hue blue ] [
+    ifelse field-display = "S" [ set variable S set hue brown ] [
+    ifelse field-display = "T" [ set variable T set hue violet ] [
+    ifelse field-display = "BA" [ set variable BA set hue lime ] [
+    ifelse field-display = "BP" [ set variable BP set hue cyan ] [
+    ifelse field-display = "BAM" [ set variable BAM set hue orange ] [
+    ifelse field-display = "BPM" [ set variable BPM set hue turquoise ] [
+      set variable 1 ]]]]]]]]]]]]]]]]
+    set pcolor scale-color hue (variable / 1.5) 0 1
+  ]
+end
+
+to-report argmax [val]
+  let Mx -100000 ; "negative infinity"
+  let i 0
+  let j 0
+  foreach val [
+    if ? > Mx [
+      set j i
+      set Mx ?
+    ]
+    set i i + 1
+  ]
+  report j
+end
+
+to start-movie
+  movie-start user-input "Movie file name (with .mov)?"
+  set recording-movie? true
+end
+
+to finish-movie
+  set recording-movie? false
+  movie-close
+end
