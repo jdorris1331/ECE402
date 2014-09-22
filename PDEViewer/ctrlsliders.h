@@ -3,12 +3,13 @@
 
 #include <QFrame>
 #include <QGridLayout>
+#include <QScrollArea>
 #include "sliderbox.h"
 
-class CtrlSliders : public QFrame
+class CtrlSliders : public QScrollArea
 {
 public:
-    CtrlSliders(QWidget *parent = 0);
+    CtrlSliders(QString sFile, QWidget *parent = 0);
 
 private:
     QFrame *fraGraph, *fraSliders[5], *fraButtons[2];

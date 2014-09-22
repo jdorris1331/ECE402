@@ -21,7 +21,7 @@ SOURCES += main.cpp\
         ctrlsliders.cpp \
     ctrlmenubar.cpp \
     ctrlcmd.cpp \
-    ctrlgraph.cpp
+    initview.cpp
 
 HEADERS  += \#uiview.h \
         model.h \
@@ -31,7 +31,7 @@ HEADERS  += \#uiview.h \
         ctrlsliders.h \
     ctrlmenubar.h \
     ctrlcmd.h \
-    ctrlgraph.h
+    initview.h
 
 #FORMS    += uiview.ui
 
