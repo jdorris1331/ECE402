@@ -34,7 +34,6 @@ CtrlCmd::CtrlCmd(QWidget *parent) : QFrame(parent)
 
     txtLog = new QTextEdit(fraCtrlCmd[1]);
     txtLog->setReadOnly(true);
-    //txtLog->setGeometry()
     fraCtrlCmd[1]->layout()->addWidget(txtLog);
 
     lblObserver = new QLabel(QString::fromStdString("observer>"), fraCtrlCmd[2]);

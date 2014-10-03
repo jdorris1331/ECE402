@@ -1,6 +1,6 @@
 #include "..\include\ctrlsliders.h"
 
-CtrlSliders::CtrlSliders(QString sFile, QWidget *parent) : QScrollArea(parent)
+CtrlSliders::CtrlSliders(QWidget *parent) : QFrame(parent)
 {
     this->setLayout(new QGridLayout);
 

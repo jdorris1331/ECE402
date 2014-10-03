@@ -1,5 +1,24 @@
 #include "..\include\ctrlmenubar.h"
 
+QAction *fileNew, *fileOpen, *fileAddToLib,
+        *fileSave, *fileSaveAs, *fileUpToModCom,
+        *filePrint, *fileQuit;
+QMenu *fileRecentFiles, *fileExport, *fileImport;
+
+QAction *editUndo, *editRedo, *editCut, *editCopy, *editPaste, *editDelete,
+        *editSelectAll, *editFind, *editFindNext, *editShiftLeft, *editShiftRight,
+        *editComment, *editUncomment, *editSnapToGrid;
+
+QAction *toolsHalt, *toolsGlobalMonitor, *toolsTurtleMonitor, *toolsPatchMonitor,
+        *toolsLinkMonitor, *toolsCloseAllAgentMonitors, *toolsHideCommandCenter,
+        *toolsThreedView, *toolsColorSwatches, *toolsTurtleShapeEditor,
+        *toolsLinkShapeEditor, *toolsBehaviorSpace, *toolsSystemDynamicsMonitor,
+        *toolsHubNetClientEditor, *toolsHubNetControlCenter;
+
+QAction *zoomLarger, *zoomNormalSize, *zoomSmaller;
+
+QAction *helpPDEViewerHelp;
+
 CtrlMenuBar::CtrlMenuBar(QWidget *parent) : QMenuBar(parent)
 {
     file = new QMenu(QString::fromStdString("&File"), this);

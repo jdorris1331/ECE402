@@ -11,7 +11,7 @@ class GUIView : public QMainWindow
     Q_OBJECT
 
 public:
-    GUIView(QString sFile, QWidget *parent = 0);
+    GUIView(QWidget *parent = 0);
     //void repaint();
     //void resizeEvent(QResizeEvent *event);
 

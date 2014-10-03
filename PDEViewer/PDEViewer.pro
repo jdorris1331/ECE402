@@ -13,6 +13,7 @@ TEMPLATE = app
 
 INCLUDEPATH += $$_PRO_FILE_PWD_/include
 
+<<<<<<< HEAD
 SOURCES += \
     src/ctrlcmd.cpp \
     src/ctrlgraph.cpp \
@@ -291,6 +292,30 @@ HEADERS  += \
     include/gsl/gsl_version.h \
     include/gsl/gsl_wavelet.h \
     include/gsl/gsl_wavelet2d.h \
+=======
+SOURCES += main.cpp\
+        \ #uiview.cpp \
+        model.cpp \
+        guiview.cpp \
+        sliderbox.cpp \
+        ctrlgui.cpp \
+        ctrlsliders.cpp \
+    ctrlmenubar.cpp \
+    ctrlcmd.cpp \
+    ctrlgraph.cpp
+
+HEADERS  += \#uiview.h \
+        model.h \
+        guiview.h \
+        sliderbox.h \
+        ctrlgui.h \
+        ctrlsliders.h \
+    ctrlmenubar.h \
+    ctrlcmd.h \
+    ctrlgraph.h
+
+#FORMS    += uiview.ui
+>>>>>>> parent of 79f3b53... Initial load dialog added
 
 OTHER_FILES += \
         netlogogui.txt \
