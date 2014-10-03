@@ -622,10 +622,10 @@ void QMathGL::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
     }
 }
 
-/*const QMetaObject QMathGL::staticMetaObject = {
+const QMetaObject QMathGL::staticMetaObject = {
     { &QWidget::staticMetaObject, qt_meta_stringdata_QMathGL.data,
       qt_meta_data_QMathGL,  qt_static_metacall, 0, 0}
-};*/
+};
 
 
 const QMetaObject *QMathGL::metaObject() const

@@ -9,7 +9,7 @@ class MglWrapper
 {
 public:
     MglWrapper();
-    void loadData(int size, double* x, double* y, double* z, double* c);
+    void loadData(int size, double *x, double *y, double *z, double *c);
     void plot();
 
 private:

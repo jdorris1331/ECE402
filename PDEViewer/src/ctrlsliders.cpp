@@ -4,11 +4,11 @@ CtrlSliders::CtrlSliders(QString sFile, QWidget *parent) : QScrollArea(parent)
 {
     this->setLayout(new QGridLayout);
 
-
+    /*
     mgl = new MglWrapper();
     mgl->loadData(0, NULL, NULL, NULL, NULL);
     mgl->plot();
-
+    */
 
     for (int ct = 0; ct < 5; ct++)
     {

@@ -1,3 +1,4 @@
+/*
 #include "MglWrapper/MglWrapper.h"
 
 void MglWrapper::loadData(int size, double* temp_x, double* temp_y, double* temp_z, double* temp_c)
@@ -28,3 +29,4 @@ int MglWrapper::setup(mglGraph *gr)
     gr->Dots(x,y,z);
     return 0;
 }
+*/
