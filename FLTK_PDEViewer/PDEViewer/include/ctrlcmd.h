@@ -1,12 +1,13 @@
 #ifndef CTRLCMD_H
 #define CTRLCMD_H
 
+#include <Windows.h>
 #include <Fl/Fl_Pack.H>
 
 class CtrlCmd : public Fl_Pack
 {
 public:
-    CtrlCmd(int x, int y, int w, int h, const char *label = 0);
+    CtrlCmd();
 
 private:
     Fl_Pack *fraCtrlCmd[3];

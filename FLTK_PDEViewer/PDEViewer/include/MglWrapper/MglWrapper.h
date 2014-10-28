@@ -1,6 +1,7 @@
 #ifndef MGLWRAPPER_H
 #define MGLWRAPPER_H
 
+#include <Windows.h>
 #include <iostream>
 #include "mgl2/qt.h"
 

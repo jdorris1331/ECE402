@@ -36,6 +36,9 @@
     <ClInclude Include="include\sliderbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ctrlcmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\initview.cpp">
@@ -53,13 +56,16 @@
     <ClCompile Include="src\ctrlgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ctrlcmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\ctrlsliders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MglWrapper\MglWrapper.cpp">
+    <ClCompile Include="src\sliderbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\sliderbox.cpp">
+    <ClCompile Include="..\..\Qt_PDEViewer\src\MglWrapper\MglWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

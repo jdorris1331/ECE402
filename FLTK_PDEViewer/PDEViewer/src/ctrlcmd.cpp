@@ -1,51 +1,42 @@
 #include "..\include\ctrlcmd.h"
+#include <FL\Fl_Button.H>
+#include <FL\Fl_Output.H>
+#include <FL\Fl_Input.H>
+#include <FL\Fl_Text_Display.H>
 
-QLabel *lblCommandCenter, *lblObserver;
-Fl_Button *btnSwitch, *btnClear;
-QToolButton *btnHistory;
-QLineEdit *txtCmd;
-QTextEdit *txtLog;
+Fl_Output *lblCommandCenter, *lblObserver;
+Fl_Text_Display *txtLog;
+Fl_Button *btnSwitch, *btnClear, *btnHistory;
+Fl_Input *txtCmd;
 
-CtrlCmd::CtrlCmd(int x, int y, int w, int h, const char *label = 0) : Fl_Pack(x, y, w, h, label)
+CtrlCmd::CtrlCmd() : Fl_Pack(0, 0, 900, 30, 0)
 {
-    //this->setStyleSheet("background-color:rgb(200,200,230);");
-    this->setLayout(new QVBoxLayout);
-    this->layout()->setSpacing(1);
-    for (int ct = 0; ct < 3; ct++)
-    {
-        fraCtrlCmd[ct] = new QFrame(this);
-        fraCtrlCmd[ct]->setLayout(new QHBoxLayout);
-        this->layout()->addWidget(fraCtrlCmd[ct]);
-    }
+    this->spacing(1);
 
-    lblCommandCenter = new QLabel(QString::fromStdString("Command Center"), fraCtrlCmd[0]);
-    btnSwitch = new QPushButton(QIcon(), NULL, fraCtrlCmd[0]);
-    btnClear = new QPushButton(QString::fromStdString("Clear"), fraCtrlCmd[0]);
-    fraCtrlCmd[0]->layout()->addWidget(lblCommandCenter);
-    fraCtrlCmd[0]->layout()->addWidget(btnSwitch);
-    fraCtrlCmd[0]->layout()->addWidget(btnClear);
+	fraCtrlCmd[0] = new Fl_Pack(0, 0, 900, 30, 0);
+    fraCtrlCmd[0]->type(Fl_Pack::HORIZONTAL);
+	lblCommandCenter = new Fl_Output(0, 0, 120, 30, 0);
+	lblCommandCenter->box(FL_NO_BOX);
+	lblCommandCenter->insert(" Command Center");
+	btnSwitch = new Fl_Button(0, 0, 30, 30, 0);
+    btnClear = new Fl_Button(0, 0, 100, 30, "Clear");
+	fraCtrlCmd[0]->end();
 
-    txtLog = new QTextEdit(fraCtrlCmd[1]);
-    txtLog->setReadOnly(true);
-    //txtLog->setGeometry()
-    fraCtrlCmd[1]->layout()->addWidget(txtLog);
+	fraCtrlCmd[1] = new Fl_Pack(0, 0, 900, 30, 0);
+	fraCtrlCmd[1]->type(Fl_Pack::HORIZONTAL);
+	txtLog = new Fl_Text_Display(0, 0, 900, 60, 0);
+	fraCtrlCmd[1]->resizable(txtLog);
+	fraCtrlCmd[1]->end();
 
-    lblObserver = new QLabel(QString::fromStdString("observer>"), fraCtrlCmd[2]);
-    txtCmd = new QLineEdit(fraCtrlCmd[2]);
-    btnHistory = new QToolButton(fraCtrlCmd[2]);
-    fraCtrlCmd[2]->layout()->addWidget(lblObserver);
-    fraCtrlCmd[2]->layout()->addWidget(txtCmd);
-    fraCtrlCmd[2]->layout()->addWidget(btnHistory);
+	fraCtrlCmd[2] = new Fl_Pack(0, 0, 900, 30, 0);
+	fraCtrlCmd[2]->type(Fl_Pack::HORIZONTAL);
+	lblObserver = new Fl_Output(0, 0, 80, 30, 0);
+	lblObserver->box(FL_NO_BOX);
+	lblObserver->insert(" observer>");
+	txtCmd = new Fl_Input(0, 0, 790, 30, 0);
+	btnHistory = new Fl_Button(0, 0, 30, 30, 0);
+	fraCtrlCmd[2]->resizable(txtCmd);
+	fraCtrlCmd[2]->end();
 
-    btnSwitch->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    btnClear->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    txtLog->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    txtCmd->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    btnHistory->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
-    for (int ct = 0; ct < 3; ct++)
-    {
-        fraCtrlCmd[ct]->layout()->update();
-        fraCtrlCmd[ct]->adjustSize();
-    }
+	//this->resizable(fraCtrlCmd[1]);
 }

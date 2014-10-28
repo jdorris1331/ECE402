@@ -67,6 +67,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\ctrlcmd.h" />
     <ClInclude Include="include\ctrlgui.h" />
     <ClInclude Include="include\ctrlmenubar.h" />
     <ClInclude Include="include\ctrlsliders.h" />
@@ -76,13 +77,14 @@
     <ClInclude Include="include\sliderbox.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Qt_PDEViewer\src\MglWrapper\MglWrapper.cpp" />
+    <ClCompile Include="src\ctrlcmd.cpp" />
     <ClCompile Include="src\ctrlgui.cpp" />
     <ClCompile Include="src\ctrlmenubar.cpp" />
     <ClCompile Include="src\ctrlsliders.cpp" />
     <ClCompile Include="src\guiview.cpp" />
     <ClCompile Include="src\initview.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\MglWrapper\MglWrapper.cpp" />
     <ClCompile Include="src\sliderbox.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
