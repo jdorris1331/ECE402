@@ -4,9 +4,13 @@
 #include "..\include\ctrlsliders.h"
 #include "..\include\ctrlcmd.h"
 
+#include "..\include\sliderbox.h"
+#include <sstream>
+#include <iomanip>
+
 GUIView::GUIView(const char *sFile) : Fl_Window(900, 700, "PDER Control Panel")
 {
-	fraFrame = new Fl_Pack(0, 0, 900, 50, 0);
+	fraFrame = new Fl_Pack(0, 0, 900, 700, 0);
 	fraFrame->spacing(1);
 	
 	mb = new CtrlMenuBar();
@@ -19,8 +23,9 @@ GUIView::GUIView(const char *sFile) : Fl_Window(900, 700, "PDER Control Panel")
 	{
 		fraFrame->add(fraMain[ct]);
 	}
-	
+
 	fraFrame->end();
 	this->resizable(fraMain[1]);
 	fraFrame->show();
+	this->end();
 }

@@ -39,4 +39,5 @@ CtrlCmd::CtrlCmd() : Fl_Pack(0, 0, 900, 30, 0)
 	fraCtrlCmd[2]->end();
 
 	//this->resizable(fraCtrlCmd[1]);
+	//this->end();
 }

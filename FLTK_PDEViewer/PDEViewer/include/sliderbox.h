@@ -15,6 +15,7 @@ private:
 	int iPrc;
 	std::string sVal;
 	std::stringstream ss;
+	Fl_Pack *fraSli[2];
 
 	static void cb_update(Fl_Widget *w, void *data);
 	void update();
