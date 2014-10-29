@@ -9,11 +9,12 @@ z 0 10
 var1 2 3
 var2 3 4
 
-## Equation definitions (available operators: lapacian, etc)
-var1 = dvar2/dt+y+z;
+## Constants - (t=timestep[seconds]) 
+    t = .01
+k = 2.0
 
-## timestep (seconds)
-t = .01
+## Equation definitions (available operators: lapacian, etc)
+var1 = grad(var1)+y+z/k;
 
 ## initial values set to below or all zeros with a ZEROS
 x y z val

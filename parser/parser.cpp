@@ -14,6 +14,7 @@ int main(int argc, char* argv[]) {
   string var_name [50];
   int var_type [50];
   int var_range [100];
+  float ****var_values;
 
   int dim [6];
 	
@@ -90,15 +91,71 @@ int main(int argc, char* argv[]) {
     //} 
     }
     /*******************************************
+        Constants
+
+    *******************************************/
+    else if (i==2) {
+      bool initial = true;
+      while(getline(infile, line)) {
+        while(line[0]==' ') line.erase(0,1);
+	//check for block of input
+	if(line[0]=='#' && initial==false) break; 
+	else if(line[0]!='#' && initial==true) initial=false;
+	
+	
+	cout << line << endl;
+        /*while
+        isstringstream iss(line);
+        string name;
+        float value;
+       */ 
+      }    
+    }
+    /*******************************************
         Equations to solve 
         
     *******************************************/ 
-    else if (i==2) {
-      while(getline(infile, line)) {
+    else if (i==3) {
+    /*  while(getline(infile, line)) {
         istringstream iss(line);
         string name, lower, upper;
         if(!(iss >> name >> lower >> upper)) { break; }
+    }*/
     }
-  } 
-  return 0;
+    /*******************************************
+        Initial conditions
+
+    *******************************************/ 
+    else if (i==4) {
+      bool initial=true;
+      string v_order[53];
+      float values[53];
+      int x_length=dim[1]-dim[0];
+      int y_length=dim[3]-dim[2];
+      int z_length=dim[5]-dim[4];
+      var_values = new double***[num_vars];
+      for(int j=0;j<num_vars;j++) {
+        var_values = new doulbe**[x_length];
+        for(int k=0;k<x_length;k++) {
+          var_values = new double*[y_length];
+          for(int l=0;l<y_length;l++) {
+            var_values = new double*[z_length];
+          }
+        }
+      }
+      while(getline(infile, line)) {
+        istringstream iss(line);
+        if(initial) {
+          int index=0;
+          while(iss >> v_order[index]) index++;
+          inital=false;
+        }
+        else{
+          for(int j=0;j<index;j++) iss >> values[j];
+          
+          if(v_order[
+        
+    }
+} 
+ return 0;
 }
