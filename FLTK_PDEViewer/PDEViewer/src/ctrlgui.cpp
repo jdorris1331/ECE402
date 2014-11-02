@@ -1,7 +1,18 @@
 #include "..\include\ctrlgui.h"
 
-CtrlGui::CtrlGui() : Fl_Pack(0, 0, 900, 30, 0)
+void CtrlGui::cb_startGraph(Fl_Widget *w, void *data)
 {
+	((CtrlGui*)data)->startGraph();
+}
+void CtrlGui::startGraph()
+{
+	graph.beginAnimation;
+}
+
+CtrlGui::CtrlGui(Graphics *myGraph) : Fl_Pack(0, 0, 900, 30, 0)
+{
+	graph = myGraph;
+
 	this->type(Fl_Pack::HORIZONTAL);
 	this->spacing(1);
 
@@ -35,6 +46,9 @@ CtrlGui::CtrlGui() : Fl_Pack(0, 0, 900, 30, 0)
 		{ "On Tick" },
 		{ 0 } };
 	cmbUpdateFreq->copy(cmbItems1);
+
+
+
 	fraCtrlGui[1]->end();
 
 	fraCtrlGui[2] = new Fl_Pack(0, 0, 100, 30, 0);
@@ -43,4 +57,6 @@ CtrlGui::CtrlGui() : Fl_Pack(0, 0, 900, 30, 0)
 
 	//this->resizable(fraCtrlGui[1]);
 	//fraCtrlGui[1]->resizable(sldSpeed);
+
+	btnStart->callback(cb_startGraph, this);
 }

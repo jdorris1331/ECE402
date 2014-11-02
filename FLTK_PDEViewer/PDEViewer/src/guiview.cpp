@@ -8,14 +8,16 @@
 #include <sstream>
 #include <iomanip>
 
-GUIView::GUIView(const char *sFile) : Fl_Window(900, 700, "PDER Control Panel")
+GUIView::GUIView(Graphics *myGraph, const char *sFile) : Fl_Window(900, 700, "PDER Control Panel")
 {
+	graph = myGraph;
+
 	fraFrame = new Fl_Pack(0, 0, 900, 700, 0);
 	fraFrame->spacing(1);
 	
 	mb = new CtrlMenuBar();
 	
-	fraMain[0] = new CtrlGui();
+	fraMain[0] = new CtrlGui(graph);
 	fraMain[1] = new CtrlSliders(sFile);
 	fraMain[2] = new CtrlCmd();
 

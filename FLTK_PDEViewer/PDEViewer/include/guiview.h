@@ -6,6 +6,7 @@
 #include <FL/Fl_Pack.H>
 //#include <FL/Fl_Scroll.H>
 #include "ctrlmenubar.h"
+#include "graphics.h"
 
 class GUIView : public Fl_Window
 {
@@ -15,8 +16,10 @@ private:
 	Fl_Group *fraMain[3];
 	//Fl_Scroll *scrMain;
 
+	Graphics *graph;
+
 public:
-    GUIView(const char *sFile);
+    GUIView(Graphics *myGraph, const char *sFile);
 };
 
 #endif // GUIVIEW_H

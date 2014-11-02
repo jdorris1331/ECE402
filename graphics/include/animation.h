@@ -1,7 +1,7 @@
+#include <Windows.h> //<unistd.h>
 #include <mgl2/fltk.h>
 #include <mgl2/mgl.h>
 #include <mgl2/type.h>
-#include <unistd.h>
 #include <string>
 #include <iostream>
 #include <thread>

@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include "guiview.h"
+#include "graphics.h"
 
 class InitView : public Fl_Window
 {
@@ -22,7 +23,9 @@ private:
 	static void cb_pickFile(Fl_Widget *w, void *data);
 	void pickFile();
 	static void cb_launchControls(Fl_Widget *w, void *data);
-	void launchControls();
+	void launchControls(Graphics *graph);
+	Graphics *launchGraph();
+
 
 public:
     InitView();

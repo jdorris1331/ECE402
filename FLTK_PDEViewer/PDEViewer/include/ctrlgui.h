@@ -7,6 +7,7 @@
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Hor_Nice_Slider.H>
 #include <FL/Fl_Check_Button.H>
+#include "graphics.h"
 
 class CtrlGui : public Fl_Pack
 {
@@ -16,10 +17,15 @@ private:
 	Fl_Choice *cmbAdd, *cmbUpdateFreq;
 	Fl_Hor_Nice_Slider *sldSpeed;
 	Fl_Check_Button *chkViewUpdates;
-	//Fl_Menu_Item *cmbItems;
+
+	Graphics graph;
+	Fl_Button *btnStart;
+
+	static void cb_startGraph(Fl_Widget *w, void *data);
+	void startGraph();
 
 public:
-    CtrlGui();
+    CtrlGui(Graphics *myGraph);
 };
 
 #endif // CTRLGUI_H

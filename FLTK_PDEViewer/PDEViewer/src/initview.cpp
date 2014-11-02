@@ -7,13 +7,29 @@ void InitView::pickFile()
 	txtFile->value(sFile);
 }
 
-void InitView::cb_launchControls(Fl_Widget *w, void *data) { ((InitView*)data)->launchControls(); }
-void InitView::launchControls()
+void InitView::cb_launchControls(Fl_Widget *w, void *data)
 {
-	GUIView *gui = new GUIView(txtFile->value());
+	InitView *loc = (InitView*)data;
+	loc->launchControls(loc->launchGraph());
+}
+void InitView::launchControls(Graphics graph)
+{
+	GUIView *gui = new GUIView(graph, txtFile->value());
 	vGui.push_back(gui);
 	this->hide();
 	gui->show();
+}
+Graphics InitView::launchGraph()
+{
+	Graphics test;
+	std::cout << "Hello.cpp\n";
+	//std::cout << "pthread: " << MGL_HAVE_PTHREAD  << std::endl;
+
+	//test.beginAnimation();
+	sleep(2);
+	test.Run();
+
+	return test;
 }
 
 InitView::InitView() : Fl_Window(500, 30, "PDER Launcher")
