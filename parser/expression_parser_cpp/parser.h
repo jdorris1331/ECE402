@@ -71,7 +71,7 @@ class Parser
 {
     // public functions
     public:
-        Parser();
+        Parser(int x, int y, int z);
         char* parse(const char expr[]);
 
     // enumerations
@@ -98,7 +98,7 @@ class Parser
         char ans_str[255];            // holds a string containing the result
                                       // of the expression
 
-        Variablelist user_var;        // list with variables defined by user
+        Variablelist *user_var;        // list with variables defined by user
 
     // private functions
     private:

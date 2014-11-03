@@ -41,22 +41,28 @@ void toupper(char upper[], const char str[]);
 
 class Variablelist {
     public:
+	Variablelist(int x, int y, int z);
         bool exist(const char* name);
-        bool add(const char* name, double value);
+        bool add(const char* name, const int type);
         bool del(const char* name);
 
+	int get_type(const char* name);
         bool get_value(const char* name, double* value);
         bool get_value(const int id, double* value);
         int  get_id(const char* name);
         bool set_value(const char* name, const double value);
-
+        bool set_scalar_field(const char* name, const double*** scalar_field);
+        bool set_vector_field(const char* name, const double**** vector_field);
     private:
         struct VAR
         {
             char name[NAME_LEN_MAX+1];
-            double value;
+            int type;
+            double *** sf;
+            double **** vf;
+            double val;
         };
-
+	int x,y,z;
         vector<VAR> var;
 };
 

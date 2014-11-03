@@ -7,7 +7,7 @@ struct variable {
   string name;
   double *** scalar_field;
   double **** vector_field;
-  double single;
+  double value;
 };
 
 variable add(variable A, variable B) {

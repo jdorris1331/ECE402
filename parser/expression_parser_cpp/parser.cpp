@@ -38,13 +38,14 @@ using namespace std;
  * constructor.
  * Initializes all data with zeros and empty strings
  */
-Parser::Parser()
+Parser::Parser(int x, int y, int z)
 {
     expr[0] = '\0';
     e = NULL;
 
     token[0] = '\0';
     token_type = NOTHING;
+    user_var = new Variablelist(x,y,z);
 }
 
 
@@ -91,8 +92,8 @@ char* Parser::parse(const char new_expr[])
         }
 
         // add the answer to memory as variable "Ans"
-        user_var.add("Ans", ans);
-
+        user_var->add("Ans",0);
+        user_var->set_value("Ans", ans);
         snprintf(ans_str, sizeof(ans_str), "Ans = %g", ans);
     }
     catch (Error err)
@@ -348,10 +349,11 @@ double Parser::parse_level1()
             double ans;
             getToken();
             ans = parse_level2();
-            if (user_var.add(token_now, ans) == false)
+            if (user_var->add(token_now,0) == false)
             {
                 throw Error(row(), col(), 300);
             }
+            user_var->set_value(token_now,ans);
             return ans;
         }
         else
@@ -739,7 +741,7 @@ double Parser::eval_variable(const char var_name[])
 
     // check for user defined variables
     double ans;
-    if (user_var.get_value(var_name, &ans))
+    if (user_var->get_value(var_name, &ans))
     {
         return ans;
     }

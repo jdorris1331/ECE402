@@ -26,6 +26,16 @@
 #include "variablelist.h"
 
 /*
+ * Initialize the size of the space
+ */
+
+Variablelist::Variablelist(int size_x, int size_y, int size_z) {
+  x = size_x;
+  y = size_y;
+  z = size_z;
+}
+
+/*
  * Returns true if the given name already exists in the variable list
  */
 bool Variablelist::exist(const char* name)
@@ -37,22 +47,47 @@ bool Variablelist::exist(const char* name)
 /*
  * Add a name and value to the variable list
  */
-bool Variablelist::add(const char* name, double value)
+bool Variablelist::add(const char* name, const int type)
 {
     VAR new_var;
     strncpy(new_var.name, name, 30);
-    new_var.value = value;
+    new_var.type = type;
 
     int id = get_id(name);
     if (id == -1)
     {
         // variable does not yet exist
         var.push_back(new_var);
+        id = get_id(name);
     }
     else
     {
         // variable already exists. overwrite it
         var[id] = new_var;
+    }
+    
+    //scalar field
+    if(var[id].type == 1) {
+      var[id].sf = new double**[x];
+      for(int i=0;i<x;i++) {
+        var[id].sf[i] = new double*[y];
+        for(int j=0;j<y;j++) {
+          var[id].sf[i][j] = new double[z];
+        } 
+      }
+    }
+    //vector field
+    else if(var[id].type == 2) {
+      var[id].vf = new double***[x];
+      for(int i=0;i<x;i++) {
+        var[id].vf[i] = new double**[y];
+        for(int j=0;j<y;j++) {
+          var[id].vf[i][j] = new double*[z];
+          for(int k=0;k<z;k++) {
+            var[id].vf[i][j][k] = new double[3];
+          }
+        }
+      } 
     }
     return true;
 }
@@ -73,6 +108,15 @@ bool Variablelist::del(const char* name)
 }
 
 /*
+ * Get the type of the specified variable
+ */
+int Variablelist::get_type(const char* name)
+{
+    int id = get_id(name);
+    return var[id].type;
+}
+
+/*
  * Get value of variable with given name
  */
 bool Variablelist::get_value(const char* name, double* value)
@@ -80,7 +124,7 @@ bool Variablelist::get_value(const char* name, double* value)
     int id = get_id(name);
     if (id != -1)
     {
-        *value = var[id].value;
+        *value = var[id].val;
         return true;
     }
     return false;
@@ -94,17 +138,63 @@ bool Variablelist::get_value(const int id, double* value)
 {
     if (id >= 0 && id < (int)var.size())
     {
-        *value = var[id].value;
+        *value = var[id].val;
         return true;
     }
     return false;
 }
 
-
+/*
+ * Set the single value of the variable 
+ */
 bool Variablelist::set_value(const char* name, const double value)
 {
-    return add(name, value);
+    int id = get_id(name);
+    if(var[id].type!=0) return false;
+
+    var[id].val = value;	
+    return true;
 }
+
+/* 
+ * Set the scalar field for this type of variable
+ */
+
+bool Variablelist::set_scalar_field(const char* name, const double*** scalar_field) {
+  int id = get_id(name);
+  if(var[id].type!=1) return false;
+
+  for(int i=0;i<x;i++) {
+    for(int j=0;j<y;j++) {
+      for(int k=0;k<z;k++) {
+        var[id].sf[i][j][k] = scalar_field[i][j][k];
+      }
+    }
+  }
+  return true;
+}
+
+/*
+ * Set the vector field for this type of variable
+ */
+
+bool Variablelist::set_vector_field(const char* name, const double**** vector_field) {
+  int id = get_id(name);
+  if(var[id].type!=2) return false;
+
+  for(int i=0;i<x;i++) {
+    for(int j=0;j<y;j++) {
+      for(int k=0;k<z;k++) {
+        for(int l=0;l<3;l++) {
+          var[id].vf[i][j][k][l] = vector_field[i][j][k][l];
+        }
+      }
+    }
+  }
+  return true;
+}
+
+
 
 /*
  * Returns the id of the given name in the variable list. Returns -1 if name
