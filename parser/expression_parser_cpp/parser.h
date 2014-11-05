@@ -72,7 +72,13 @@ class Parser
     // public functions
     public:
         Parser(int x, int y, int z);
+	~Parser();
         char* parse(const char expr[]);
+
+	void solve(VAR* test);
+	//void inc_time();
+	void set_time(double dtx);
+	void set_eqs(char ** equations, int num); 
 
     // enumerations
     private:
@@ -88,6 +94,13 @@ class Parser
 
     // data
     private:
+	char ** eqs;
+	//char ** answers;
+	int num_eqs;
+
+	double time;
+	double dtime;
+
         char expr[EXPR_LEN_MAX+1];    // holds the expression
         char* e;                      // points to a character in expr
 
@@ -120,6 +133,8 @@ class Parser
         double eval_operator(const int op_id, const double &lhs, const double &rhs);
         double eval_function(const char fn_name[], const double &value);
         double eval_variable(const char var_name[]);
+
+	void inc_time();
 
         int row();
         int col();

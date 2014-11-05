@@ -27,10 +27,12 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
+#include "variable.h"
 
 using namespace std;
 
 double factorial(double value);
 double sign(double value);
+VAR add(VAR A, VAR B);
 
 #endif

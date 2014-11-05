@@ -25,7 +25,7 @@
 
 
 #include "error.h"
-
+#include "variable.h"
 using namespace std;
 
 
@@ -64,4 +64,15 @@ double sign(double value)
     if (value > 0) return 1;
     if (value < 0) return -1;
     return 0;
+}
+
+VAR add(VAR A, VAR B) 
+{
+    
+    VAR ret_var;
+    if(A.type==0 && B.type==0) {
+      ret_var.type=0;
+      ret_var.val=A.val+B.val;
+    }
+    return ret_var;
 }

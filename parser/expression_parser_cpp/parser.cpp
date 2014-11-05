@@ -46,8 +46,39 @@ Parser::Parser(int x, int y, int z)
     token[0] = '\0';
     token_type = NOTHING;
     user_var = new Variablelist(x,y,z);
+    time=0;
 }
 
+/*
+ * destructor.
+ * need to delete all initialized arrays
+ */
+Parser::~Parser() {
+ //figure out
+ delete user_var;
+}
+
+void Parser::set_eqs(char ** equations, int num) {
+  eqs = equations;
+  num_eqs = num;
+}
+
+void Parser::solve(VAR* ret_val) {
+  time+=dtime;
+  
+  for(int i=0;i<num_eqs;i++) {
+    char* result =  parse(eqs[i]);
+    printf("\t%s\n", result);
+  }
+  ret_val[0].val = 3.8;
+  ret_val[0].type = 0;
+  ret_val[1].val = 3;
+  ret_val[1].type = 0;
+}
+
+void Parser::set_time(double dtx) {
+  dtime=dtx;
+}
 
 /**
  * parses and evaluates the given expression

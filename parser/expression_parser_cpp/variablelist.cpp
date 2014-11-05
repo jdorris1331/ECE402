@@ -24,7 +24,7 @@
 
 
 #include "variablelist.h"
-
+#include <iostream>
 /*
  * Initialize the size of the space
  */
@@ -33,6 +33,30 @@ Variablelist::Variablelist(int size_x, int size_y, int size_z) {
   x = size_x;
   y = size_y;
   z = size_z;
+  dim = 3;
+}
+
+Variablelist::~Variablelist() {
+
+  for(int i=0;i<var.size();i++) {
+    if(var[i].type==1) {
+      for(int j=0;j<x;j++) {
+        for(int k=0;k<y;k++) {
+          delete[] var[i].sf[j][k];
+        }
+      }
+    }
+    else if(var[i].type==2) {
+      for(int j=0;j<x;j++) {
+        for(int k=0;k<y;k++) {
+          for(int l=0;l<z;l++) {
+            delete[] var[i].vf[j][k][l];
+          }
+        }
+      }
+    } 
+  }
+  std::cout << "deleted stuff\n"; 
 }
 
 /*
@@ -84,7 +108,7 @@ bool Variablelist::add(const char* name, const int type)
         for(int j=0;j<y;j++) {
           var[id].vf[i][j] = new double*[z];
           for(int k=0;k<z;k++) {
-            var[id].vf[i][j][k] = new double[3];
+            var[id].vf[i][j][k] = new double[dim];
           }
         }
       } 
@@ -185,7 +209,7 @@ bool Variablelist::set_vector_field(const char* name, const double**** vector_fi
   for(int i=0;i<x;i++) {
     for(int j=0;j<y;j++) {
       for(int k=0;k<z;k++) {
-        for(int l=0;l<3;l++) {
+        for(int l=0;l<dim;l++) {
           var[id].vf[i][j][k][l] = vector_field[i][j][k][l];
         }
       }
