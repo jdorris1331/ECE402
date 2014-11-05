@@ -132,7 +132,7 @@ class Parser
         int get_operator_id(const char op_name[]);
         double eval_operator(const int op_id, const double &lhs, const double &rhs);
         double eval_function(const char fn_name[], const double &value);
-        double eval_variable(const char var_name[]);
+        bool eval_variable(const char var_name[], VAR* ret_var);
 
 	void inc_time();
 

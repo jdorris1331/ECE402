@@ -58,8 +58,8 @@ class Variablelist {
         bool del(const char* name);
 
 	int get_type(const char* name);
-        bool get_value(const char* name, double* value);
-        bool get_value(const int id, double* value);
+        bool get_value(const char* name, VAR* ret_var);
+        bool get_value(const int id, VAR* ret_var);
         int  get_id(const char* name);
         bool set_value(const char* name, const double value);
         bool set_scalar_field(const char* name, const double*** scalar_field);

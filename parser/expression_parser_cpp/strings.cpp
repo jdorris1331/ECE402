@@ -15,9 +15,9 @@ Parser prs(100,100,100);
 
 
   string test[3]; 
-  test[0] = "4 + 5";
+  test[0] = "4e5";
   test[1] = "var =4";
-  test[2] = "Ans";
+  test[2] = "var";
   
   //getline(cin, test);
   //cout << test;
