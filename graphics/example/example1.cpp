@@ -7,7 +7,7 @@ int main()
 	std::cout << "Hello.cpp\n";
 	//std::cout << "pthread: " << MGL_HAVE_PTHREAD  << std::endl;
 	
-	test.beginAnimation();
-	sleep(2);	
+//	test.beginAnimation();
+//	sleep(100);	
 	test.Run();
 }
