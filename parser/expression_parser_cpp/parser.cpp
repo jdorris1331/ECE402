@@ -28,7 +28,7 @@
 
 // declarations
 #include "parser.h"
-
+#include "variable.h"
 
 using namespace std;
 
@@ -47,6 +47,8 @@ Parser::Parser(int x, int y, int z)
     token_type = NOTHING;
     user_var = new Variablelist(x,y,z);
     time=0;
+    user_var->add("E",0);
+    user_var->set_value("E", 2.7182818284590452353602874713527);
 }
 
 /*
@@ -369,10 +371,11 @@ double Parser::parse_level1()
     {
         // copy current token
         char* e_now = e;
+        char varU[NAME_LEN_MAX+1];
         TOKENTYPE token_type_now = token_type;
         char token_now[NAME_LEN_MAX+1];
         strcpy(token_now, token);
-
+        toupper(varU, token_now);
         getToken();
         if (strcmp(token, "=") == 0)
         {
@@ -380,11 +383,12 @@ double Parser::parse_level1()
             double ans;
             getToken();
             ans = parse_level2();
-            if (user_var->add(token_now,0) == false)
+
+            if (user_var->add(varU,0) == false)
             {
                 throw Error(row(), col(), 300);
             }
-            user_var->set_value(token_now,ans);
+            user_var->set_value(varU,ans);
             return ans;
         }
         else
@@ -609,11 +613,15 @@ double ans = 0;
             break;
 
         case VARIABLE:
+          {
             // this is a variable
-            ans = eval_variable(token);
+            VAR * temp_var = new VAR;
+            if(eval_variable(token, temp_var)) ans = temp_var->val;
+            else ans = 0;
+            delete temp_var;
             getToken();
             break;
-
+          }
         default:
             // syntax error or unexpected end of expression
             if (token[0] == '\0')
@@ -760,26 +768,26 @@ double Parser::eval_function(const char fn_name[], const double &value)
 /*
  * evaluate a variable
  */
-double Parser::eval_variable(const char var_name[])
+bool Parser::eval_variable(const char var_name[], VAR * ret_var)
 {
     // first make the variable name uppercase
     char varU[NAME_LEN_MAX+1];
     toupper(varU, var_name);
 
     // check for built-in variables
-    if (!strcmp(varU, "E")) {return 2.7182818284590452353602874713527;}
-    if (!strcmp(varU, "PI")) {return 3.1415926535897932384626433832795;}
+    //if (!strcmp(varU, "E")) {return 2.7182818284590452353602874713527;}
+    //if (!strcmp(varU, "PI")) {return 3.1415926535897932384626433832795;}
 
     // check for user defined variables
     double ans;
-    if (user_var->get_value(var_name, &ans))
+    if (user_var->get_value(varU, ret_var))
     {
-        return ans;
+        return true;
     }
 
     // unknown variable
     throw Error(row(), col(), 103, var_name);
-    return 0;
+    return false;
 }
 
 

@@ -143,12 +143,12 @@ int Variablelist::get_type(const char* name)
 /*
  * Get value of variable with given name
  */
-bool Variablelist::get_value(const char* name, double* value)
+bool Variablelist::get_value(const char* name, VAR* ret_var)
 {
     int id = get_id(name);
     if (id != -1)
     {
-        *value = var[id].val;
+        *ret_var = var[id];
         return true;
     }
     return false;
@@ -158,11 +158,11 @@ bool Variablelist::get_value(const char* name, double* value)
 /*
  * Get value of variable with given id
  */
-bool Variablelist::get_value(const int id, double* value)
+bool Variablelist::get_value(const int id, VAR* ret_var)
 {
     if (id >= 0 && id < (int)var.size())
     {
-        *value = var[id].val;
+        *ret_var = var[id];
         return true;
     }
     return false;
