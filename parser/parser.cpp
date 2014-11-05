@@ -9,16 +9,22 @@ using namespace std;
 int main(int argc, char* argv[]) {
   ifstream infile(argv[1]);
   string line;
-		
+  int max_vars = 50;		
   int num_vars;
-  string var_name [50];
-  int var_type [50];
-  int var_range [100];
-  float ****var_values;
+  string var_name [max_vars];
+  int var_type [max_vars];
+  int var_range_warn [max_vars*2];
+  int var_range_show [max_vars*2];
+  //float ****var_values;
+
+  for(int i=0;i<max_vars*2;i++) {
+	var_range_warn[i]=0;
+	var_range_show[i]=0;
+  }
 
   int dim [6];
 	
-  for(int i=0;i<5;i++) {
+  for(int i=0;i<2;i++) {
     /*******************************************
         Variable name and type declarations
     *******************************************/ 
@@ -51,9 +57,11 @@ int main(int argc, char* argv[]) {
         ranges for variables
     *******************************************/ 
     else if (i==1) {
+      
       while(getline(infile, line)) {
         istringstream iss(line);
         string name, lower, upper;
+        string type;
         if(!(iss >> name >> lower >> upper)) { break; }
         if(name!="##") {
           if(name=="x") {
@@ -73,8 +81,20 @@ int main(int argc, char* argv[]) {
             for(int j=0;j<num_vars;j++) {
               if(name==var_name[j]) {
                 valid=true;
-                var_range[2*j] = atoi(lower.c_str());
-                var_range[(2*j)+1] = atoi(upper.c_str());             
+                if(iss >> type) {
+                  if(type=="warn") {
+                    var_range_warn[2*j] = atoi(lower.c_str());
+                    var_range_warn[(2*j)+1] = atoi(upper.c_str());
+                  }
+                  if(type=="show") {
+                    var_range_show[2*j] = atoi(lower.c_str());
+                    var_range_show[(2*j)+1]  = atoi(upper.c_str());
+                  }
+                }
+                else {
+                  var_range_show[2*j] = atoi(lower.c_str());
+                  var_range_show[2*j+1] = atoi(upper.c_str());             
+                }
               } 
             }
             if(valid==false) {
@@ -126,7 +146,7 @@ int main(int argc, char* argv[]) {
         Initial conditions
 
     *******************************************/ 
-    else if (i==4) {
+ /*   else if (i==4) {
       bool initial=true;
       string v_order[53];
       float values[53];
@@ -156,6 +176,6 @@ int main(int argc, char* argv[]) {
           if(v_order[
         
     }
-} 
+}*/ 
  return 0;
 }
