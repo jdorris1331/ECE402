@@ -200,7 +200,7 @@ bool Variablelist::set_value(const char* name,  double value)
     }
     //var[id].val = new double;
     var[id].val = value;
-    cout << value << endl;	
+    //cout << value << endl;	
     return true;
 }
 

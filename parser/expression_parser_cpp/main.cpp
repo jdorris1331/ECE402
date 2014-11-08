@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     //char *expr = NULL;
     //size_t len = 255;
     // create a parser object
-    Parser prs(100,100,100);
+    Parser prs;
 
     puts("Enter an expression an press Enter to calculate the result.");
     puts("Enter an empty expression to quit.");

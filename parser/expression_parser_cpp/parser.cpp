@@ -28,7 +28,6 @@
 
 // declarations
 #include "parser.h"
-#include "variable.h"
 
 
 using namespace std;
@@ -39,48 +38,16 @@ using namespace std;
  * constructor.
  * Initializes all data with zeros and empty strings
  */
-Parser::Parser(int x, int y, int z)
+Parser::Parser()
 {
     expr[0] = '\0';
     e = NULL;
 
     token[0] = '\0';
     token_type = NOTHING;
-    temp_var = new Variablelist(x,y,z);
-    
-    time=0;
-    user_var->add("E",0);
-    user_var->set_value("E", 2.7182818284590452353602874713527);
-    user_var->add("PI",0);
-    user_var->set_value("PI", 3.1415926535897932384626433832795);
+    user_var = new Variablelist(100,100,100);
 }
 
-/*
- * destructor.
- * need to delete all initialized arrays
- */
-Parser::~Parser() {
- delete temp_var;
-}
-
-void Parser::set_eqs(char ** equations, int num) {
-  eqs = equations;
-  num_eqs = num;
-}
-
-void Parser::solve() {
-//  user_var = user_varx;
-//  time+=dtime;
-  
-  for(int i=0;i<num_eqs;i++) { 
-    char* result =  parse(eqs[i]);
-    printf("\t%s\n", result);
-  }
-}
-
-/*void Parser::set_time(double dtx) {
-  dtime=dtx;
-}*/
 
 /**
  * parses and evaluates the given expression
@@ -101,16 +68,14 @@ char* Parser::parse(const char new_expr[])
         e = expr;                                  // let e point to the start of the expression
         ans = 0;
 
-
         getToken();
         if (token_type == DELIMETER && *token == '\0')
         {
             throw Error(row(), col(), 4);
         }
-        //user_var->add("ANS",-1);
+
         ans = parse_level1();
-        //user_var->set_value("ANS",)
-        
+
         // check for garbage at the end of the expression
         // an expression ends with a character '\0' and token_type = delimeter
         if (token_type != DELIMETER || *token != '\0')
@@ -127,8 +92,9 @@ char* Parser::parse(const char new_expr[])
         }
 
         // add the answer to memory as variable "Ans"
-        user_var->add("Ans",0);
-        user_var->set_value("Ans", ans);
+        user_var->add("Ans", 0);
+        user_var->set_value("Ans",ans);
+
         snprintf(ans_str, sizeof(ans_str), "Ans = %g", ans);
     }
     catch (Error err)
@@ -268,7 +234,6 @@ void Parser::getToken()
     if (isDelimeter(*e))
     {
         token_type = DELIMETER;
-        ans = parse_level1();
         while (isDelimeter(*e))
         {
             *t = *e;
@@ -374,11 +339,10 @@ double Parser::parse_level1()
     {
         // copy current token
         char* e_now = e;
-        char varU[NAME_LEN_MAX+1];
         TOKENTYPE token_type_now = token_type;
         char token_now[NAME_LEN_MAX+1];
         strcpy(token_now, token);
-        toupper(varU, token_now);
+
         getToken();
         if (strcmp(token, "=") == 0)
         {
@@ -386,12 +350,11 @@ double Parser::parse_level1()
             double ans;
             getToken();
             ans = parse_level2();
-
-            if (user_var->add(varU,0) == false)
+            if (user_var->add(token_now, 0) == false)
             {
                 throw Error(row(), col(), 300);
             }
-            user_var->set_value(varU,ans);
+            user_var->set_value(token_now, ans);
             return ans;
         }
         else
@@ -606,7 +569,7 @@ double Parser::parse_level10()
 double Parser::parse_number()
 {
 double ans = 0;
-printf("\t%d\n",token_type);
+
     switch (token_type)
     {
         case NUMBER:
@@ -616,15 +579,11 @@ printf("\t%d\n",token_type);
             break;
 
         case VARIABLE:
-          {
             // this is a variable
-            VAR * temp_var_test = new VAR;
-            if(eval_variable(token, temp_var_test)) ans = temp_var_test->val;
-            else ans = 0;
-            delete temp_var_test;
+            ans = eval_variable(token);
             getToken();
             break;
-          }
+
         default:
             // syntax error or unexpected end of expression
             if (token[0] == '\0')
@@ -771,30 +730,28 @@ double Parser::eval_function(const char fn_name[], const double &value)
 /*
  * evaluate a variable
  */
-bool Parser::eval_variable(const char var_name[], VAR * ret_var)
+double Parser::eval_variable(const char var_name[])
 {
     // first make the variable name uppercase
     char varU[NAME_LEN_MAX+1];
     toupper(varU, var_name);
 
     // check for built-in variables
-    //if (!strcmp(varU, "E")) {return 2.7182818284590452353602874713527;}
-    //if (!strcmp(varU, "PI")) {return 3.1415926535897932384626433832795;}
+    if (!strcmp(varU, "E")) {return 2.7182818284590452353602874713527;}
+    if (!strcmp(varU, "PI")) {return 3.1415926535897932384626433832795;}
 
     // check for user defined variables
+    VAR * ans_var = new VAR;
     double ans;
-    if (user_var->get_value(varU, ret_var))
+    if (user_var->get_value(var_name, ans_var))
     {
-        return true;
-    }/*
-    if (temp_var->get_value(varU, ret_var))
-    {
-        return true;
-    }*/
+        ans = ans_var->val;
+        return ans;
+    }
 
     // unknown variable
     throw Error(row(), col(), 103, var_name);
-    return false;
+    return 0;
 }
 
 
