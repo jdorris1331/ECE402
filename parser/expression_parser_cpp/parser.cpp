@@ -38,16 +38,51 @@ using namespace std;
  * constructor.
  * Initializes all data with zeros and empty strings
  */
-Parser::Parser()
+Parser::Parser(int xx, int yy, int zz)
 {
     expr[0] = '\0';
     e = NULL;
 
+    x=xx;
+    y=yy;
+    z=zz;
+
     token[0] = '\0';
     token_type = NOTHING;
-    user_var = new Variablelist(100,100,100);
+    user_var = new Variablelist(x,y,z);
+    temp_var = new Variablelist(x,y,z);
 }
 
+/*
+ * destructor.
+ * need to delete all initialized arrays
+ */
+Parser::~Parser() {
+    delete user_var;
+    delete temp_var;
+}
+
+/*
+ * setup all the equations to solve
+ *
+ */
+void Parser::set_eqs(char ** equations, int num) {
+  eqs = equations;
+  num_eqs = num;
+}
+
+/*
+ * Solve all of the equations once
+ *
+ */
+void Parser::solve() {
+//  user_var = user_varx;
+
+  for(int i=0;i<num_eqs;i++) {
+    char* result =  parse(eqs[i]);
+    printf("\t%s\n", result);
+  }
+}
 
 /**
  * parses and evaluates the given expression

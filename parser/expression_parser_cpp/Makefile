@@ -1,4 +1,4 @@
-all: main
+all: strings
 
 main: parser.o error.o functions.o variablelist.o
 	g++ parser.o error.o functions.o variablelist.o -o main main.cpp
@@ -19,4 +19,4 @@ variablelist.o: variablelist.cpp
 	g++ -c variablelist.cpp
 
 clean: 
-	rm -rf *o main
+	rm -rf *o strings

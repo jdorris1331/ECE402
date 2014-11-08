@@ -58,6 +58,7 @@ class Variablelist {
 	void print();
 
     private:
+	void clear(const char* name);
 	/*
         struct VAR
         {

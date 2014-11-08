@@ -71,7 +71,10 @@ class Parser
 {
     // public functions
     public:
-        Parser();
+        Parser(int x, int y, int z);
+	~Parser();
+	void set_eqs(char ** eqs, int num_eqs);
+	void solve();
         char* parse(const char expr[]);
 
     // enumerations
@@ -88,6 +91,11 @@ class Parser
 
     // data
     private:
+	char ** eqs;
+	int num_eqs;
+
+	int x,y,z;
+
         char expr[EXPR_LEN_MAX+1];    // holds the expression
         char* e;                      // points to a character in expr
 
@@ -99,6 +107,7 @@ class Parser
                                       // of the expression
 
         Variablelist* user_var;        // list with variables defined by user
+	Variablelist* temp_var;
 
     // private functions
     private:

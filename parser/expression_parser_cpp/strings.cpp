@@ -11,7 +11,7 @@ using namespace std;
 int main() {
 Variablelist * vars = new Variablelist(100,100,100); 
 
-Parser prs;
+Parser prs(100,100,100);
 
 
   string test[3]; 

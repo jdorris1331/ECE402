@@ -39,6 +39,8 @@ Variablelist::Variablelist(int size_x, int size_y, int size_z) {
 Variablelist::~Variablelist() {
  
   for(int i=0;i<var.size();i++) {
+    clear(var[i].name);
+    /*
     if(var[i].type==0) {
       //delete var[i].val;
     }
@@ -63,6 +65,7 @@ Variablelist::~Variablelist() {
       }
       delete var[i].vf;
     } 
+    */
   }
   std::cout << "deleted stuff\n"; 
 }
@@ -132,12 +135,48 @@ bool Variablelist::del(const char* name)
     int id = get_id(name);
     if (id != -1)
     {
+	clear(var[id].name);
         var[id] = var[var.size()-1]; // move last item to deleted item
         //need to free memory
         var.pop_back();              // remove last item
         return true;
     }
     return false;
+}
+
+/*
+ * Free up memory
+ */
+void Variablelist::clear(const char* name)
+{
+    int id = get_id(name);
+    if(id != -1)
+    {
+        if(var[id].type==0) {
+        //delete var[i].val;
+        }
+        else if(var[id].type==1) {
+          for(int j=0;j<x;j++) {
+            for(int k=0;k<y;k++) {
+              delete[] var[id].sf[j][k];
+            }
+            delete[] var[id].sf[j];
+          }
+          delete[] var[id].sf;
+        }
+        else if(var[id].type==2) {
+          for(int j=0;j<x;j++) {
+            for(int k=0;k<y;k++) {
+              for(int l=0;l<z;l++) {
+                delete[] var[id].vf[j][k][l];
+              }
+              delete[] var[id].vf[j][k];
+            }
+            delete[] var[id].vf[j];
+          }
+          delete var[id].vf;
+        }
+    }
 }
 
 /*
