@@ -35,19 +35,7 @@
 using namespace std;
 
 
-
 void toupper(char upper[], const char str[]);
-
-
-/*struct VAR
-{
-  char name[NAME_LEN_MAX+1];
-  int type;
-  double *** sf;
-  double **** vf;
-  double val;
-};*/
-
 
 class Variablelist {
     public:
@@ -62,8 +50,13 @@ class Variablelist {
         bool get_value(const int id, VAR* ret_var);
         int  get_id(const char* name);
         bool set_value(const char* name, const double value);
+	bool set_scalar_single(const char* name, int i, int j, int k, const double value);
         bool set_scalar_field(const char* name, const double*** scalar_field);
+	bool set_vector_single(const char* name, int i, int j, int k, int dir, const double value);
         bool set_vector_field(const char* name, const double**** vector_field);
+
+	void print();
+
     private:
 	/*
         struct VAR
@@ -72,7 +65,7 @@ class Variablelist {
             int type;
             double *** sf;
             double **** vf;
-            double val;
+            double * val;
         };*/
 	int x,y,z,dim;
         vector<VAR> var;

@@ -37,14 +37,19 @@ Variablelist::Variablelist(int size_x, int size_y, int size_z) {
 }
 
 Variablelist::~Variablelist() {
-
+ 
   for(int i=0;i<var.size();i++) {
-    if(var[i].type==1) {
+    if(var[i].type==0) {
+      //delete var[i].val;
+    }
+    else if(var[i].type==1) {
       for(int j=0;j<x;j++) {
         for(int k=0;k<y;k++) {
           delete[] var[i].sf[j][k];
         }
+        delete[] var[i].sf[j];
       }
+      delete[] var[i].sf;      
     }
     else if(var[i].type==2) {
       for(int j=0;j<x;j++) {
@@ -52,8 +57,11 @@ Variablelist::~Variablelist() {
           for(int l=0;l<z;l++) {
             delete[] var[i].vf[j][k][l];
           }
+         delete[] var[i].vf[j][k];
         }
+        delete[] var[i].vf[j];
       }
+      delete var[i].vf;
     } 
   }
   std::cout << "deleted stuff\n"; 
@@ -125,10 +133,22 @@ bool Variablelist::del(const char* name)
     if (id != -1)
     {
         var[id] = var[var.size()-1]; // move last item to deleted item
+        //need to free memory
         var.pop_back();              // remove last item
         return true;
     }
     return false;
+}
+
+/*
+ * Print desired stuff for debugging
+ */
+void Variablelist::print()
+{
+  for(int i=0;i<var.size();i++) {
+    cout << var[i].name << " " << var[i].type << endl;
+    cout << var[i].val << " " << var[i].sf << " " << var[i].vf << endl;
+  }
 }
 
 /*
@@ -171,51 +191,105 @@ bool Variablelist::get_value(const int id, VAR* ret_var)
 /*
  * Set the single value of the variable 
  */
-bool Variablelist::set_value(const char* name, const double value)
+bool Variablelist::set_value(const char* name,  double value)
 {
     int id = get_id(name);
-    if(var[id].type!=0) return false;
-
-    var[id].val = value;	
+    if(var[id].type!=0 && var[id].type!=-1) {
+      //cout << "value not set\n";
+      return false;
+    }
+    //var[id].val = new double;
+    var[id].val = value;
+    //cout << value << endl;	
     return true;
+}
+
+
+/* 
+ * Set a specific value in  scalar field for this type of variable
+ */
+bool Variablelist::set_scalar_single(const char* name, int i, int j, int k, const double val) {
+  int id = get_id(name);
+  if(var[id].type==1) {
+    var[id].sf[i][j][k] = val;
+    return true;
+  }
+  return false;
 }
 
 /* 
  * Set the scalar field for this type of variable
  */
-
 bool Variablelist::set_scalar_field(const char* name, const double*** scalar_field) {
   int id = get_id(name);
-  if(var[id].type!=1) return false;
-
-  for(int i=0;i<x;i++) {
-    for(int j=0;j<y;j++) {
-      for(int k=0;k<z;k++) {
-        var[id].sf[i][j][k] = scalar_field[i][j][k];
+  if(var[id].type==1) {
+    for(int i=0;i<x;i++) {
+      for(int j=0;j<y;j++) {
+        for(int k=0;k<z;k++) {
+          var[id].sf[i][j][k] = scalar_field[i][j][k];
+        }
       }
     }
+    return true;
   }
-  return true;
+  else if(var[id].type==-1) {
+    //var[id].
+    var[id].type=1; 
+    //allocate memory
+    var[id].sf = new double**[x];
+    for(int i=0;i<x;i++) {
+      var[id].sf[i] = new double*[y];
+      for(int j=0;j<y;j++) {
+        var[id].sf[i][j] = new double[z];
+      } 
+    }
+    
+    //store values
+    for(int i=0;i<x;i++) {
+      for(int j=0;j<y;j++) {
+        for(int k=0;k<z;k++) {
+          var[id].sf[i][j][k] = scalar_field[i][j][k];
+        }
+      }
+    }
+    return true;
+  }
+  else return false;
 }
+
+
+/* 
+ * Set a specific location of vector field for this type of variable
+ */
+bool Variablelist::set_vector_single(const char* name, int i, int j, int k, int dir, const double val) {
+  int id = get_id(name);
+  if(var[id].type==1) {
+    var[id].vf[i][j][k][dir] = val;
+    return true;
+  }
+  return false;
+}
+
 
 /*
  * Set the vector field for this type of variable
  */
-
 bool Variablelist::set_vector_field(const char* name, const double**** vector_field) {
   int id = get_id(name);
-  if(var[id].type!=2) return false;
-
-  for(int i=0;i<x;i++) {
-    for(int j=0;j<y;j++) {
-      for(int k=0;k<z;k++) {
-        for(int l=0;l<dim;l++) {
-          var[id].vf[i][j][k][l] = vector_field[i][j][k][l];
+  if(var[id].type==2) {
+    for(int i=0;i<x;i++) {
+      for(int j=0;j<y;j++) {
+        for(int k=0;k<z;k++) {
+          for(int l=0;l<dim;l++) {
+            var[id].vf[i][j][k][l] = vector_field[i][j][k][l];
+          }
         }
       }
     }
-  }
   return true;
+  }
+  //else if{
+  return false;
 }
 
 

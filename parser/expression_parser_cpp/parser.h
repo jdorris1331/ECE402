@@ -75,9 +75,9 @@ class Parser
 	~Parser();
         char* parse(const char expr[]);
 
-	void solve(VAR* test);
+	void solve();
 	//void inc_time();
-	void set_time(double dtx);
+	//void set_time(double dtx);
 	void set_eqs(char ** equations, int num); 
 
     // enumerations
@@ -111,7 +111,8 @@ class Parser
         char ans_str[255];            // holds a string containing the result
                                       // of the expression
 
-        Variablelist *user_var;        // list with variables defined by user
+        Variablelist *user_var;       // list with variables defined by user
+	Variablelist *temp_var;       // temporary variables for solving
 
     // private functions
     private:

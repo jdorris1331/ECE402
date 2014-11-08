@@ -9,8 +9,8 @@ z 0 10
 var1 2 3 warn
 var2 3 4 show
 
-## Constants - (t=timestep[seconds]) need ranges
-t = .01 - 0 1
+## Constants - (t=timestep[seconds]) need ranges for sliders
+t = .01 
 k = 2.0
 
 ## Equation definitions (available operators: lapacian, etc)
@@ -18,6 +18,4 @@ var1 = grad(var1)+y+z/k;
 
 
 ## initial values set to below or all zeros with a ZEROS
-
-x y z val
-0 0 0 0
+initial.txt
