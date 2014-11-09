@@ -1,4 +1,4 @@
-#include "sliderbox.h"
+#include "..\include\sliderbox.h"
 #include <iomanip>
 
 void SliderBox::cb_update(Fl_Widget *w, void *data) { ((SliderBox*)data)->update(); }
@@ -26,18 +26,20 @@ SliderBox::SliderBox(const char *name, int min, int max, int val, double scl, in
 
 	fraSli[0] = new Fl_Pack(0, 0, 160, 20, 0);
 	fraSli[0]->type(Fl_Pack::HORIZONTAL);
-	lblName = new Fl_Output(6, 15, 80, 20, 0);
+	lblName = new Fl_Output(6, 15, 155, 20, 0);
 	lblName->box(FL_NO_BOX);
 	lblName->insert(name);
 	lblVal = new Fl_Output(105, 15, 50, 20, 0);
 	lblVal->box(FL_NO_BOX);
 	lblVal->label(sVal.c_str());
-	lblVal->align(FL_ALIGN_RIGHT);
 	fraSli[0]->end();
 
+	fraSli[1] = new Fl_Pack(0, 0, 160, 20, 0);
+	fraSli[1]->type(Fl_Pack::HORIZONTAL);
 	sld = new Fl_Hor_Nice_Slider(5, 1, 150, 20, 0);
 	sld->bounds(min, max);
 	sld->value(val);
+	fraSli[1]->end();
 
 	sld->callback(cb_update, this);
 	this->end();
