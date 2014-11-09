@@ -28,7 +28,7 @@
 
 // declarations
 #include "parser.h"
-#include "variable.h"
+
 
 using namespace std;
 
@@ -38,17 +38,19 @@ using namespace std;
  * constructor.
  * Initializes all data with zeros and empty strings
  */
-Parser::Parser(int x, int y, int z)
+Parser::Parser(int xx, int yy, int zz)
 {
     expr[0] = '\0';
     e = NULL;
 
+    x=xx;
+    y=yy;
+    z=zz;
+
     token[0] = '\0';
     token_type = NOTHING;
     user_var = new Variablelist(x,y,z);
-    time=0;
-    user_var->add("E",0);
-    user_var->set_value("E", 2.7182818284590452353602874713527);
+    temp_var = new Variablelist(x,y,z);
 }
 
 /*
@@ -56,30 +58,30 @@ Parser::Parser(int x, int y, int z)
  * need to delete all initialized arrays
  */
 Parser::~Parser() {
- //figure out
- delete user_var;
+    delete user_var;
+    delete temp_var;
 }
 
+/*
+ * setup all the equations to solve
+ *
+ */
 void Parser::set_eqs(char ** equations, int num) {
   eqs = equations;
   num_eqs = num;
 }
 
-void Parser::solve(VAR* ret_val) {
-  time+=dtime;
-  
+/*
+ * Solve all of the equations once
+ *
+ */
+void Parser::solve() {
+//  user_var = user_varx;
+
   for(int i=0;i<num_eqs;i++) {
     char* result =  parse(eqs[i]);
     printf("\t%s\n", result);
   }
-  ret_val[0].val = 3.8;
-  ret_val[0].type = 0;
-  ret_val[1].val = 3;
-  ret_val[1].type = 0;
-}
-
-void Parser::set_time(double dtx) {
-  dtime=dtx;
 }
 
 /**
@@ -125,8 +127,9 @@ char* Parser::parse(const char new_expr[])
         }
 
         // add the answer to memory as variable "Ans"
-        user_var->add("Ans",0);
-        user_var->set_value("Ans", ans);
+        user_var->add("Ans", 0);
+        user_var->set_value("Ans",ans);
+
         snprintf(ans_str, sizeof(ans_str), "Ans = %g", ans);
     }
     catch (Error err)
@@ -371,11 +374,10 @@ double Parser::parse_level1()
     {
         // copy current token
         char* e_now = e;
-        char varU[NAME_LEN_MAX+1];
         TOKENTYPE token_type_now = token_type;
         char token_now[NAME_LEN_MAX+1];
         strcpy(token_now, token);
-        toupper(varU, token_now);
+
         getToken();
         if (strcmp(token, "=") == 0)
         {
@@ -383,12 +385,11 @@ double Parser::parse_level1()
             double ans;
             getToken();
             ans = parse_level2();
-
-            if (user_var->add(varU,0) == false)
+            if (user_var->add(token_now, 0) == false)
             {
                 throw Error(row(), col(), 300);
             }
-            user_var->set_value(varU,ans);
+            user_var->set_value(token_now, ans);
             return ans;
         }
         else
@@ -613,15 +614,11 @@ double ans = 0;
             break;
 
         case VARIABLE:
-          {
             // this is a variable
-            VAR * temp_var = new VAR;
-            if(eval_variable(token, temp_var)) ans = temp_var->val;
-            else ans = 0;
-            delete temp_var;
+            ans = eval_variable(token);
             getToken();
             break;
-          }
+
         default:
             // syntax error or unexpected end of expression
             if (token[0] == '\0')
@@ -768,26 +765,28 @@ double Parser::eval_function(const char fn_name[], const double &value)
 /*
  * evaluate a variable
  */
-bool Parser::eval_variable(const char var_name[], VAR * ret_var)
+double Parser::eval_variable(const char var_name[])
 {
     // first make the variable name uppercase
     char varU[NAME_LEN_MAX+1];
     toupper(varU, var_name);
 
     // check for built-in variables
-    //if (!strcmp(varU, "E")) {return 2.7182818284590452353602874713527;}
-    //if (!strcmp(varU, "PI")) {return 3.1415926535897932384626433832795;}
+    if (!strcmp(varU, "E")) {return 2.7182818284590452353602874713527;}
+    if (!strcmp(varU, "PI")) {return 3.1415926535897932384626433832795;}
 
     // check for user defined variables
+    VAR * ans_var = new VAR;
     double ans;
-    if (user_var->get_value(varU, ret_var))
+    if (user_var->get_value(var_name, ans_var))
     {
-        return true;
+        ans = ans_var->val;
+        return ans;
     }
 
     // unknown variable
     throw Error(row(), col(), 103, var_name);
-    return false;
+    return 0;
 }
 
 
