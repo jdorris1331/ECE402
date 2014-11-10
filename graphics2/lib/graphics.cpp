@@ -15,7 +15,7 @@ void Graphics::calculation(){
 	mreal x,y,z;
 	gr->Rotate(50,60);
 	gr->Light(true);
-	gr->Alpha(true);
+//	gr->Alpha(true);
 	register long i,j,k, n = 20, m = 20, l = 20, i0;
 	a.Create(n,m,l);
 	bool begin = true;
@@ -25,10 +25,7 @@ void Graphics::calculation(){
 	while(animation_paused == true)
 	{
 		std::cout << "yielding thread\n";
-		std::cout << "calculations thread: " << std::this_thread::get_id();
-	//	sleep(10000);
-		sleep(2);
-//		std::this_thread::yield();
+		std::this_thread::yield();
 		gr->Update();
 		std::cout << "waking thread\n";
 	}
@@ -44,7 +41,10 @@ void Graphics::calculation(){
 	//axis();	
 	//gr->Plot(y, x, z);
 		gr->Clf();
-//		gr->Box();
+//       gr->Axis();
+ //       gr->Rotate(90,90);
+  //      gr->Box();
+		gr->Box();
 		gr->Surf3(a);
 		//gr->Dens3(a);
 		//gr->ContF(a);
