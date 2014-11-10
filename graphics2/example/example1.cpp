@@ -9,7 +9,7 @@ int main()
 //	Graphics test;
 	std::cout << "Hmm.cpp\n";
 	//std::cout << "pthread: " << MGL_HAVE_PTHREAD  << std::endl;
-	
+	std:: cout << "main thread: " << std::this_thread::get_id();	
 	//thread thread1(test.beginAnimation);
 	//test.beginAnimation();	
 //	sleep(40);	

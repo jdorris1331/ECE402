@@ -1,6 +1,7 @@
 #ifndef SLIDERBOX_H
 #define SLIDERBOX_H
 
+//#include <Windows.h>
 #include <FL/Fl_Pack.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Hor_Nice_Slider.H>

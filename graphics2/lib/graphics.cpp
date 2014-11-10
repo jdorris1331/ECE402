@@ -25,8 +25,11 @@ void Graphics::calculation(){
 	while(animation_paused == true)
 	{
 		std::cout << "yielding thread\n";
-		sleep(10000);
-	//	std::this_thread::yield();
+		std::cout << "calculations thread: " << std::this_thread::get_id();
+	//	sleep(10000);
+		sleep(2);
+//		std::this_thread::yield();
+		gr->Update();
 		std::cout << "waking thread\n";
 	}
     		x=2*i/(n-1.)-1; y=2*j/(m-1.)-1; z=2*k/(l-1.)-1; i0 = i+n*(j+m*k);
