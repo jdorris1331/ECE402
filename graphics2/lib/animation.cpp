@@ -7,6 +7,8 @@ Animation::Animation(std::string title, int s, int p){
 	points = p;  //Set Default amount of points.
 	animation_paused = false;
 	animation_begin = false;
+	gr->ToggleZoom(); //Allow toggle by mouse.
+	gr->ToggleRotate(); //Allow for mouse rotation.
 }
 
 
@@ -35,9 +37,26 @@ Animation::~Animation(){
 
 void Animation::beginAnimation(){
 
-	std::thread calc_thread(&Animation::calculation, this);
+	mglData x(50), y(50), z(50);
+	gr->Rotate(50,60);
+	//`gr->Box();
+	gr->SetRanges(-90, 90, -90, 90, -90, 90);
+	for(int t = 0; t < 1000; t++)
+	{
+
+		while(animation_paused == true)
+		{
+			std::this_thread::yield();
+			gr->Update();
+		}
+	//	std::thread calc_thread(&Animation::calculation,  this, t, &x, &y, &z, 200);
+		calculation(t, &x, &y, &z, 50);			
+		//calc_thread.join();
+		gr->Dots(x,y,z);
+		gr->Update();	
+	}
 	std::cout << "Begin Calculations\n";
-	calc_thread.detach();
+	//calc_thread.detach();
 	std::cout << "BeginAnimation Returning\n";
 }
 
@@ -47,7 +66,9 @@ void Animation::toggleAnimation(){
 	{
 		animation_paused = false;
 		animation_begin = true;
-		beginAnimation();
+		std::thread animation (&Animation::beginAnimation, this);
+		animation.detach();
+		gr->Run();
 	}
 	else
 		animation_paused = !animation_paused;
@@ -66,7 +87,5 @@ void Animation::update(){
 			std::cerr <<"Graph not read\n";
 	}
 }
-
-
 
 

@@ -34,6 +34,7 @@ void Graphics::calculation(){
 	//gr->Plot(y, x, z);
 		gr->Clf();
 		gr->Box();
+		gr->Axis();
 		gr->Surf3(a);
 		//gr->Dens3(a);
 		//gr->ContF(a);

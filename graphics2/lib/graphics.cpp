@@ -9,6 +9,20 @@ void Graphics::axis(double x, double y, double z, double ticks){
 
 }
 
+void Graphics::calculation(int t, mglData* x, mglData * y, mglData * z, int  n  ){
+	srand(time(NULL));
+	double a, b, c;	
+	int i, j, k;
+	for(int i = 0; i < n; i++) for(j = 0; j < n; j++) for(k = 0; k < n; k++)
+	{
+    		x->a[i] = .7*t*cos(.05*i)*cos(.05*i);
+    		y->a[j] = 0.9*t*cos(.05*j)*sin(.05*j);
+    		z->a[k] = 0.6*t*sin(.05*k);
+	}
+}
+
+
+
 
 void Graphics::calculation(){
 	mglData a;
@@ -57,3 +71,8 @@ void Graphics::calculation(){
   }	
 
 }
+
+
+
+
+

@@ -1,8 +1,6 @@
 #include <mgl2/fltk.h>
-#include <unistd.h>
 int main(int argc,char **argv)
 {
-   mglPoint pnt;
   mglFLTK gr("test");     // create window
   gr.RunThr();            // run event loop in separate thread
   for(int i=0;i<10;i++)   // do calculation

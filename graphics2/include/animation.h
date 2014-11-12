@@ -40,9 +40,10 @@ class Animation
 		 Animation(std::string = "PDE SOLVER", int s = 1, int p = 5000);
 		~Animation();
 
-		virtual void calculation(){}  //I don't know what to do right here.
+	//	virtual void calculation(){}  //I don't know what to do right here.
 		//Theoretically this will be the method that controls the calculation 
 		//Basic High-level animation controls.
+		virtual void calculation(int t, mglData* x, mglData * y, mglData * z, int n){}
 		void toggleAnimation(); //Toggles animation from paused to resuming.	
 					//First call to toggle will begin the animation.
 		//Getters
