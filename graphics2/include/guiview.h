@@ -12,8 +12,7 @@ class GUIView : public Fl_Window
 {
 private:
 	CtrlMenuBar *mb;
-	Fl_Pack *fraFrame, *fraGraph, *fraSliders;
-	Fl_Group *fraMain[3];
+	Fl_Pack *fraFrame, *fraMain[3];
 	//Fl_Scroll *scrMain;
 
 	Graphics *graph;

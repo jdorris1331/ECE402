@@ -1,7 +1,7 @@
 #ifndef SPINNERBOX_H
 #define SPINNERBOX_H
 
-#include <Windows.h>
+//#include <Windows.h>
 #include <FL/Fl_Pack.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Input.H>

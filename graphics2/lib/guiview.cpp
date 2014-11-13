@@ -7,12 +7,12 @@
 #include "sliderbox.h"
 #include <sstream>
 #include <iomanip>
+#include <iostream>
 
 void GUIView::cb_launchGraph(Fl_Widget *w, void *data) { ((GUIView*)data)->launchGraph(); }
 void GUIView::launchGraph()
 {
 	graph = new Graphics();
-   // graph = new Graphics();
 	//graph->RunThread();
 }
 
@@ -21,9 +21,11 @@ GUIView::GUIView(const char *sFile) : Fl_Window(900, 700, "PDER Control Panel")
 	fraFrame = new Fl_Pack(0, 0, 900, 700, 0);
 	fraFrame->spacing(1);
 	
+	launchGraph();
+	
 	mb = new CtrlMenuBar();
 	
-	fraMain[0] = new CtrlGui();
+	fraMain[0] = new CtrlGui(graph);
 	fraMain[0]->end();
 	fraMain[1] = new Fl_Pack(0, 0, 900, 700, 0);
 	fraMain[1]->type(Fl_Pack::HORIZONTAL);
@@ -39,4 +41,8 @@ GUIView::GUIView(const char *sFile) : Fl_Window(900, 700, "PDER Control Panel")
 	this->resizable(fraMain[1]);
 	fraFrame->show();
 	this->end();
+	
+	fraFrame->add(mb);
+	fraFrame->add(fraMain[0]);
+	fraFrame->add(fraMain[1]);
 }
