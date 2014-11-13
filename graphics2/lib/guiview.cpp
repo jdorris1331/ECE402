@@ -20,10 +20,12 @@ GUIView::GUIView(const char *sFile) : Fl_Window(900, 700, "PDER Control Panel")
 {
 	fraFrame = new Fl_Pack(0, 0, 900, 700, 0);
 	fraFrame->spacing(1);
+
+	Graphics *graph = new Graphics();
 	
 	mb = new CtrlMenuBar();
 	
-	fraMain[0] = new CtrlGui();
+	fraMain[0] = new CtrlGui(graph);
 	fraMain[0]->end();
 	fraMain[1] = new Fl_Pack(0, 0, 900, 700, 0);
 	fraMain[1]->type(Fl_Pack::HORIZONTAL);

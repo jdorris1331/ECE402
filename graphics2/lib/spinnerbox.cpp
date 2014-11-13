@@ -1,4 +1,4 @@
-#include "..\include\spinnerbox.h"
+#include "spinnerbox.h"
 #include <sstream>
 #include <iomanip>
 #include <string>

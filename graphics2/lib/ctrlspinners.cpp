@@ -1,4 +1,4 @@
-#include "..\include\ctrlspinners.h"
+#include "ctrlspinners.h"
 #include <iostream>
 
 void CtrlSpinners::cb_updatePos(Fl_Widget *w, void *data) { ((CtrlSpinners*)data)->updatePos(); }
