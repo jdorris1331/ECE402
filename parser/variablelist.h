@@ -60,15 +60,6 @@ class Variablelist {
 	void print();
 
     private:
-	/*
-        struct VAR
-        {
-            char name[NAME_LEN_MAX+1];
-            int type;
-            double *** sf;
-            double **** vf;
-            double * val;
-        };*/
 	int x,y,z,dim;
         vector<VAR> var;
 };

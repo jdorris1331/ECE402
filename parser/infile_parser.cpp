@@ -5,7 +5,7 @@ using namespace std;
 infile_parser::infile_parser() {}
 infile_parser::~infile_parser() {}
 
-bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) {
+bool infile_parser::parse(string file, vector<VAR> *vars, vector<string>* eqs) {
   ifstream infile(file);
   string line;
   int max_vars = 50;
@@ -48,12 +48,16 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
         
           //add to 
           if(type=="scalar" || type=="s") {
-            vars->add(v_name.c_str(),1);
-            vars->set_scalar_field(v_name.c_str(),value);
+            VAR new_sf;
+            new_sf.name=v_name.c_str();
+            new_sf.set_type(1);
+            vars->push_back(new_sf);
           }
           else if(type=="vector" || type=="v") {
-            vars->add(v_name.c_str(),2);
-            vars->set_vector_field(v_name.c_str(),value);
+            VAR new_vf;
+            new_vf.name=v_name.c_str();
+            new_vf.set_type(2);
+            vars->push_back(new_vf);
           }
           else {
             cerr << "Incorrect variable type in variable section: ";
@@ -93,9 +97,12 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
           string c_name, val;
           //get type and name
           if(!(iss >> c_name >> val)) { break; }
-          cout << c_name << " " << val << endl;
-          vars->add(c_name.c_str(),0);
-          vars->set_value(c_name.c_str(),atof(val.c_str()));
+          //cout << c_name << " " << val << endl;
+          VAR new_const;
+          new_const.name=c_name.c_str();
+          new_const.set_type(0);
+          new_const.val=atof(val.c_str());
+          vars->push_back(new_const);
           initial=false;
       }
     }

@@ -29,15 +29,11 @@
  * Initialize the size of the space
  */
 
-Variablelist::Variablelist(int size_x, int size_y, int size_z) {
-  x = size_x;
-  y = size_y;
-  z = size_z;
-  dim = 3;
+Variablelist::Variablelist() {
 }
 
 Variablelist::~Variablelist() {
- 
+ /*
   for(int i=0;i<var.size();i++) {
     if(var[i].type==0) {
       //delete var[i].val;
@@ -63,7 +59,7 @@ Variablelist::~Variablelist() {
       }
       delete var[i].vf;
     } 
-  }
+  }*/
   std::cout << "deleted stuff\n"; 
 }
 
