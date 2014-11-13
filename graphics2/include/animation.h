@@ -3,6 +3,7 @@
 #include <mgl2/fltk.h>
 #include <mgl2/mgl.h>
 #include <mgl2/type.h>
+#include <vector>
 #include <unistd.h>
 #include <string>
 #include <iostream>
@@ -36,6 +37,9 @@ class Animation
 		//This function will be set to 1 when ToggleAnimation is started for hte 
 		//first time.
 		void beginAnimation(); //Begin animation will begin the calculation.
+		void UpdatePointers(int t, mglData* &, mglData* & , mglData* & );
+		//Internal Method used for updating memory for drawing.  Should never
+		//Be called or used by functions other than beginAnimation();
 	public:
 		 Animation(std::string = "PDE SOLVER", int s = 1, int p = 5000);
 		~Animation();
@@ -55,6 +59,8 @@ class Animation
 		void setSpeed(int s){speed = s;}
 		void setPoints(int p){points = p;}
 		void update();
+		void drawDots(mglData * , mglData* , mglData* );
+
 };
 
 #endif //ANIMATION_H

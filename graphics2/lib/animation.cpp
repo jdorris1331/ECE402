@@ -3,12 +3,11 @@
 Animation::Animation(std::string title, int s, int p){	
 	gr = new mglFLTK(title.c_str()); //Create a Window
 				  //Default Title.
+	gr->ToggleZoom(); //Allow toggle by mouse.
 	speed = s;	//SetDefault amount of speed.
 	points = p;  //Set Default amount of points.
 	animation_paused = false;
 	animation_begin = false;
-	gr->ToggleZoom(); //Allow toggle by mouse.
-	gr->ToggleRotate(); //Allow for mouse rotation.
 }
 
 
@@ -35,29 +34,67 @@ Animation::~Animation(){
 }
 
 
+
+void Animation::drawDots(mglData*  x, mglData *  y ,mglData *  z )
+{
+
+	gr->Clf(); //Clear the old graph.
+	gr->Dots(*x, *y, *z);	
+	gr->Update();
+}
+
+
+void Animation::UpdatePointers(int t, mglData* & x, mglData* & y, mglData* & z)
+{
+	//Update size fo points
+	mglData* tx = new mglData((t+1)*100);
+	mglData* ty = new mglData((t+1)*100);
+	mglData* tz = new mglData((t+1)*100);
+	if(x && y && z){		
+		//Update size of pointers.
+		tx = new mglData((t+1)*100);
+		ty = new mglData((t+1)*100);
+		tz = new mglData((t+1)*100);
+				
+		//memcpy old ponter into new pointer		
+		memcpy(tx->a, x->a, (t)*100*sizeof(mreal));
+		memcpy(ty->a, y->a, (t)*100*sizeof(mreal));
+		memcpy(tz->a, z->a, (t)*100*sizeof(mreal));
+		delete x; delete y; delete z; //Delete Old memory.
+		x = tx; y = ty; z = tz;
+	}
+	else{
+		x = new mglData(100);
+		y = new mglData(100);
+		z = new mglData(100);
+	}
+
+
+}
+
+
 void Animation::beginAnimation(){
-
-	mglData x(50), y(50), z(50);
-	gr->Rotate(50,60);
-	//`gr->Box();
-	gr->SetRanges(-90, 90, -90, 90, -90, 90);
-	for(int t = 0; t < 1000; t++)
+	mglData *px = NULL, *py = NULL, *pz = NULL;
+	gr->Rotate(60,50); 
+	gr->Box();
+	gr->SetRanges(-100, 100, -100, 100, -100, 100);
+	for(int t = 0; t < 100; t++)
 	{
-
 		while(animation_paused == true)
 		{
 			std::this_thread::yield();
 			gr->Update();
 		}
-	//	std::thread calc_thread(&Animation::calculation,  this, t, &x, &y, &z, 200);
-		calculation(t, &x, &y, &z, 50);			
-		//calc_thread.join();
-		gr->Dots(x,y,z);
-		gr->Update();	
+		UpdatePointers(t, px, py, pz);
+		if(t == 0){
+			calculation(t, px, py, pz, 0);			
+		}
+		else{
+			calculation(t, px, py, pz, t*100);			
+		}
+			drawDots(px, py, pz);
+			gr->View(50,60);
 	}
-	std::cout << "Begin Calculations\n";
-	//calc_thread.detach();
-	std::cout << "BeginAnimation Returning\n";
 }
 
 void Animation::toggleAnimation(){

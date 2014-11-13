@@ -1,4 +1,4 @@
-#include "..\include\ctrlsliders.h"
+#include "ctrlsliders.h"
 
 CtrlSliders::CtrlSliders(const char *sFile) : Fl_Pack(0, 0, 160, 30, 0)
 {
