@@ -44,6 +44,7 @@ class Variablelist {
         bool exist(const char* name);
         bool add(const char* name, const int type);
         bool del(const char* name);
+        bool copy(const char* name1, const char* name2);
 
 	int get_type(const char* name);
         bool get_value(const char* name, VAR* ret_var);

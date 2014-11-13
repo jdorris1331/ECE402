@@ -147,7 +147,13 @@ void Variablelist::print()
 {
   for(int i=0;i<var.size();i++) {
     cout << var[i].name << " " << var[i].type << endl;
-    cout << var[i].val << " " << var[i].sf << " " << var[i].vf << endl;
+    if(var[i].type==0) cout << var[i].val << "\n"; 
+    if(var[i].type==1) cout << var[i].sf[1][2][3] << "\n";
+    if(var[i].type==2) cout << var[i].vf[0][0][0][0] << endl;
+    cout << "Show range min=" << var[i].show_min << endl;
+    cout << "Show range max=" << var[i].show_max << endl;
+    cout << "Warn range min=" << var[i].warn_min << endl;
+    cout << "Warn range min=" << var[i].warn_max << endl;
   }
 }
 
@@ -220,18 +226,22 @@ bool Variablelist::set_scalar_single(const char* name, int i, int j, int k, cons
 /* 
  * Set the scalar field for this type of variable
  */
-bool Variablelist::set_scalar_field(const char* name, const double*** scalar_field) {
+bool Variablelist::set_scalar_field(const char* name, const double value) {
   int id = get_id(name);
   if(var[id].type==1) {
     for(int i=0;i<x;i++) {
       for(int j=0;j<y;j++) {
         for(int k=0;k<z;k++) {
-          var[id].sf[i][j][k] = scalar_field[i][j][k];
+          var[id].sf[i][j][k] = value;//scalar_field[i][j][k];
         }
       }
     }
+    var[id].type=1;
     return true;
   }
+
+//need to create if not type 1 and clear old memory
+/*
   else if(var[id].type==-1) {
     //var[id].
     var[id].type=1; 
@@ -254,6 +264,7 @@ bool Variablelist::set_scalar_field(const char* name, const double*** scalar_fie
     }
     return true;
   }
+*/
   else return false;
 }
 
@@ -274,24 +285,62 @@ bool Variablelist::set_vector_single(const char* name, int i, int j, int k, int 
 /*
  * Set the vector field for this type of variable
  */
-bool Variablelist::set_vector_field(const char* name, const double**** vector_field) {
+bool Variablelist::set_vector_field(const char* name, const double value) {
   int id = get_id(name);
-  if(var[id].type==2) {
+  //if(var[id].type==2) {
     for(int i=0;i<x;i++) {
       for(int j=0;j<y;j++) {
         for(int k=0;k<z;k++) {
           for(int l=0;l<dim;l++) {
-            var[id].vf[i][j][k][l] = vector_field[i][j][k][l];
+            var[id].vf[i][j][k][l] = value;
           }
         }
       }
     }
+  var[id].type=2;
   return true;
-  }
+  
+  //need to create memory and clear old memory
+//}
   //else if{
+  //return false;
+}
+
+/*
+ * Set ranges for a variable
+ */
+bool Variablelist::set_range(const char* name, const int type, const double min, const double max) {
+  int id = get_id(name);
+  if(id==-1) return false;
+  if(type==0) {
+    var[id].show_min=min;
+    var[id].show_max=max;
+    return true;
+  }
+  else if(type==1){
+    var[id].warn_min=min;
+    var[id].warn_max=max;
+    return true; 
+  }
   return false;
 }
 
+/*
+ *  Get a range value for a variable
+ */ 
+double Variablelist::get_range(const char* name, const int type, const int LorH) {
+  int id  = get_id(name);
+  if(id==-1) return -1;
+  if(type==0) {
+    if(LorH==0) return var[id].show_min;
+    else return var[id].show_max;
+  }
+  else if(type==1){
+    if(LorH==0) return var[id].warn_min;
+    else return var[id].warn_max;
+  }
+  else return -1;
+}
 
 
 /*

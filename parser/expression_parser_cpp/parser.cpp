@@ -49,7 +49,7 @@ Parser::Parser(int xx, int yy, int zz)
 
     token[0] = '\0';
     token_type = NOTHING;
-    user_var = new Variablelist(x,y,z);
+ //   user_var = new Variablelist(x,y,z);
     temp_var = new Variablelist(x,y,z);
 }
 
@@ -58,7 +58,7 @@ Parser::Parser(int xx, int yy, int zz)
  * need to delete all initialized arrays
  */
 Parser::~Parser() {
-    delete user_var;
+   // delete user_var;
     delete temp_var;
 }
 
@@ -75,12 +75,12 @@ void Parser::set_eqs(char ** equations, int num) {
  * Solve all of the equations once
  *
  */
-void Parser::solve() {
-//  user_var = user_varx;
+void Parser::solve(Variablelist* vars) {
+  //user_var = vars;
 
   for(int i=0;i<num_eqs;i++) {
-    char* result =  parse(eqs[i]);
-    printf("\t%s\n", result);
+    char* result =  parse(eqs[i], vars);
+    //printf("\t%s\n", result);
   }
 }
 
@@ -88,7 +88,7 @@ void Parser::solve() {
  * parses and evaluates the given expression
  * On error, an error of type Error is thrown
  */
-char* Parser::parse(const char new_expr[])
+char* Parser::parse(const char new_expr[], Variablelist* vars)
 {
     try
     {
@@ -109,7 +109,7 @@ char* Parser::parse(const char new_expr[])
             throw Error(row(), col(), 4);
         }
 
-        ans = parse_level1();
+        ans = parse_level1(vars);
 
         // check for garbage at the end of the expression
         // an expression ends with a character '\0' and token_type = delimeter
@@ -127,8 +127,8 @@ char* Parser::parse(const char new_expr[])
         }
 
         // add the answer to memory as variable "Ans"
-        user_var->add("Ans", 0);
-        user_var->set_value("Ans",ans);
+        vars->add("Ans", 0);
+        vars->set_value("Ans",ans);
 
         snprintf(ans_str, sizeof(ans_str), "Ans = %g", ans);
     }
@@ -368,7 +368,7 @@ void Parser::getToken()
 /*
  * assignment of variable or function
  */
-double Parser::parse_level1()
+const char* Parser::parse_level1(Variablelist* vars)
 {
     if (token_type == VARIABLE)
     {
@@ -382,14 +382,14 @@ double Parser::parse_level1()
         if (strcmp(token, "=") == 0)
         {
             // assignment
-            double ans;
+            char* ans;
             getToken();
-            ans = parse_level2();
-            if (user_var->add(token_now, 0) == false)
+            ans = parse_level2(vars);
+            if (vars->add(token_now, 0) == false)
             {
                 throw Error(row(), col(), 300);
             }
-            user_var->set_value(token_now, ans);
+            vars->set_value(token_now, ans);
             return ans;
         }
         else
@@ -401,24 +401,24 @@ double Parser::parse_level1()
         }
     }
 
-    return parse_level2();
+    return parse_level2(vars);
 }
 
 
 /*
  * conditional operators and bitshift
  */
-double Parser::parse_level2()
+double Parser::parse_level2(Variablelist* vars)
 {
     int op_id;
     double ans;
-    ans = parse_level3();
+    ans = parse_level3(vars);
 
     op_id = get_operator_id(token);
     while (op_id == AND || op_id == OR || op_id == BITSHIFTLEFT || op_id == BITSHIFTRIGHT)
     {
         getToken();
-        ans = eval_operator(op_id, ans, parse_level3());
+        ans = eval_operator(op_id, ans, parse_level3(vars));
         op_id = get_operator_id(token);
     }
 
@@ -428,17 +428,17 @@ double Parser::parse_level2()
 /*
  * conditional operators
  */
-double Parser::parse_level3()
+double Parser::parse_level3(Variablelist* vars)
 {
     int op_id;
     double ans;
-    ans = parse_level4();
+    ans = parse_level4(vars);
 
     op_id = get_operator_id(token);
     while (op_id == EQUAL || op_id == UNEQUAL || op_id == SMALLER || op_id == LARGER || op_id == SMALLEREQ || op_id == LARGEREQ)
     {
         getToken();
-        ans = eval_operator(op_id, ans, parse_level4());
+        ans = eval_operator(op_id, ans, parse_level4(vars));
         op_id = get_operator_id(token);
     }
 
@@ -448,17 +448,17 @@ double Parser::parse_level3()
 /*
  * add or subtract
  */
-double Parser::parse_level4()
+double Parser::parse_level4(Variablelist* vars)
 {
     int op_id;
     double ans;
-    ans = parse_level5();
+    ans = parse_level5(vars);
 
     op_id = get_operator_id(token);
     while (op_id == PLUS || op_id == MINUS)
     {
         getToken();
-        ans = eval_operator(op_id, ans, parse_level5());
+        ans = eval_operator(op_id, ans, parse_level5(vars));
         op_id = get_operator_id(token);
     }
 
@@ -469,17 +469,17 @@ double Parser::parse_level4()
 /*
  * multiply, divide, modulus, xor
  */
-double Parser::parse_level5()
+double Parser::parse_level5(Variablelist* vars)
 {
     int op_id;
     double ans;
-    ans = parse_level6();
+    ans = parse_level6(vars);
 
     op_id = get_operator_id(token);
     while (op_id == MULTIPLY || op_id == DIVIDE || op_id == MODULUS || op_id == XOR)
     {
         getToken();
-        ans = eval_operator(op_id, ans, parse_level6());
+        ans = eval_operator(op_id, ans, parse_level6(vars));
         op_id = get_operator_id(token);
     }
 
@@ -490,17 +490,17 @@ double Parser::parse_level5()
 /*
  * power
  */
-double Parser::parse_level6()
+double Parser::parse_level6(Variablelist* vars)
 {
     int op_id;
     double ans;
-    ans = parse_level7();
+    ans = parse_level7(vars);
 
     op_id = get_operator_id(token);
     while (op_id == POW)
     {
         getToken();
-        ans = eval_operator(op_id, ans, parse_level7());
+        ans = eval_operator(op_id, ans, parse_level7(vars));
         op_id = get_operator_id(token);
     }
 
@@ -510,11 +510,11 @@ double Parser::parse_level6()
 /*
  * Factorial
  */
-double Parser::parse_level7()
+double Parser::parse_level7(Variablelist* vars)
 {
     int op_id;
     double ans;
-    ans = parse_level8();
+    ans = parse_level8(vars);
 
     op_id = get_operator_id(token);
     while (op_id == FACTORIAL)
@@ -532,7 +532,7 @@ double Parser::parse_level7()
 /*
  * Unary minus
  */
-double Parser::parse_level8()
+double Parser::parse_level8(Variablelist* vars)
 {
     double ans;
 
@@ -540,12 +540,12 @@ double Parser::parse_level8()
     if (op_id == MINUS)
     {
         getToken();
-        ans = parse_level9();
+        ans = parse_level9(vars);
         ans = -ans;
     }
     else
     {
-        ans = parse_level9();
+        ans = parse_level9(vars);
     }
 
     return ans;
@@ -555,7 +555,7 @@ double Parser::parse_level8()
 /*
  * functions
  */
-double Parser::parse_level9()
+double Parser::parse_level9(Variablelist* vars)
 {
     char fn_name[NAME_LEN_MAX+1];
     double ans;
@@ -564,11 +564,11 @@ double Parser::parse_level9()
     {
         strcpy(fn_name, token);
         getToken();
-        ans = eval_function(fn_name, parse_level10());
+        ans = eval_function(fn_name, parse_level10(vars));
     }
     else
     {
-        ans = parse_level10();
+        ans = parse_level10(vars);
     }
 
     return ans;
@@ -578,7 +578,7 @@ double Parser::parse_level9()
 /*
  * parenthesized expression or value
  */
-double Parser::parse_level10()
+double Parser::parse_level10(Variablelist* vars)
 {
     // check if it is a parenthesized expression
     if (token_type == DELIMETER)
@@ -586,7 +586,7 @@ double Parser::parse_level10()
         if (token[0] == '(' && token[1] == '\0')
         {
             getToken();
-            double ans = parse_level2();
+            double ans = parse_level2(vars);
             if (token_type != DELIMETER || token[0] != ')' || token[1] || '\0')
             {
                 throw Error(row(), col(), 3);
@@ -597,11 +597,11 @@ double Parser::parse_level10()
     }
 
     // if not parenthesized then the expression is a value
-    return parse_number();
+    return parse_number(vars);
 }
 
 
-double Parser::parse_number()
+double Parser::parse_number(Variablelist* vars)
 {
 double ans = 0;
 
@@ -609,12 +609,15 @@ double ans = 0;
     {
         case NUMBER:
             // this is a number
+            vars->add(token,0);
+            vars->set_value(token,strtod(token, NULL);
             ans = strtod(token, NULL);
             getToken();
             break;
 
         case VARIABLE:
             // this is a variable
+            
             ans = eval_variable(token);
             getToken();
             break;
@@ -679,12 +682,12 @@ int Parser::get_operator_id(const char op_name[])
 /*
  * evaluate an operator for given valuess
  */
-double Parser::eval_operator(const int op_id, const double &lhs, const double &rhs)
+double Parser::eval_operator(const int op_id, Variablelist* vars)//const double &lhs, const double &rhs)
 {
     switch (op_id)
     {
         // level 2
-        case AND:           return static_cast<int>(lhs) & static_cast<int>(rhs);
+        /*case AND:           return static_cast<int>(lhs) & static_cast<int>(rhs);
         case OR:            return static_cast<int>(lhs) | static_cast<int>(rhs);
         case BITSHIFTLEFT:  return static_cast<int>(lhs) << static_cast<int>(rhs);
         case BITSHIFTRIGHT: return static_cast<int>(lhs) >> static_cast<int>(rhs);
@@ -696,11 +699,11 @@ double Parser::eval_operator(const int op_id, const double &lhs, const double &r
         case LARGER:    return lhs > rhs;
         case SMALLEREQ: return lhs <= rhs;
         case LARGEREQ:  return lhs >= rhs;
-
+*/
         // level 4
-        case PLUS:      return lhs + rhs;
+        case PLUS:      return add(vars,const;
         case MINUS:     return lhs - rhs;
-
+/*
         // level 5
         case MULTIPLY:  return lhs * rhs;
         case DIVIDE:    return lhs / rhs;
@@ -712,7 +715,7 @@ double Parser::eval_operator(const int op_id, const double &lhs, const double &r
 
         // level 7
         case FACTORIAL: return factorial(lhs);
-    }
+  */  }
 
     throw Error(row(), col(), 104, op_id);
     return 0;
@@ -766,27 +769,30 @@ double Parser::eval_function(const char fn_name[], const double &value)
  * evaluate a variable
  */
 double Parser::eval_variable(const char var_name[])
-{
+{ 
+  //JOE COMMENTED OUT THIS STUFF
     // first make the variable name uppercase
-    char varU[NAME_LEN_MAX+1];
-    toupper(varU, var_name);
+    //char varU[NAME_LEN_MAX+1];
+    //toupper(varU, var_name);
 
     // check for built-in variables
-    if (!strcmp(varU, "E")) {return 2.7182818284590452353602874713527;}
-    if (!strcmp(varU, "PI")) {return 3.1415926535897932384626433832795;}
+    //if (!strcmp(varU, "E")) {return 2.7182818284590452353602874713527;}
+    //if (!strcmp(varU, "PI")) {return 3.1415926535897932384626433832795;}
 
     // check for user defined variables
-    VAR * ans_var = new VAR;
-    double ans;
-    if (user_var->get_value(var_name, ans_var))
-    {
-        ans = ans_var->val;
-        return ans;
-    }
+    //VAR * ans_var = new VAR;
+    //double ans;
+    //if (user_var->get_value(var_name, ans_var))
+    //if(vars->get_value(var_name,
+    //{
+    //    ans = ans_var->val;
+    //    return ans;
+    //}
 
     // unknown variable
-    throw Error(row(), col(), 103, var_name);
-    return 0;
+    //throw Error(row(), col(), 103, var_name);
+    
+    return 1;
 }
 
 

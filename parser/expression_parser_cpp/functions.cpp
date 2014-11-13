@@ -66,13 +66,12 @@ double sign(double value)
     return 0;
 }
 
-VAR add(VAR A, VAR B) 
+bool add(VAR* A, VAR* B, VAR* C) 
 {
-    
-    VAR ret_var;
-    if(A.type==0 && B.type==0) {
-      ret_var.type=0;
-      ret_var.val=A.val+B.val;
-    }
-    return ret_var;
+   /* 
+    if(A->type==0 && B->type==0) {
+      C->type=0;
+      C->val=A->val+B->val;
+      return true;
+    }*/
 }

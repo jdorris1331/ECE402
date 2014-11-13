@@ -74,8 +74,8 @@ class Parser
         Parser(int x, int y, int z);
 	~Parser();
 	void set_eqs(char ** eqs, int num_eqs);
-	void solve();
-        char* parse(const char expr[]);
+	void solve(Variablelist* vars);
+        char* parse(const char expr[], Variablelist* vars);
 
     // enumerations
     private:
@@ -113,17 +113,17 @@ class Parser
     private:
         void getToken();
 
-        double parse_level1();
-        double parse_level2();
-        double parse_level3();
-        double parse_level4();
-        double parse_level5();
-        double parse_level6();
-        double parse_level7();
-        double parse_level8();
-        double parse_level9();
-        double parse_level10();
-        double parse_number();
+        double parse_level1(Variablelist* vars);
+        double parse_level2(Variablelist* vars);
+        double parse_level3(Variablelist* vars);
+        double parse_level4(Variablelist* vars);
+        double parse_level5(Variablelist* vars);
+        double parse_level6(Variablelist* vars);
+        double parse_level7(Variablelist* vars);
+        double parse_level8(Variablelist* vars);
+        double parse_level9(Variablelist* vars);
+        double parse_level10(Variablelist* vars);
+        double parse_number(Variablelist* vars);
 
         int get_operator_id(const char op_name[]);
         double eval_operator(const int op_id, const double &lhs, const double &rhs);

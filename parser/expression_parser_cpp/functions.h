@@ -33,6 +33,6 @@ using namespace std;
 
 double factorial(double value);
 double sign(double value);
-VAR add(VAR A, VAR B);
+bool add(VAR* A, VAR* B, VAR* C);
 
 #endif
