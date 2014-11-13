@@ -1,6 +1,6 @@
 #include "guiview.h"
 #include "ctrlgui.h"
-//#include "..\include\ctrlgraph.h"
+#include "ctrlspinners.h"
 #include "ctrlsliders.h"
 #include "ctrlcmd.h"
 
@@ -20,23 +20,23 @@ GUIView::GUIView(const char *sFile) : Fl_Window(900, 700, "PDER Control Panel")
 {
 	fraFrame = new Fl_Pack(0, 0, 900, 700, 0);
 	fraFrame->spacing(1);
-	launchGraph();
+	
 	mb = new CtrlMenuBar();
-	std::cout << "Creating Windows\n";
-	fraMain[0] = new CtrlGui(graph);
-	std::cout << "Created graph\n";
-	fraMain[1] = new CtrlSliders(sFile);
+	
+	fraMain[0] = new CtrlGui();
+	fraMain[0]->end();
+	fraMain[1] = new Fl_Pack(0, 0, 900, 700, 0);
+	fraMain[1]->type(Fl_Pack::HORIZONTAL);
+	fraMain[1]->spacing(20);
+	fraMain[1]->end();
 	//fraMain[2] = new CtrlCmd();
-	for (int ct = 0; ct < 2; ct++)
-	{
-		fraFrame->add(fraMain[ct]);
-	}
+	//fraMain[2]->end();
+
+	fraMain[1]->add(new CtrlSpinners(sFile));
+	fraMain[1]->add(new CtrlSliders(sFile));
 
 	fraFrame->end();
 	this->resizable(fraMain[1]);
 	fraFrame->show();
-
 	this->end();
-	
-	
 }

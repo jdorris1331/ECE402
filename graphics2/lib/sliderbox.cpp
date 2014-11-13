@@ -12,7 +12,7 @@ void SliderBox::update()
 	lblVal->label(sVal.c_str());
 }
 
-SliderBox::SliderBox(const char *name, int min, int max, int val, double scl, int prc) : Fl_Pack(0, 0, 160, 35, 0)
+SliderBox::SliderBox(const char *name, int min, int max, int val, double scl, int prc, int w, int h) : Fl_Pack(0, 0, w, h, 0)
 {
     iPrc = prc;
     dblScl = scl;
@@ -23,21 +23,28 @@ SliderBox::SliderBox(const char *name, int min, int max, int val, double scl, in
     sVal = ss.str();
 
 	this->box(FL_UP_FRAME);
+	/*if (w == 160 && h == 35)
+	{ 
+		this->color(fl_rgb_color(200, 200, 200));
+		this->redraw();
+	}*/
 
-	fraSli[0] = new Fl_Pack(0, 0, 160, 20, 0);
+	fraSli[0] = new Fl_Pack(0, 0, w, 20 *h / 35, 0);
 	fraSli[0]->type(Fl_Pack::HORIZONTAL);
-	lblName = new Fl_Output(6, 15, 80, 20, 0);
+	lblName = new Fl_Output(6, 15, 155 * w / 160, 20 * h / 35, 0);
 	lblName->box(FL_NO_BOX);
 	lblName->insert(name);
-	lblVal = new Fl_Output(105, 15, 50, 20, 0);
+	lblVal = new Fl_Output(105, 15, 50 * w / 160, 20 * h / 35, 0);
 	lblVal->box(FL_NO_BOX);
 	lblVal->label(sVal.c_str());
-	lblVal->align(FL_ALIGN_RIGHT);
 	fraSli[0]->end();
 
-	sld = new Fl_Hor_Nice_Slider(5, 1, 150, 20, 0);
+	fraSli[1] = new Fl_Pack(0, 0, w, 20 * h / 35, 0);
+	fraSli[1]->type(Fl_Pack::HORIZONTAL);
+	sld = new Fl_Hor_Nice_Slider(5, 1, 155 * w / 160, 20 * h / 35, 0);
 	sld->bounds(min, max);
 	sld->value(val);
+	fraSli[1]->end();
 
 	sld->callback(cb_update, this);
 	this->end();

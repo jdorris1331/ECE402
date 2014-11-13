@@ -24,7 +24,6 @@ private:
 	static void cb_launchControls(Fl_Widget *w, void *data);
 	void launchControls();
 
-
 public:
     InitView();
 };

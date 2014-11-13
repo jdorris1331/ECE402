@@ -7,11 +7,7 @@ void InitView::pickFile()
 	txtFile->value(sFile);
 }
 
-void InitView::cb_launchControls(Fl_Widget *w, void *data)
-{
-	InitView *loc = (InitView*)data;
-	loc->launchControls();
-}
+void InitView::cb_launchControls(Fl_Widget *w, void *data) { ((InitView*)data)->launchControls(); }
 void InitView::launchControls()
 {
 	GUIView *gui = new GUIView(txtFile->value());

@@ -1,12 +1,10 @@
-#include "ctrlsliders.h"
+#include "..\include\ctrlsliders.h"
 
-CtrlSliders::CtrlSliders(const char *sFile) : Fl_Pack(0, 0, 900, 30, 0)
+CtrlSliders::CtrlSliders(const char *sFile) : Fl_Pack(0, 0, 160, 30, 0)
 {
-    /*mgl = new MglWrapper();
-    mgl->loadData(0, NULL, NULL, NULL, NULL);
-    mgl->plot();*/
-    
-	fraSliders[0] = new Fl_Pack(0, 0, 900, 30, 0);
+	fraSliders[0] = new Fl_Pack(0, 0, 160, 30, 0);
+	//fraSliders[0]->label("Constants");
+	fraSliders[0]->align(FL_ALIGN_LEFT);
 	fraSliders[0]->spacing(2);
     omega = new SliderBox("omega", 0, 100, 10, 10.0, 1);
     theta_BA = new SliderBox("theta_BA", 0, 10, 5, 10.0, 1);
