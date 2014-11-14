@@ -5,3 +5,6 @@
 graphics2/example/example1
 graphics2/example/example1
 *.a
+graphics2/example/example1
+*.o
+*.a
