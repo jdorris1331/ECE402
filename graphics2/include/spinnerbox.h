@@ -16,9 +16,9 @@
 class SpinnerBox : public Fl_Pack
 {
 private:
-	Fl_Pack *fraSpi[3], *fraBox[3];
-	Fl_Output *lblName, *lblCrd, *lblXyz;
-	Fl_Input *txtColor;
+	Fl_Pack *fraSpi[3], *fraBox[5];
+	Fl_Output *lblName, *lblCrd, *lblVal, *txtVal;
+	Fl_Input *txtColor, *txtCrd;
 	Fl_Button *btnColor;
 	Fl_Spinner *spnPos;
 	Fl_Check_Button *chkVisible;

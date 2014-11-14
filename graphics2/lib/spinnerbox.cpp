@@ -155,11 +155,22 @@ SpinnerBox::SpinnerBox(const char *name, const char *color, int position, int vt
 
 	fraBox[2] = new Fl_Pack(0, 0, 105, 25, 0);
 	fraBox[2]->box(FL_UP_FRAME);
-	lblCrd = new Fl_Output(6, 15, 95, 20, 0);
+	fraBox[3] = new Fl_Pack(0, 0, 105, 25, 0);
+	fraBox[3]->type(Fl_Pack::HORIZONTAL);
+	lblCrd = new Fl_Output(6, 15, 15, 20, 0);
 	lblCrd->box(FL_NO_BOX);
-	lblCrd->insert("Coordinates");
-	lblXyz = new Fl_Output(6, 15, 95, 25, 0);
-	lblXyz->value("\(x, y, z\)");
+	lblCrd->insert("Pos:");
+	txtCrd = new Fl_Input(6, 15, 80, 20, 0)
+	txtCrd->value("(x, y, z)");
+	fraBox[3]->end();
+	fraBox[3] = new Fl_Pack(0, 0, 105, 25, 0);
+	fraBox[4]->type(Fl_Pack::HORIZONTAL);
+	lblCrd = new Fl_Output(6, 15, 15, 20, 0);
+	lblVal->box(FL_NO_BOX);
+	lblVal->insert("Val:");
+	txtVal = new Fl_Input(6, 15, 80, 20, 0)
+	txtVal->value("(x, y, z)");
+	fraBox[4]->end();
 	fraBox[2]->end();
 	fraBox[0]->end();
 
