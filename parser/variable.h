@@ -9,9 +9,10 @@ class VAR
   public:
     VAR();
     ~VAR();
+    VAR & operator=(const VAR &rhs);
     char name[NAME_LEN_MAX+1];
-    void set_type(int type);
-    int get_type();
+    void set_type(const int type);
+    int get_type() const;
     double val;
     double *** sf;
     double **** vf;

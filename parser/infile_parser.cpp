@@ -5,7 +5,7 @@ using namespace std;
 infile_parser::infile_parser() {}
 infile_parser::~infile_parser() {}
 
-bool infile_parser::parse(string file, vector<VAR> *vars, vector<string>* eqs) {
+bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) {
   ifstream infile(file);
   string line;
   int max_vars = 50;
@@ -14,7 +14,7 @@ bool infile_parser::parse(string file, vector<VAR> *vars, vector<string>* eqs) {
   int dim [6];
 	
 
-  for(int i=0;i<5;i++) {
+  for(int i=0;i<1;i++) {
     /*******************************************
         Variable name and type declarations
     *******************************************/ 
@@ -41,23 +41,19 @@ bool infile_parser::parse(string file, vector<VAR> *vars, vector<string>* eqs) {
           //turn into stringstream
           istringstream iss(line);				
           string type, v_name;
-          int value;
+          double value;
           //get type and name
           if(!(iss >> type >> v_name >> value)) { break; }
           cout << type << " " << v_name << endl;				
         
           //add to 
           if(type=="scalar" || type=="s") {
-            VAR new_sf;
-            new_sf.name=v_name.c_str();
-            new_sf.set_type(1);
-            vars->push_back(new_sf);
+            vars->add(v_name.c_str(),1);
+            vars->set_scalar_field(v_name.c_str(),value);
           }
           else if(type=="vector" || type=="v") {
-            VAR new_vf;
-            new_vf.name=v_name.c_str();
-            new_vf.set_type(2);
-            vars->push_back(new_vf);
+            vars->add(v_name.c_str(),2);
+            vars->set_vector_field(v_name.c_str(),value);
           }
           else {
             cerr << "Incorrect variable type in variable section: ";
@@ -71,6 +67,7 @@ bool infile_parser::parse(string file, vector<VAR> *vars, vector<string>* eqs) {
           //}
 					
         }
+        vars->print();
         //num_vars=var_count;
     }
     /*******************************************
@@ -98,11 +95,8 @@ bool infile_parser::parse(string file, vector<VAR> *vars, vector<string>* eqs) {
           //get type and name
           if(!(iss >> c_name >> val)) { break; }
           //cout << c_name << " " << val << endl;
-          VAR new_const;
-          new_const.name=c_name.c_str();
-          new_const.set_type(0);
-          new_const.val=atof(val.c_str());
-          vars->push_back(new_const);
+          vars->add(c_name.c_str(),0);
+          vars->set_value(c_name.c_str(),atof(val.c_str()));
           initial=false;
       }
     }
@@ -290,7 +284,7 @@ bool infile_parser::parse(string file, vector<VAR> *vars, vector<string>* eqs) {
       }
     }
   }
-get_initial(vars);
+//get_initial(vars);
 return 0;
 }
 

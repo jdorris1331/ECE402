@@ -1,5 +1,5 @@
 #include <iostream>
-#include <mgl2/qt.h>
+#include <mgl2/fltk.h>
 
 using namespace std;
 
@@ -71,7 +71,7 @@ return 0;
 
 
 int main() {
-  mglQT gr(sample,"MathGL examples");
+  mglFLTK gr(sample,"MathGL examples");
   return gr.Run();
   return 0;
 }
