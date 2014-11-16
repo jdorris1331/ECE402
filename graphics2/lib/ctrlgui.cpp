@@ -6,15 +6,25 @@ void CtrlGui::cb_toggleGraph(Fl_Widget *w, void *data)
 }
 void CtrlGui::toggleGraph()
 {
-	std::cout << "calling toggle\n";
+	//std::cout << "calling toggle\n";
+
+	if (togglekludge == 0) { togglekludge++; btnStart->label("Pause"); }
 	
 	graph->toggleAnimation();
-	sleep(1);
+	//sleep(1);
 	//graph->Run();
 	std::cout << btnStart->label() << std::endl;
-	if (btnStart->label() == "Start") { btnStart->label("Pause"); }
-	else { btnStart->label("Start"); }
 
+	if (btnStart->label()[0] == 'S') { btnStart->label("Pause"); }
+	else { btnStart->label("Start"); }
+	if (togglekludge == 0) { togglekludge++; btnStart->label("Pause"); }
+
+}
+
+void CtrlGui::cb_rotateGraph(Fl_Widget *w, void *data) { ((CtrlGui*)data)->rotateGraph(); }
+void CtrlGui::rotateGraph()
+{
+	//TODO
 }
 
 CtrlGui::CtrlGui(Graphics *myGraph) : Fl_Pack(0, 0, 900, 30, 0)
@@ -46,7 +56,20 @@ CtrlGui::CtrlGui(Graphics *myGraph) : Fl_Pack(0, 0, 900, 30, 0)
 
 	fraCtrlGui[1] = new Fl_Pack(0, 0, 900, 30, 0);
 	fraCtrlGui[1]->type(Fl_Pack::HORIZONTAL);
-	btnStart = new Fl_Button(0, 0, 100, 30, "Start");
+	btnStart = new Fl_Button(0, 0, 100, 30, 0);
+	btnStart->label("Start");
+	
+	fraRot = new Fl_Pack(0, 0, 135, 22, 0);
+	fraRot->type(Fl_Pack::HORIZONTAL);
+	fraRot->box(FL_UP_FRAME);
+	lblRot = new Fl_Output(6, 15, 75, 25, 0);
+	lblRot->box(FL_NO_BOX);
+	lblRot->insert("Rotation:");
+	txtRot = new Fl_Input(6, 15, 65, 25, 0);
+	txtRot->value("\(0, 0, 0\)");
+	txtRot->when(FL_WHEN_ENTER_KEY);
+	fraRot->end();
+	
 	/*sldSpeed = new Fl_Hor_Nice_Slider(0, 0, 100, 10, "Speed");
 	chkViewUpdates = new Fl_Check_Button(0, 0, 110, 30, "View Updates");
 	cmbUpdateFreq = new Fl_Choice(0, 0, 100, 30, 0);
@@ -65,4 +88,5 @@ CtrlGui::CtrlGui(Graphics *myGraph) : Fl_Pack(0, 0, 900, 30, 0)
 	//fraCtrlGui[1]->resizable(sldSpeed);
 
 	btnStart->callback(cb_toggleGraph, this);
+	txtRot->callback(cb_rotateGraph, this);
 }

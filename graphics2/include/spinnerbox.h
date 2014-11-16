@@ -38,6 +38,8 @@ private:
 	void updatePos();
 	static void cb_vectorExclusive(Fl_Widget *w, void *data);
 	void vectorExclusive();
+	static void cb_valAtCrd(Fl_Widget *w, void *data);
+	void valAtCrd();
 
 public:
     SpinnerBox(const char *name, const char *color, int position, int vt = 0);

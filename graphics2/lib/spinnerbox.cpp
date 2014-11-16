@@ -112,6 +112,12 @@ void SpinnerBox::toggleVector()
 			radVisible->value(0); } }
 }
 
+void SpinnerBox::cb_valAtCrd(Fl_Widget *w, void *data) { ((SpinnerBox*)data)->valAtCrd(); }
+void SpinnerBox::valAtCrd()
+{
+	//TODO
+}
+
 SpinnerBox::SpinnerBox(const char *name, const char *color, int position, int vt) : Fl_Pack(0, 0, 260, 75, 0)
 {
 	pos = position;
@@ -162,7 +168,8 @@ SpinnerBox::SpinnerBox(const char *name, const char *color, int position, int vt
 	lblCrd->box(FL_NO_BOX);
 	lblCrd->insert("Pos:");
 	txtCrd = new Fl_Input(6, 15, 65, 25, 0);
-	txtCrd->value("\(x, y, z\)");
+	txtCrd->value("\(0, 0, 0\)");
+	txtCrd->when(FL_WHEN_ENTER_KEY);
 	fraBox[3]->end();
 	fraBox[4] = new Fl_Pack(0, 0, 115, 23, 0);
 	fraBox[4]->type(Fl_Pack::HORIZONTAL);
@@ -185,6 +192,7 @@ SpinnerBox::SpinnerBox(const char *name, const char *color, int position, int vt
 	txtColor->callback(cb_setColor, this);
 	btnColor->callback(cb_changeColor, this);
 	spnPos->callback(cb_updatePos, this);
+	txtCrd->callback(cb_valAtCrd, this);
 	if (vartype == 1) { radVisible->callback(cb_vectorExclusive, this); }
 	this->end();
 }
