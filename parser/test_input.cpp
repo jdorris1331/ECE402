@@ -9,15 +9,15 @@ using namespace std;
 
 int main() {
   infile_parser fileP;
-  vector<VAR> vars;
+  vector<VAR> user_vars;
   //VAR* ret_var;
-  //Variablelist *vars = new Variablelist(100,100,100);
-  vector<string> equations; //= new vector<string>;
+  Variablelist *vars = new Variablelist();
+  vector<string> *equations= new vector<string>;
   fileP.parse("new_problem.txt", vars, equations);
   //vars->get_value("DT", ret_var);
   //cout << ret_var->val << endl;
   for(int i=0;i<equations->size();i++) {
-    cout << equations->at(i) << endl;
+//    cout << equations->at(i) << endl;
   }
 
   //to get sliders look at each type 

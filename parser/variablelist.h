@@ -39,7 +39,7 @@ void toupper(char upper[], const char str[]);
 
 class Variablelist {
     public:
-	Variablelist(int x, int y, int z);
+	Variablelist();
 	~Variablelist();
         bool exist(const char* name);
         bool add(const char* name, const int type);
@@ -58,9 +58,10 @@ class Variablelist {
         bool set_range(const char* name, const int type,const double min, const double max);
         double get_range(const char* name, const int type, const int lorH);
 	void print();
-
+       
+        void set_varables(vector<VAR> * vars);
+        void get_variables(vector<VAR> * vars);
     private:
-	int x,y,z,dim;
         vector<VAR> var;
 };
 

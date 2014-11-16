@@ -4,19 +4,24 @@
 
 #include "constants.h"
 
-struct VAR
+class VAR
 {
-  VAR();
-  ~VAR();
-  char name[NAME_LEN_MAX+1];
-  int type;
-  double *** sf;
-  double **** vf;
-  double val;
-  double warn_min;
-  double warn_max;
-  double show_min;
-  double show_max;
+  public:
+    VAR();
+    ~VAR();
+    VAR & operator=(const VAR &rhs);
+    char name[NAME_LEN_MAX+1];
+    void set_type(const int type);
+    int get_type() const;
+    double val;
+    double *** sf;
+    double **** vf;
+    double warn_min;
+    double warn_max;
+    double show_min;
+    double show_max;
+  private:
+    int type;
 };
 
 #endif
