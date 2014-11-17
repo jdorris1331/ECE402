@@ -24,10 +24,10 @@ class Animation
 		mglFLTK* gr;
 		void Run();
 		bool animation_paused; 
+		int points;  //The amount of point to calculate.
 	private:
 		int speed; //The speed of the animation 
 			   //**specificationf or speed not yet defined.
-		int points;  //The amount of point to calculate.
 		//SIGNALS
 		//If set to true, then animation will start/resume/continue
 		//If set to false, animation will stall/pause until animation_paused is 

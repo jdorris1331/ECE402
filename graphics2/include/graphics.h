@@ -21,6 +21,6 @@ class Graphics : public Animation
 		void Run(){gr->Run();}
 		void begin();
 		//Graphics(){gr->zoom = true;}
-
+		Graphics(){points = 100;}
 };
 #endif //CTRLGRAPH_H 
