@@ -1,34 +1,7 @@
-/**
- * @file functions.cpp
- *
- * @brief Class containing extra functions which are not available in the
- * default c++ libraries.
- *
- * @license
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy
- * of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- *
- * Copyright (C) 2007-2011 Jos de Jong, http://www.speqmath.com
- *
- * @author 	Jos de Jong, <wjosdejong@gmail.com>
- * @date	2007-12-22, updated 2012-02-06
- */
-
-
 #include "error.h"
 #include "variable.h"
+#include "functions.h"
 using namespace std;
-
-
 
 /*
  * calculate factorial of value
@@ -66,12 +39,308 @@ double sign(double value)
     return 0;
 }
 
-bool add(VAR* A, VAR* B, VAR* C) 
-{
-   /* 
-    if(A->type==0 && B->type==0) {
-      C->type=0;
-      C->val=A->val+B->val;
-      return true;
-    }*/
+
+void add(VAR* A, VAR* B, VAR* ret_val) {
+  int type1 = A->get_type();
+  int type2 = B->get_type();
+  if(type1==0 && type2==0) {
+    ret_val->set_type(0);
+    ret_val->val = A->val + B->val;
+  }
+  if(type1 == 2 && type2 == 2){
+	ret_val->set_type(2);
+	for(int v = 0; v < 2; v++){
+		for(int x = 0; x < DIM_SIZE; x++){
+			for(int y = 0; y < DIM_SIZE; y++){
+				for(int z = 0; z < DIM_SIZE; z++){
+					ret_val->vf[x][y][z][v] = A->vf[x][y][z][v] + B->vf[x][y][z][v];
+				}
+			}
+		}
+	}
+  }
+  if(type1 == 1 && type2 == 1){
+	ret_val->set_type(1);
+	for(int x = 0; x < DIM_SIZE; x++){
+		for(int y = 0; y < DIM_SIZE; y++){
+			for(int z = 0; z < DIM_SIZE; z++){
+				ret_val->sf[x][y][z] = A->sf[x][y][z] + B->sf[x][y][z];
+			}
+		}
+	}
+  }
+ 
+
+  if((type1 == 1 && type2 == 0)){
+	ret_val->set_type(1);
+		for(int x = 0; x < DIM_SIZE; x++){
+			for(int y = 0; y < DIM_SIZE; y++){
+				for(int z = 0; z < DIM_SIZE; z++){
+					ret_val->sf[x][y][z] = A->sf[x][y][z] + B->val;
+				}
+			}
+		}
+	}
+  if((type1 == 0 && type2 == 1)){
+	ret_val->set_type(1);
+		for(int x = 0; x < DIM_SIZE; x++){
+			for(int y = 0; y < DIM_SIZE; y++){
+				for(int z = 0; z < DIM_SIZE; z++){
+					ret_val->sf[x][y][z] = A->val + B->sf[x][y][z];
+				}
+			}
+		}
+	}
+ 
+ if((type1==1 && type2==2) || (type1 == 2 && type2 == 1)) {
+    ret_val->set_type(-1);
+  }
 }
+
+void sub(VAR* A, VAR* B, VAR* ret_val) {
+  int type1 = A->get_type();
+  int type2 = B->get_type();
+  if(type1==0 && type2==0) {
+    ret_val->set_type(0);
+    ret_val->val = A->val - B->val;
+  }
+  if(type1 == 2 && type2 == 2){
+	ret_val->set_type(2);
+	for(int v = 0; v < 2; v++){
+		for(int x = 0; x < DIM_SIZE; x++){
+			for(int y = 0; y < DIM_SIZE; y++){
+				for(int z = 0; z < DIM_SIZE; z++){
+					ret_val->vf[x][y][z][v] = A->vf[x][y][z][v] - B->vf[x][y][z][v];
+				}
+			}
+		}
+	}
+  }
+  if(type1 == 1 && type2 == 1){
+	ret_val->set_type(1);
+	for(int x = 0; x < DIM_SIZE; x++){
+		for(int y = 0; y < DIM_SIZE; y++){
+			for(int z = 0; z < DIM_SIZE; z++){
+				ret_val->sf[x][y][z] = A->sf[x][y][z] - B->sf[x][y][z];
+			}
+		}
+	}
+  }
+  if((type1 == 1 && type2 == 0)){
+	ret_val->set_type(1);
+		for(int x = 0; x < DIM_SIZE; x++){
+			for(int y = 0; y < DIM_SIZE; y++){
+				for(int z = 0; z < DIM_SIZE; z++){
+					ret_val->sf[x][y][z] = A->sf[x][y][z] - B->val;
+				}
+			}
+		}
+	}
+  if((type1 == 0 && type2 == 1)){
+	ret_val->set_type(1);
+		for(int x = 0; x < DIM_SIZE; x++){
+			for(int y = 0; y < DIM_SIZE; y++){
+				for(int z = 0; z < DIM_SIZE; z++){
+					ret_val->sf[x][y][z] = A->val - B->sf[x][y][z];
+				}
+			}
+		}
+	}
+  if((type1==1 && type2==2) || (type1 == 2 && type2 == 1)) {
+    ret_val->set_type(-1);
+  }
+}
+
+void mult(VAR* A, VAR* B, VAR* ret_val) {
+  int type1 = A->get_type();
+  int type2 = B->get_type();
+  if(type1==0 && type2==0) {
+    ret_val->set_type(0);
+    ret_val->val = A->val - B->val;
+  }
+  if(type1 == 2 && type2 == 2){
+	ret_val->set_type(2);
+	for(int v = 0; v < 2; v++){
+		for(int x = 0; x < DIM_SIZE; x++){
+			for(int y = 0; y < DIM_SIZE; y++){
+				for(int z = 0; z < DIM_SIZE; z++){
+					ret_val->vf[x][y][z][v] = A->vf[x][y][z][v] * B->vf[x][y][z][v];
+				}
+			}
+		}
+	}
+  }
+  if(type1 == 1 && type2 == 1){
+	ret_val->set_type(1);
+	for(int x = 0; x < DIM_SIZE; x++){
+		for(int y = 0; y < DIM_SIZE; y++){
+			for(int z = 0; z < DIM_SIZE; z++){
+				ret_val->sf[x][y][z] = A->sf[x][y][z] * B->sf[x][y][z];
+			}
+		}
+	}
+  }
+  if((type1 == 1 && type2 == 0)){
+	ret_val->set_type(1);
+		for(int x = 0; x < DIM_SIZE; x++){
+			for(int y = 0; y < DIM_SIZE; y++){
+				for(int z = 0; z < DIM_SIZE; z++){
+					ret_val->sf[x][y][z] = A->sf[x][y][z] * B->val;
+				}
+			}
+		}
+	}
+  if((type1 == 0 && type2 == 1)){
+	ret_val->set_type(1);
+		for(int x = 0; x < DIM_SIZE; x++){
+			for(int y = 0; y < DIM_SIZE; y++){
+				for(int z = 0; z < DIM_SIZE; z++){
+					ret_val->sf[x][y][z] = A->val * B->sf[x][y][z];
+				}
+			}
+		}
+	}
+  if((type1==1 && type2==2) || (type1 == 2 && type2 == 1)) {
+    ret_val->set_type(-1);
+  }
+}
+
+void divide(VAR* A, VAR* B, VAR* ret_val) {
+  int type1 = A->get_type();
+  int type2 = B->get_type();
+  if(type1==0 && type2==0) {
+    ret_val->set_type(0);
+    ret_val->val = A->val - B->val;
+  }
+  if(type1 == 2 && type2 == 2){
+	ret_val->set_type(1);
+	for(int v = 0; v < 2; v++){
+		for(int x = 0; x < DIM_SIZE; x++){
+			for(int y = 0; y < DIM_SIZE; y++){
+				for(int z = 0; z < DIM_SIZE; z++){
+					if(B->vf[x][y][z][v] != 0) ret_val->vf[x][y][z][v] = A->vf[x][y][z][v] / B->vf[x][y][z][v];
+					else ret_val->vf[x][y][z][v] = -1;
+				}
+			}
+		}
+	}
+  }
+  if(type1 == 1 && type2 == 1){
+	ret_val->set_type(1);
+	for(int x = 0; x < DIM_SIZE; x++){
+		for(int y = 0; y < DIM_SIZE; y++){
+			for(int z = 0; z < DIM_SIZE; z++){
+				if(B->sf[x][y][z] != 0) ret_val->sf[x][y][z] = A->sf[x][y][z] / B->sf[x][y][z];
+				else ret_val->sf[x][y][z] = -1;
+			}
+		}
+	}
+  }
+  if((type1 == 1 && type2 == 0)){
+	ret_val->set_type(1);
+		for(int x = 0; x < DIM_SIZE; x++){
+			for(int y = 0; y < DIM_SIZE; y++){
+				for(int z = 0; z < DIM_SIZE; z++){
+					if(B->val != 0) ret_val->sf[x][y][z] = A->sf[x][y][z] / B->val;
+					else ret_val->sf[x][y][z] = -1;
+				}
+			}
+		}
+	}
+  if((type1 == 0 && type2 == 1)){
+	ret_val->set_type(1);
+		for(int x = 0; x < DIM_SIZE; x++){
+			for(int y = 0; y < DIM_SIZE; y++){
+				for(int z = 0; z < DIM_SIZE; z++){
+					if(B->sf[x][y][z] != 0) ret_val->sf[x][y][z] = A->val / B->sf[x][y][z];
+					else ret_val->sf[x][y][z] = -1;
+				}
+			}
+		}
+	}
+  if((type1==1 && type2==2) || (type1 == 2 && type2 == 1)) {
+    ret_val->set_type(-1);
+  }
+}
+
+double cdf(VAR* A, int x, int y, int z, int v, int d){ //d is the derivative respect
+
+	if(d == 0 && x != 0 && x != DIM_SIZE-1) return (A->vf[x+1][y][z][v] - A->vf[x-1][y][z][v])/2;
+	else if(d == 0 && x == 0) return (A->vf[x+1][y][z][v] - 0)/2;
+	else if(d == 0 && x == DIM_SIZE-1) return (0 - A->vf[x-1][y][z][v])/2;
+
+	if(d == 1 && y != 0 && y != DIM_SIZE-1) return (A->vf[x][y+1][z][v] - A->vf[x][y-1][z][v])/2;
+	else if(d == 1 && y == 0) return (A->vf[x][y+1][z][v] - 0)/2;
+	else if(d == 1 && y == DIM_SIZE-1) return (0 - A->vf[x][y-1][z][v])/2;
+	
+	if(d == 2 && z != 0 && z != DIM_SIZE-1) return (A->vf[x][y][z+1][v] - A->vf[x][y][z-1][v])/2;
+	else if(d == 2 && z == 0) return (A->vf[x][y][z+1][v] - 0)/2;
+	else if(d == 2 && z == DIM_SIZE-1) return (0 - A->vf[x][y][z-1][v])/2;
+
+return 0;
+}
+
+void grad(VAR* A, VAR* ret_val) {
+  int type1 = A->get_type();
+  
+  if(type1 == 0 || type1 == 1){ ret_val->set_type(-1);}
+  else {
+  ret_val->set_type(type1);
+	for(int v = 0; v < 2; v++){
+		for(int x = 0; x < DIM_SIZE; x++){
+			for(int y = 0; y < DIM_SIZE; y++){
+				for(int z = 0; z < DIM_SIZE; z++){
+					if(v == 0) ret_val->vf[x][y][z][v] = cdf(A,x,y,z,v,0);
+					if(v == 1) ret_val->vf[x][y][z][v] = cdf(A,x,y,z,v,1);
+					if(v == 2) ret_val->vf[x][y][z][v] = cdf(A,x,y,z,v,2);
+				}
+			}
+		}
+	}
+  } 
+}
+
+void curl(VAR* A, VAR* ret_val){
+  int type1 = A->get_type();
+  ret_val->set_type(type1);
+	for(int v = 0; v < 2; v++){
+		for(int x = 0; x < DIM_SIZE; x++){
+			for(int y = 0; y < DIM_SIZE; y++){
+				for(int z = 0; z < DIM_SIZE; z++){
+					if(v == 0) ret_val->vf[x][y][z][v] = cdf(A,x,y,z,2,1) - cdf(A,x,y,z,1,2);
+					if(v == 1) ret_val->vf[x][y][z][v] = cdf(A,x,y,z,0,2) - cdf(A,x,y,z,2,0);
+					if(v == 2) ret_val->vf[x][y][z][v] = cdf(A,x,y,z,1,0) - cdf(A,x,y,z,0,1);
+				}
+			}
+		}
+	}
+}
+
+void diverg(VAR* A, VAR* ret_val){
+  int type1 = A->get_type();
+  ret_val->set_type(type1);
+	for(int x = 0; x < DIM_SIZE; x++){
+		for(int y = 0; y < DIM_SIZE; y++){
+			for(int z = 0; z < DIM_SIZE; z++){
+				ret_val->sf[x][y][z] = cdf(A,x,y,z,0,0) + cdf(A,x,y,z,1,1) + cdf(A,x,y,z,2,2);
+			}
+		}
+	}
+}
+	
+void laplac(VAR* A, VAR* ret_val){
+        VAR* temp;
+        grad(A,temp);
+	diverg(temp,ret_val);
+}
+
+/*
+int main() {
+  VAR* A,B;
+  type1 = 0;
+  A->single = 3;
+  type2 = 0;
+  B->single = 2;
+  cout << add(A,B).single;
+  return 0;
+}*/

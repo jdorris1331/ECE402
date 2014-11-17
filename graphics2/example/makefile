@@ -1,4 +1,4 @@
-CC = clang++ -std=c++11 -lpthread
+CC = clang++ -std=c++11 
 CFLAGS =  $(MATHGLI) $(GSLI) $(FLTKI) $(HEADERS)
 #INCLUDES
 HEADERS = -I ../include

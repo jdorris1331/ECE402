@@ -112,6 +112,12 @@ void SpinnerBox::toggleVector()
 			radVisible->value(0); } }
 }
 
+void SpinnerBox::cb_valAtCrd(Fl_Widget *w, void *data) { ((SpinnerBox*)data)->valAtCrd(); }
+void SpinnerBox::valAtCrd()
+{
+	//TODO
+}
+
 SpinnerBox::SpinnerBox(const char *name, const char *color, int position, int vt) : Fl_Pack(0, 0, 260, 75, 0)
 {
 	pos = position;
@@ -122,11 +128,12 @@ SpinnerBox::SpinnerBox(const char *name, const char *color, int position, int vt
 
 	fraBox[0] = new Fl_Pack(0, 0, 160, 48, 0);
 	fraBox[0]->type(Fl_Pack::HORIZONTAL);
+	
 	fraBox[1] = new Fl_Pack(0, 0, 155, 20, 0);
 	fraBox[1]->box(FL_UP_FRAME);
 	fraSpi[0] = new Fl_Pack(0, 0, 160, 20, 0);
 	fraSpi[0]->type(Fl_Pack::HORIZONTAL);
-	lblName = new Fl_Output(6, 15, 95, 20, 0);
+	lblName = new Fl_Output(6, 15, 93, 20, 0);
 	lblName->box(FL_NO_BOX);
 	lblName->insert(name);
 	if (vartype == 1)
@@ -153,14 +160,27 @@ SpinnerBox::SpinnerBox(const char *name, const char *color, int position, int vt
 	fraSpi[1]->end();
 	fraBox[1]->end();
 
-	fraBox[2] = new Fl_Pack(0, 0, 105, 25, 0);
+	fraBox[2] = new Fl_Pack(0, 0, 105, 35, 0);
 	fraBox[2]->box(FL_UP_FRAME);
-	lblCrd = new Fl_Output(6, 15, 95, 20, 0);
+	fraBox[3] = new Fl_Pack(0, 0, 115, 22, 0);
+	fraBox[3]->type(Fl_Pack::HORIZONTAL);
+	lblCrd = new Fl_Output(6, 15, 35, 25, 0);
 	lblCrd->box(FL_NO_BOX);
-	lblCrd->insert("Coordinates");
-	lblXyz = new Fl_Output(6, 15, 95, 25, 0);
-	lblXyz->value("\(x, y, z\)");
+	lblCrd->insert("Pos:");
+	txtCrd = new Fl_Input(6, 15, 65, 25, 0);
+	txtCrd->value("\(0, 0, 0\)");
+	txtCrd->when(FL_WHEN_ENTER_KEY);
+	fraBox[3]->end();
+	fraBox[4] = new Fl_Pack(0, 0, 115, 23, 0);
+	fraBox[4]->type(Fl_Pack::HORIZONTAL);
+	lblVal = new Fl_Output(6, 15, 35, 25, 0);
+	lblVal->box(FL_NO_BOX);
+	lblVal->insert("Val:");
+	txtVal = new Fl_Output(6, 15, 65, 25, 0);
+	txtVal->value("0");
+	fraBox[4]->end();
 	fraBox[2]->end();
+	
 	fraBox[0]->end();
 
 	fraSpi[2] = new Fl_Pack(0, 0, 160, 25, 0);
@@ -172,6 +192,7 @@ SpinnerBox::SpinnerBox(const char *name, const char *color, int position, int vt
 	txtColor->callback(cb_setColor, this);
 	btnColor->callback(cb_changeColor, this);
 	spnPos->callback(cb_updatePos, this);
+	txtCrd->callback(cb_valAtCrd, this);
 	if (vartype == 1) { radVisible->callback(cb_vectorExclusive, this); }
 	this->end();
 }

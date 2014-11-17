@@ -14,12 +14,12 @@ FLTKLL = -L$(OSLIBS)/fltk/1.3.2_1/lib -lfltk
 
 
 LIBS = $(AL) $(MATHGLL)  $(FLTKLL)
-EXECUTABLES = example1 example2
+EXECUTABLES = example1 example2 example3
 
 all: $(EXECUTABLES)
 
-
-
+example3: 	example3.o
+	$(CC) $(CFLAGS) -o $@ $^  $(LIBS)
 example2: 	example2.o
 	$(CC) $(CFLAGS) -o $@ $^  $(LIBS)
 example1:	example1.o 

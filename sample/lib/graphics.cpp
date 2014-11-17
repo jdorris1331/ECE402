@@ -9,18 +9,58 @@ void Graphics::axis(double x, double y, double z, double ticks){
 
 }
 
-void Graphics::calculation(int t, mglData* x, mglData * y, mglData * z, int  n  ){
+void Graphics::calculation(int t, mglData* x, mglData* y, mglData* z, int  n  ){
+
+
+/*
 	int i, j,k;
-	for(i = n; i < (n+100); i++) for(j = n; j < (n + 100); j++) for(k = n; k < (n + 100); k++)
+	for(i = n; i < (n+points); i++) for(j = n; j < (n + points); j++) for(k = n; k < (n + points); k++)
 	{
-    		x->a[i] = .7*t*cos(.05*i);//*cos(.05*i);
-    		y->a[j] = 0.9*t*cos(.05*j)*sin(.05*j);
-    		z->a[k] = 0.6*t*sin(.05*k);//*sin(.05*k);
+		x->a[i] = .002*t*cos(2*.01*i)*cos(i*.01) + .001*cos(i*.01);
+		y->a[i] = .002*t*cos(2*.01*i)*sin(i*.01) + .001*sin(i*.01);
+		if(t%2)	
+			z->a[i] = -.002*t;
+		else
+			z->a[i] = .002*t;
+//    		x->a[i] = .7*t*cos(.05*i);//cos(.05*i);
+ //   		y->a[j] = 0.9*t*cos(.05*j)*sin(.05*j);
+  //  		z->a[k] = 0.6*t*sin(.05*k);//sin(.05*k);
+	}
+*/
+	
+	int i, j, k;
+	std::vector<VAR> vars = initVfield();
+	//conver vars shit.
+	for(i=0;i<100;i++)  for(j=0;j<100;j++)  for(k=0;k<100;k++)
+  	{
+		vars[i][j][k][0];	
+
 	}
 }
 
 
 
+
+
+/*
+void Graphics::calculation(int t, mglData* x, mglData * y, mglData * z, int  n  ){
+	int i, j,k;
+	for(i = n; i < (n+points); i++) for(j = n; j < (n + points); j++) for(k = n; k < (n + points); k++)
+	{
+		x->a[i] = .002*t*cos(2*.01*i)*cos(i*.01) + .001*cos(i*.01);
+		y->a[i] = .002*t*cos(2*.01*i)*sin(i*.01) + .001*sin(i*.01);
+		if(t%2)	
+			z->a[i] = -.002*t;
+		else
+			z->a[i] = .002*t;
+//    		x->a[i] = .7*t*cos(.05*i);/cos(.05*i);
+ //   		y->a[j] = 0.9*t*cos(.05*j)*sin(.05*j);
+  //  		z->a[k] = 0.6*t*sin(.05*k);sin(.05*k);
+	}
+}
+*/
+
+/*
 
 void Graphics::calculation(){
 	mglData a;
@@ -71,6 +111,6 @@ void Graphics::calculation(){
 }
 
 
-
+*/
 
 

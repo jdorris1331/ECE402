@@ -16,9 +16,9 @@
 class SpinnerBox : public Fl_Pack
 {
 private:
-	Fl_Pack *fraSpi[3], *fraBox[3];
-	Fl_Output *lblName, *lblCrd, *lblXyz;
-	Fl_Input *txtColor;
+	Fl_Pack *fraSpi[3], *fraBox[5];
+	Fl_Output *lblName, *lblCrd, *lblVal, *txtVal;
+	Fl_Input *txtColor, *txtCrd;
 	Fl_Button *btnColor;
 	Fl_Spinner *spnPos;
 	Fl_Check_Button *chkVisible;
@@ -38,6 +38,8 @@ private:
 	void updatePos();
 	static void cb_vectorExclusive(Fl_Widget *w, void *data);
 	void vectorExclusive();
+	static void cb_valAtCrd(Fl_Widget *w, void *data);
+	void valAtCrd();
 
 public:
     SpinnerBox(const char *name, const char *color, int position, int vt = 0);

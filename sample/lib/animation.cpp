@@ -11,16 +11,6 @@ Animation::Animation(std::string title, int s, int p){
 }
 
 
-
-void Animation::RunThread()
-{
-	std::thread graphThread(&Animation::Run, this);
-	graphThread.detach();
-
-}
-
-
-
 void Animation::Run(){
 	if(gr){
 		gr->Run();
@@ -33,15 +23,28 @@ Animation::~Animation(){
 	}
 }
 
+void Animation::drawSurf3(mglData*  x)
+{
 
+	gr->Clf(); //Clear the old graph.
+//	gr->Box(); //Add axises	
+	gr->SetRanges(-2,2,-2,2,-2,2);
+//	gr->Axis();	
+	gr->Surf3(*x);	
+	gr->Update();
+//	sleep(1);
+}
 
 void Animation::drawDots(mglData*  x, mglData *  y ,mglData *  z )
 {
 
 	gr->Clf(); //Clear the old graph.
+//	gr->Box(); //Add axises	
+	gr->SetRanges(-2,2,-2,2,-2,2);
+//	gr->Axis();	
 	gr->Dots(*x, *y, *z);	
 	gr->Update();
-	sleep(1);
+//	sleep(1);
 }
 
 
@@ -76,8 +79,9 @@ void Animation::beginAnimation(){
 	mglData *px = NULL, *py = NULL, *pz = NULL;
 	gr->Rotate(60,50); 
 	gr->Box();
+	points = 100;
 	gr->SetRanges(-points, points, -points, points, -points, points);
-	for(int t = 0; t < points; t++)
+	for(int t = 0; t < 1000; t++)
 	{
 		while(animation_paused == true)
 		{
@@ -93,7 +97,6 @@ void Animation::beginAnimation(){
 			calculation(t, px, py, pz, t*points);			
 		}
 			drawDots(px, py, pz);
-			gr->View(50,60);
 	}
 }
 

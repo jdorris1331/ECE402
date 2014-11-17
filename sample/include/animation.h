@@ -3,6 +3,7 @@
 #include <mgl2/fltk.h>
 #include <mgl2/mgl.h>
 #include <mgl2/type.h>
+#include "variable.h"
 #include <vector>
 #include <unistd.h>
 #include <string>
@@ -60,6 +61,7 @@ class Animation
 		void setPoints(int p){points = p;}
 		void update();
 		void drawDots(mglData * , mglData* , mglData* );
+		void drawSurf3(mglData *);
 
 };
 

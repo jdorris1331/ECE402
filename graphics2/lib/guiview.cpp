@@ -21,8 +21,6 @@ GUIView::GUIView(const char *sFile) : Fl_Window(900, 700, "PDER Control Panel")
 	fraFrame = new Fl_Pack(0, 0, 900, 700, 0);
 	fraFrame->spacing(1);
 
-	Graphics *graph = new Graphics();
-	
 	launchGraph();
 	
 	mb = new CtrlMenuBar();
