@@ -10,6 +10,7 @@ void SliderBox::update()
 	ss << std::fixed << std::setprecision(iPrc) << dblVal;
 	sVal = ss.str();
 	lblVal->label(sVal.c_str());
+	this->redraw();
 }
 
 SliderBox::SliderBox(const char *name, int min, int max, int val, double scl, int prc, int w, int h) : Fl_Pack(0, 0, w, h, 0)
