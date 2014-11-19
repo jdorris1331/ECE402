@@ -5,11 +5,17 @@ Animation::Animation(std::string title, int s, int p){
 				  //Default Title.
 	gr->ToggleZoom(); //Allow toggle by mouse.
 	speed = s;	//SetDefault amount of speed.
-	points = p;  //Set Default amount of points.
+	points = 100;  //Set Default amount of points.
 	animation_paused = false;
 	animation_begin = false;
 }
 
+void Animation::RunThread()
+{
+	std::thread graphThread(&Animation::Run, this);
+	graphThread.detach();
+
+}
 
 void Animation::Run(){
 	if(gr){
@@ -23,28 +29,19 @@ Animation::~Animation(){
 	}
 }
 
-void Animation::drawSurf3(mglData*  x)
+void Animation::drawVec3(mglData* ex, mglData* ey, mglData*ez)
 {
-
-	gr->Clf(); //Clear the old graph.
-//	gr->Box(); //Add axises	
-	gr->SetRanges(-2,2,-2,2,-2,2);
-//	gr->Axis();	
-	gr->Surf3(*x);	
+	gr->Clf();
+	gr->Vect3(*ex, *ey, *ez);
 	gr->Update();
-//	sleep(1);
 }
 
 void Animation::drawDots(mglData*  x, mglData *  y ,mglData *  z )
 {
 
 	gr->Clf(); //Clear the old graph.
-//	gr->Box(); //Add axises	
-	gr->SetRanges(-2,2,-2,2,-2,2);
-//	gr->Axis();	
 	gr->Dots(*x, *y, *z);	
 	gr->Update();
-//	sleep(1);
 }
 
 
@@ -77,11 +74,67 @@ void Animation::UpdatePointers(int t, mglData* & x, mglData* & y, mglData* & z)
 
 void Animation::beginAnimation(){
 	mglData *px = NULL, *py = NULL, *pz = NULL;
+	mglData ex , ey , ez;
+	int n = 100;
+	ex.Create(n,n,n); ey.Create(n,n,n); ez.Create(n,n,n);
+	int i, j,k;
+	mreal  x,y,z, r1, r2;
+	int i0;
+  	gr->Rotate(50,60);
+	for(int t = 0; t < 1; t++)
+	{
+		while(animation_paused == true)
+		{
+			std::this_thread::yield();
+	//		drawVec3(&ex, &ey, &ez);	
+		}
+	/*			
+		UpdatePointers(t, px, py, pz);
+		if(t == 0){
+			calculation(t, px, py, pz, 0);			
+		}
+		else{
+			calculation(t, px, py, pz, t*points);			
+		}
+	*/
+	//		drawDots(px, py, pz);
+  vector<VAR> d = initVfield();
+  for(i=0;i<n;i++)  for(j=0;j<n;j++)  for(k=0;k<n;k++)
+  {
+    x=2*i/(n-1.)-1; y=2*j/(n-1.)-1; z=2*k/(n-1.)-1; i0 = i+n*(j+k*n);
+    r1 = pow(x*x+y*y+(z-0.3)*(z-0.3)+0.03,1.5);
+    r2 = pow(x*x+y*y+(z+0.3)*(z+0.3)+0.03,1.5);
+     cout <<   d[0].vf[i][j][k][0];
+     cout <<   d[0].vf[i][j][k][1];
+     cout <<   d[0].vf[i][j][k][2];
+	
+    ex.a[i0]= d[0].vf[i][j][k][0];
+    ey.a[i0]= d[0].vf[i][j][k][1];
+    ez.a[i0]= d[0].vf[i][j][k][2];
+	//0.2*y/r1 - 0.2*y/r2;
+	//0.2*(z-0.3)/r1 - 0.2*(z+0.3)/r2;
+  }
+
+//		gr->Axis("_xyz");
+		gr->Box();
+ // gr->Vect3(ex,ey,ez,"fx");// gr->Vect3(ex,ey,ez,"f");
+	gr->Vect(ex,ey,ez);	
+
+	//gr->Grid3(ex,ey,ez,"W");
+		gr->Update();
+	//	drawVec3(&ex, &ey, &ez);	
+	}
+
+
+	std::cout << "Finished\n";
+}
+/*
+void Animation::beginAnimation(){
+	mglData *px = NULL, *py = NULL, *pz = NULL;
 	gr->Rotate(60,50); 
 	gr->Box();
-	points = 100;
 	gr->SetRanges(-points, points, -points, points, -points, points);
-	for(int t = 0; t < 1000; t++)
+	for(int t = 0; t < points; t++)
 	{
 		while(animation_paused == true)
 		{
@@ -97,9 +150,10 @@ void Animation::beginAnimation(){
 			calculation(t, px, py, pz, t*points);			
 		}
 			drawDots(px, py, pz);
+			gr->View(50,60);
 	}
 }
-
+*/
 void Animation::toggleAnimation(){
 	std::cout << "called toggle animan\n";
 	if(animation_begin == false)

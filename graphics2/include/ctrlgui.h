@@ -8,8 +8,9 @@
 //#include <FL/Fl_Hor_Nice_Slider.H>
 //#include <FL/Fl_Check_Button.H>
 #include <FL/Fl_Output.H>
-#include <FL/Fl_Input.H>
+//#include <FL/Fl_Input.H>
 #include "graphics.h"
+#include "SliderBox.h"
 
 class CtrlGui : public Fl_Pack
 {
@@ -23,7 +24,8 @@ private:
 	Graphics* graph;
 	Fl_Button *btnStart;
 	Fl_Output *lblRot;
-	Fl_Input *txtRot;
+	//Fl_Input *txtRot;
+	SliderBox *sldXRot, *sldYRot, *sldZRot;
 
 	static void cb_toggleGraph(Fl_Widget *w, void *data);
 	void toggleGraph();
