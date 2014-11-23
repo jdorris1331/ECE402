@@ -17,7 +17,7 @@ int main() {
   //vars->get_value("DT", ret_var);
   //cout << ret_var->val << endl;
   for(int i=0;i<equations->size();i++) {
-    cout << equations->at(i) << endl;
+//    cout << equations->at(i) << endl;
   }
 
   //to get sliders look at each type 

@@ -59,10 +59,11 @@ class Variablelist {
         double get_range(const char* name, const int type, const int lorH);
 	void print();
        
-        void set_varables(vector<VAR> * vars);
-        void get_variables(vector<VAR> * vars);
-    private:
         vector<VAR> var;
+        //void set_varables(vector<VAR> * vars);
+        //void get_variables(vector<VAR> * vars);
+    private:
+        //vector<VAR> var;
 };
 
 

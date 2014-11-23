@@ -132,16 +132,12 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
               for(int k=0;k<dim_points;k++) {
                 for(int l=0;l<dim_points;l++) {    
                   vars->set_scalar_single("X",j,k,l,tempx);
-                  if(l==0) cout << tempx << " ";
                 }
               }
-              cout << endl;
               tempx+=dx;
             }
               //vars->set_scalar_field_single("X",tempx);
             }
-            //  dim[0] = atoi(lower.c_str());
-            //  dim[1] = atoi(upper.c_str());
             else if(name=="y" || name=="Y") {
               dim[2] = atof(lower.c_str());
               dim[3] = atof(upper.c_str());
@@ -206,7 +202,7 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
     else if (i==3) {
       //int eqs_num=0;
       bool initial=true;
-      cout << "******EQUATIONS******\n";
+      //cout << "******EQUATIONS******\n";
       while(getline(infile, line)) {
         
         //skip extra space
@@ -229,7 +225,7 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
 
     *******************************************/ 
     else if (i==4) {
-      cout << "*****INITIAL****\n";
+      //cout << "*****INITIAL****\n";
       int initial=true;
       int current=0;
       while(getline(infile, line)) {
@@ -245,13 +241,13 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
         if(line.at(0)=='#') {continue;}
 
             initial_files.push_back(line);
-            cout << initial_files[current] << endl;
+            //cout << initial_files[current] << endl;
             current++;
       }
     }
   }
 //vars->print();
-//get_initial(vars);
+get_initial(vars);
 return 0;
 }
 
@@ -261,7 +257,7 @@ bool infile_parser::get_initial(Variablelist * vars) {
   for(int i=0;i<initial_files.size();i++) {
     vector<string> order;
     vector<int> type;
-    cout << "OPENING " << initial_files[i] << endl;
+   // cout << "OPENING " << initial_files[i] << endl;
     ifstream infile(initial_files[i]); 
     getline(infile, line);
     istringstream iss(line);

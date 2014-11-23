@@ -21,8 +21,6 @@ class infile_parser
         infile_parser();
 	~infile_parser();
         bool parse(string file, Variablelist* vars, vector<string> * equations);
-        //bool get_initial(Variablelist * vars);
-    // enumerations
     private:
         bool get_initial(Variablelist * vars);
 	vector<string> initial_files;
