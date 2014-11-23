@@ -132,16 +132,12 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
               for(int k=0;k<dim_points;k++) {
                 for(int l=0;l<dim_points;l++) {    
                   vars->set_scalar_single("X",j,k,l,tempx);
-                  if(l==0) cout << tempx << " ";
                 }
               }
-              cout << endl;
               tempx+=dx;
             }
               //vars->set_scalar_field_single("X",tempx);
             }
-            //  dim[0] = atoi(lower.c_str());
-            //  dim[1] = atoi(upper.c_str());
             else if(name=="y" || name=="Y") {
               dim[2] = atof(lower.c_str());
               dim[3] = atof(upper.c_str());

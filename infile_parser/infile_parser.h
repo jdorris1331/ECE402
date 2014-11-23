@@ -7,6 +7,7 @@
 #include <string>
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 
 #include "constants.h"
 #include "variablelist.h"
@@ -19,11 +20,10 @@ class infile_parser
     public:
         infile_parser();
 	~infile_parser();
-        bool parse(string file, Variablelist* vars);
-        bool get_initial(Variablelist* vars);
-    // enumerations
+        bool parse(string file, Variablelist* vars, vector<string> * equations);
     private:
-	string initial_file;
+        bool get_initial(Variablelist * vars);
+	vector<string> initial_files;
 };
 
 #endif

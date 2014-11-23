@@ -5,200 +5,301 @@ using namespace std;
 infile_parser::infile_parser() {}
 infile_parser::~infile_parser() {}
 
-bool infile_parser::parse(string file, Variablelist *vars) {
+bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) {
   ifstream infile(file);
   string line;
-  int max_vars = 50;		
-  int num_vars;
-  string var_name [50];
-  int var_type [max_vars];
-  int var_range_warn [max_vars*2];
-  int var_range_show [max_vars*2];
-  //float ****var_values;
-  double var1 = 1.0;
-  //cout << var1;
-  //vars->add("test",0);
-  //vars->set_value("test",var1);
-  for(int i=0;i<max_vars*2;i++) {
-	var_range_warn[i]=0;
-	var_range_show[i]=0;
-  }
-
+  int max_vars = 50;
+  double dim_points = 100.0;		
+  
   int dim [6];
 	
-  for(int i=0;i<2;i++) {
+
+  for(int i=0;i<5;i++) {
     /*******************************************
         Variable name and type declarations
     *******************************************/ 
     if (i==0) {
-      int var_count=0;
+      //cout << "*****VARIABLES*****\n";
+      //int var_count=0;
+      int initial=true;
+   
+      //read in lines
       while(getline(infile, line)) {
-        istringstream iss(line);				
-        string type, v_name;
-        if(!(iss >> type >> v_name)) { break; }
-        cout << type << " " << v_name << endl;				
-        if(type!="##") {
-          if(type=="scalar" || type=="s") vars->add(v_name.c_str(),1);//var_type[var_count]=0;
-          else if(type=="vector" || type=="v") vars->add(v_name.c_str(),2);//var_type[var_count]=1;
+  
+        //skip extra space
+        if((line.size()<2)) continue;
+        while(line[0]==' ') line.erase(0,1);
+        if((line.size()<2)) continue;
+
+        //check for new section or comments
+        if((line.at(0)=='#' && line.at(1)=='#') && initial==true) {continue;}
+        if(line.at(0)=='#' && line.at(1)=='#') break;
+        if(line.at(0)=='#') {continue;}
+        
+        //read in variables and types
+        //else {
+          //turn into stringstream
+          istringstream iss(line);				
+          string type, v_name;
+          double value;
+          //get type and name
+          if(!(iss >> type >> v_name >> value)) { break; }
+          //cout << type << " " << v_name << endl;				
+        
+          //add to 
+          if(type=="scalar" || type=="s") {
+            vars->add(v_name.c_str(),1);
+            vars->set_scalar_field(v_name.c_str(),value);
+          }
+          else if(type=="vector" || type=="v") {
+            vars->add(v_name.c_str(),2);
+            vars->set_vector_field(v_name.c_str(),value);
+          }
           else {
             cerr << "Incorrect variable type in variable section: ";
             cerr << type << endl;
             return 1;
           }
-
-          var_name[var_count] = v_name;
-
-          var_count++;
-					
+          initial=false;			
         }
-        num_vars=var_count;
+        //vars->print();
+    }
+    /*******************************************
+        Constants
+
+    *******************************************/
+    else if (i==1) {
+      //cout << "*****CONSTANTS*****\n";
+      bool initial = true;
+      while(getline(infile, line)) {
+
+        //skip extra space
+        if((line.size()<2)) continue;
+        while(line[0]==' ') line.erase(0,1);
+        if((line.size()<2)) continue;
+
+        //check for new section or comments
+        if((line.at(0)=='#' && line.at(1)=='#') && initial==true) {continue;}
+        if(line.at(0)=='#' && line.at(1)=='#') break;
+        if(line.at(0)=='#') {continue;}
+
+        //read in variables and types
+          istringstream iss(line);
+          string c_name, val;
+          //get type and name
+          if(!(iss >> c_name >> val)) { break; }
+          //cout << c_name << " " << val << endl;
+          vars->add(c_name.c_str(),0);
+          vars->set_value(c_name.c_str(),atof(val.c_str()));
+          initial=false;
       }
     }
     /*******************************************
         Ranges for dimensions and variables
         ranges for variables
     *******************************************/ 
-    else if (i==1) {
-      
-      while(getline(infile, line)) {
-        istringstream iss(line);
-        string name, lower, upper;
-        string type;
-        if(!(iss >> name >> lower >> upper)) { break; }
-        if(name!="##") {
-          cout << name << " " << lower << " " << upper << endl;
-          if(name=="x") {
-            dim[0] = atoi(lower.c_str());
-            dim[1] = atoi(upper.c_str());
-          }
-          else if(name=="y") {
-            dim[2] = atoi(lower.c_str());
-            dim[3] = atoi(upper.c_str());
-          }
-          else if(name=="z") {
-            dim[4] = atoi(lower.c_str());
-            dim[5] = atoi(upper.c_str());
-          }
-          else {
-            bool valid=false;
-            for(int j=0;j<num_vars;j++) {
-              if(name==var_name[j]) {
-                valid=true;
-                if(iss >> type) {
-                  if(type=="warn") {
-                    var_range_warn[2*j] = atoi(lower.c_str());
-                    var_range_warn[(2*j)+1] = atoi(upper.c_str());
-                  }
-                  if(type=="show") {
-                    var_range_show[2*j] = atoi(lower.c_str());
-                    var_range_show[(2*j)+1]  = atoi(upper.c_str());
-                  }
-                }
-                else {
-                  var_range_show[2*j] = atoi(lower.c_str());
-                  var_range_show[2*j+1] = atoi(upper.c_str());             
-                }
-              } 
-            }
-            if(valid==false) {
-              cerr << "Incorrect name of variable in range section: ";
-              cerr << name << endl;
-              return 1;
-            }
-          }          
-        }	
-      }
-    //cout << num_vars << endl;
-    //for(int j=0;j<num_vars;j++) {
-    //cout << var_name[j] << " " << var_range[2*j] << " " << var_range[(2*j)+1] << endl;
-    //} 
-    }
-    /*******************************************
-        Constants
-
-    *******************************************/
     else if (i==2) {
-      bool initial = true;
+      //cout << "****RANGES******\n";
+      bool initial=true;
       while(getline(infile, line)) {
+        //skip extra space
+        if((line.size()<2)) continue;
         while(line[0]==' ') line.erase(0,1);
-	//check for block of input
-	if(line[0]=='#' && initial==false) break; 
-	else if(line[0]!='#' && initial==true) initial=false;
-	
-	
-	cout << line << endl;
-        /*while
-        isstringstream iss(line);
-        string name;
-        float value;
-       */ 
-      }    
-    }
+        if((line.size()<2)) continue;
+
+        //check for new section or comments
+        if((line.at(0)=='#' && line.at(1)=='#') && initial==true) {continue;}
+        if(line.at(0)=='#' && line.at(1)=='#') break;
+        if(line.at(0)=='#') {continue;}
+
+        //read in variables and types
+        else {
+          istringstream iss(line);
+          string name, lower, upper;
+          string type;
+          initial=false;
+          if(!(iss >> name >> lower >> upper >> type)) { break; }
+            //cout << name << " " << lower << " " << upper << endl;
+          if(name=="x" || name=="X") {
+            dim[0] = atof(lower.c_str());
+            dim[1] = atof(upper.c_str());
+
+            vars->add("X",1); 
+            double tempx=dim[0];
+            double dx=(dim[1]-dim[0])/dim_points;
+            //cout << "dx=" << dx << endl;
+            for(int j=0;j<dim_points;j++) {
+              for(int k=0;k<dim_points;k++) {
+                for(int l=0;l<dim_points;l++) {    
+                  vars->set_scalar_single("X",j,k,l,tempx);
+                }
+              }
+              tempx+=dx;
+            }
+              //vars->set_scalar_field_single("X",tempx);
+            }
+            else if(name=="y" || name=="Y") {
+              dim[2] = atof(lower.c_str());
+              dim[3] = atof(upper.c_str());
+
+              vars->add("Y",1);
+              double tempy=dim[2];
+              double dy=(dim[3]-dim[2])/dim_points;
+              for(int j=0;j<dim_points;j++) {
+                tempy=dim[2];
+                for(int k=0;k<dim_points;k++) {
+                  for(int l=0;l<dim_points;l++) {
+                    vars->set_scalar_single("Y",k,j,l,tempy);
+                  }
+                  tempy+=dy;
+                }
+              }
+            }
+            else if(name=="z" || name=="Z") {
+              dim[4] = atof(lower.c_str());
+              dim[5] = atof(upper.c_str());
+      
+              vars->add("Z",1);
+              double tempz=dim[4];
+              double dz=(dim[5]-dim[4])/dim_points;
+              for(int j=0;j<dim_points;j++) {
+                for(int k=0;k<dim_points;k++) {
+                  tempz=dim[4];
+                  for(int l=0;l<dim_points;l++) {
+                    vars->set_scalar_single("Z",k,l,j,tempz);
+                    tempz+=dz;
+                  }
+                }
+              }  
+            }
+            else {
+              bool valid=true;
+              if(type=="show") { 
+	        if(!(vars->set_range(name.c_str(),0,atof(lower.c_str()),atof(upper.c_str())))) 
+                  valid=false;
+              }
+              else if(type=="warn") {
+                if(!(vars->set_range(name.c_str(),1,atof(lower.c_str()),atof(upper.c_str()))))
+                  valid=false;
+              }
+              else valid=false;
+ 
+
+              if(valid==false) {
+                cerr << "Incorrect name of variable in range section: ";
+                cerr << name << endl;
+                return 1;
+              }
+            }          
+          }	
+        }
+      }
+   
     /*******************************************
         Equations to solve 
         
     *******************************************/ 
     else if (i==3) {
-    /*  while(getline(infile, line)) {
-        istringstream iss(line);
-        string name, lower, upper;
-        if(!(iss >> name >> lower >> upper)) { break; }
-    }*/
+      //int eqs_num=0;
+      bool initial=true;
+      //cout << "******EQUATIONS******\n";
+      while(getline(infile, line)) {
+        
+        //skip extra space
+        if((line.size()<2)) continue;
+        while(line[0]==' ') line.erase(0,1);
+        if((line.size()<2)) continue;
+
+        //check for new section or comments
+        if((line.at(0)=='#' && line.at(1)=='#') && initial==true) {continue;}
+        if(line.at(0)=='#' && line.at(1)=='#') break;
+        if(line.at(0)=='#') {continue;}
+       
+        //get equations 
+        eqs->push_back(line);
+        initial=false;
+      }
     }
     /*******************************************
         Initial conditions
 
     *******************************************/ 
     else if (i==4) {
-      getline(infile, line);
-      istringstream iss(line);
-      iss >> initial_file; 
-      cout << initial_file << endl;      
-  /*
-      bool initial=true;
-      string v_order[53];
-      float values[53];
-      int x_length=dim[1]-dim[0];
-      int y_length=dim[3]-dim[2];
-      int z_length=dim[5]-dim[4];
-      var_values = new double***[num_vars];
-      for(int j=0;j<num_vars;j++) {
-        var_values = new doulbe**[x_length];
-        for(int k=0;k<x_length;k++) {
-          var_values = new double*[y_length];
-          for(int l=0;l<y_length;l++) {
-            var_values = new double*[z_length];
-          }
-        }
-      }
+      //cout << "*****INITIAL****\n";
+      int initial=true;
+      int current=0;
       while(getline(infile, line)) {
-        istringstream iss(line);
-        if(initial) {
-          int index=0;
-          while(iss >> v_order[index]) index++;
-          inital=false;
-        }
-        else{
-          for(int j=0;j<index;j++) iss >> values[j];
-          
-          if(v_order[
-        
+
+        //skip extra space      
+        if((line.size()<2)) continue;
+        while(line[0]==' ') line.erase(0,1);
+        if((line.size()<2)) continue;
+
+        //check for new section or comments
+        if((line.at(0)=='#' && line.at(1)=='#') && initial==true) {continue;}
+        if(line.at(0)=='#' && line.at(1)=='#') break;
+        if(line.at(0)=='#') {continue;}
+
+            initial_files.push_back(line);
+            //cout << initial_files[current] << endl;
+            current++;
+      }
     }
-}}*/
-   }
- } 
- return 0;
+  }
+//vars->print();
+//get_initial(vars);
+return 0;
 }
 
-bool infile_parser::get_initial(Variablelist *vars) {
-  /*string line;
-
-  ifstream infile(initial_file); 
-  getline(infile, line);
-   
-  while(getline(infile, line)) {
+bool infile_parser::get_initial(Variablelist * vars) {
+  string line;
+  string var_name;
+  for(int i=0;i<initial_files.size();i++) {
+    vector<string> order;
+    vector<int> type;
+    cout << "OPENING " << initial_files[i] << endl;
+    ifstream infile(initial_files[i]); 
+    getline(infile, line);
     istringstream iss(line);
-       
-  }*/
+    iss >> var_name >> var_name >> var_name;
+    while(iss>>var_name) {
+      //cout << var_name << endl;
+      if(vars->exist(var_name.c_str())) {
+        order.push_back(var_name);
+        type.push_back(0);
+      }
+      else if(vars->exist(var_name.substr(0,var_name.size()-2).c_str())) {
+        //cout << var_name.substr(0,var_name.size()-2)<< endl;
+        order.push_back(var_name.substr(0,var_name.size()-2));
+        if(var_name.substr(var_name.size()-1,1)=="x") type.push_back(1);
+        else if(var_name.substr(var_name.size()-1,1)=="y") type.push_back(2);
+        else if(var_name.substr(var_name.size()-1,1)=="z") type.push_back(3);
+      }
+      else {
+        cerr << "Variable is incorrect\n";
+        return false;
+      }
+      //cout << var_name << endl;
+    }
+
+    while(getline(infile, line)) {
+      istringstream iss(line);
+      int x,y,z;
+      double value;
+      //need to change to actual xyz coordinates
+      iss >> x >> y >> z;
+      //cout << x << " " << y << " " << z << " ";
+      int current=0;
+      while(iss >> value) {
+        //cout << value << " ";
+        string temp_name=order[current];
+        int vec_type = type[current]-1;
+        if(type[current]==0) vars->set_scalar_single(temp_name.c_str(),x,y,z,value);
+        else vars->set_vector_single(temp_name.c_str(),x,y,z,vec_type,value);
+        current++;
+      }
+      //cout << endl;
+    }
+  }
   return false;
 }
