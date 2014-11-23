@@ -25,7 +25,7 @@ int main() {
   //  else then slider at show_min*.1 to show_min*10 start at show_min
   //   and slider at show_max*.1 to show_max*10 at show_max
 
-  //delete equations;
-  //delete vars;
+  delete equations;
+  delete vars;
 return 0;
 }

@@ -202,7 +202,7 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
     else if (i==3) {
       //int eqs_num=0;
       bool initial=true;
-      cout << "******EQUATIONS******\n";
+      //cout << "******EQUATIONS******\n";
       while(getline(infile, line)) {
         
         //skip extra space
@@ -225,7 +225,7 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
 
     *******************************************/ 
     else if (i==4) {
-      cout << "*****INITIAL****\n";
+      //cout << "*****INITIAL****\n";
       int initial=true;
       int current=0;
       while(getline(infile, line)) {
@@ -241,13 +241,13 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
         if(line.at(0)=='#') {continue;}
 
             initial_files.push_back(line);
-            cout << initial_files[current] << endl;
+            //cout << initial_files[current] << endl;
             current++;
       }
     }
   }
 //vars->print();
-//get_initial(vars);
+get_initial(vars);
 return 0;
 }
 
@@ -257,7 +257,7 @@ bool infile_parser::get_initial(Variablelist * vars) {
   for(int i=0;i<initial_files.size();i++) {
     vector<string> order;
     vector<int> type;
-    cout << "OPENING " << initial_files[i] << endl;
+   // cout << "OPENING " << initial_files[i] << endl;
     ifstream infile(initial_files[i]); 
     getline(infile, line);
     istringstream iss(line);
