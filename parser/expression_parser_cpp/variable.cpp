@@ -80,7 +80,7 @@ void VAR::set_type(const int typex) {
         }
         delete[] vf[j];
       }
-      delete vf;
+      delete[] vf;
     }
     if(typex==1) {
       sf = new double**[DIM_SIZE];

@@ -14,7 +14,7 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
   int dim [6];
 	
 
-  for(int i=0;i<1;i++) {
+  for(int i=0;i<5;i++) {
     /*******************************************
         Variable name and type declarations
     *******************************************/ 
@@ -67,7 +67,7 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
           //}
 					
         }
-        vars->print();
+        //vars->print();
         //num_vars=var_count;
     }
     /*******************************************
@@ -94,7 +94,7 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
           string c_name, val;
           //get type and name
           if(!(iss >> c_name >> val)) { break; }
-          //cout << c_name << " " << val << endl;
+          cout << c_name << " " << val << endl;
           vars->add(c_name.c_str(),0);
           vars->set_value(c_name.c_str(),atof(val.c_str()));
           initial=false;
@@ -284,6 +284,7 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
       }
     }
   }
+vars->print();
 //get_initial(vars);
 return 0;
 }

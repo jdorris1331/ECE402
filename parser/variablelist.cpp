@@ -30,6 +30,7 @@
  */
 
 Variablelist::Variablelist() {
+  var.reserve(100);
 }
 
 Variablelist::~Variablelist() {
@@ -58,10 +59,14 @@ bool Variablelist::add(const char* name, const int type)
     int id = get_id(name);
     if (id == -1)
     {
+        //cout << "Capacity " << var.capacity() << endl;
+        //cout << "Variable vector size " << var.size() << endl;
         var.resize(var.size()+1);
+        //cout << "New vector size " << var.size() << endl;
         // variable does not yet exist
         strncpy(var[var.size()-1].name,name,30);
         id = get_id(name);
+        //cout << "id is " << id << endl;
         var[id].set_type(type);
     }
     else
@@ -242,6 +247,7 @@ bool Variablelist::set_vector_field(const char* name, const double value) {
         for(int k=0;k<DIM_SIZE;k++) {
           for(int l=0;l<3;l++) {
             var[id].vf[i][j][k][l] = value;
+            //cout << var[id].vf[i][j][k][l] << endl;
           }
         }
       }

@@ -17,7 +17,7 @@ int main() {
   //vars->get_value("DT", ret_var);
   //cout << ret_var->val << endl;
   for(int i=0;i<equations->size();i++) {
-//    cout << equations->at(i) << endl;
+    cout << equations->at(i) << endl;
   }
 
   //to get sliders look at each type 
@@ -25,7 +25,7 @@ int main() {
   //  else then slider at show_min*.1 to show_min*10 start at show_min
   //   and slider at show_max*.1 to show_max*10 at show_max
 
-  //delete equations;
-  //delete vars;
+  delete equations;
+  delete vars;
 return 0;
 }

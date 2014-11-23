@@ -1,6 +1,7 @@
 ## Variables  - variable name declarations (type name initial_value)
 vector var1 0
-scalar var2 0
+scalar var2 1
+scalar var3 0
 
 ## Constants - (dt=timestep[seconds]) need ranges for sliders
 dt .01
