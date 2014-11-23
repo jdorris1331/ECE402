@@ -19,8 +19,8 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
         Variable name and type declarations
     *******************************************/ 
     if (i==0) {
-      cout << "*****VARIABLES*****\n";
-      int var_count=0;
+      //cout << "*****VARIABLES*****\n";
+      //int var_count=0;
       int initial=true;
    
       //read in lines
@@ -44,7 +44,7 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
           double value;
           //get type and name
           if(!(iss >> type >> v_name >> value)) { break; }
-          cout << type << " " << v_name << endl;				
+          //cout << type << " " << v_name << endl;				
         
           //add to 
           if(type=="scalar" || type=="s") {
@@ -60,22 +60,16 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
             cerr << type << endl;
             return 1;
           }
-          initial=false;
-          //var_name[var_count] = v_name;
-
-          //var_count++;
-          //}
-					
+          initial=false;			
         }
         //vars->print();
-        //num_vars=var_count;
     }
     /*******************************************
         Constants
 
     *******************************************/
     else if (i==1) {
-      cout << "*****CONSTANTS*****\n";
+      //cout << "*****CONSTANTS*****\n";
       bool initial = true;
       while(getline(infile, line)) {
 
@@ -94,7 +88,7 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
           string c_name, val;
           //get type and name
           if(!(iss >> c_name >> val)) { break; }
-          cout << c_name << " " << val << endl;
+          //cout << c_name << " " << val << endl;
           vars->add(c_name.c_str(),0);
           vars->set_value(c_name.c_str(),atof(val.c_str()));
           initial=false;
@@ -105,7 +99,7 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
         ranges for variables
     *******************************************/ 
     else if (i==2) {
-      cout << "****RANGES******\n";
+      //cout << "****RANGES******\n";
       bool initial=true;
       while(getline(infile, line)) {
         //skip extra space
@@ -138,8 +132,10 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
               for(int k=0;k<dim_points;k++) {
                 for(int l=0;l<dim_points;l++) {    
                   vars->set_scalar_single("X",j,k,l,tempx);
+                  if(l==0) cout << tempx << " ";
                 }
               }
+              cout << endl;
               tempx+=dx;
             }
               //vars->set_scalar_field_single("X",tempx);
@@ -154,12 +150,13 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
               double tempy=dim[2];
               double dy=(dim[3]-dim[2])/dim_points;
               for(int j=0;j<dim_points;j++) {
+                tempy=dim[2];
                 for(int k=0;k<dim_points;k++) {
                   for(int l=0;l<dim_points;l++) {
                     vars->set_scalar_single("Y",k,j,l,tempy);
                   }
+                  tempy+=dy;
                 }
-                tempy+=dy;
               }
             }
             else if(name=="z" || name=="Z") {
@@ -171,11 +168,12 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
               double dz=(dim[5]-dim[4])/dim_points;
               for(int j=0;j<dim_points;j++) {
                 for(int k=0;k<dim_points;k++) {
+                  tempz=dim[4];
                   for(int l=0;l<dim_points;l++) {
                     vars->set_scalar_single("Z",k,l,j,tempz);
+                    tempz+=dz;
                   }
                 }
-                tempz+=dz;
               }  
             }
             else {
@@ -201,38 +199,6 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
         }
       }
    
-    /*******************************************
-        Constants
-
-    *******************************************/
-    /*else if (i==2) {
-      cout << "*****CONSTANTS*****\n";
-      bool initial = true;
-      while(getline(infile, line)) {
-       
-        //skip extra space 
-        if((line.size()<2)) continue;
-        while(line[0]==' ') line.erase(0,1);
-        if((line.size()<2)) continue;
-
-        //check for new section or comments
-        if((line.at(0)=='#' && line.at(1)=='#') && initial==true) {continue;}
-        if(line.at(0)=='#' && line.at(1)=='#') break;
-        if(line.at(0)=='#') {continue;}
-
-        //read in variables and types
-       // else {
-          istringstream iss(line);
-          string c_name, val;
-          //get type and name
-          if(!(iss >> c_name >> val)) { break; }
-          cout << c_name << " " << val << endl; 
-          vars->add(c_name.c_str(),0);
-          vars->set_value(c_name.c_str(),atof(val.c_str()));
-          initial=false;
-       // }	
-      }    
-    }*/
     /*******************************************
         Equations to solve 
         
@@ -284,7 +250,7 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
       }
     }
   }
-vars->print();
+//vars->print();
 //get_initial(vars);
 return 0;
 }

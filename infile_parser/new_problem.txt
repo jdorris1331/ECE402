@@ -1,10 +1,8 @@
 ## Variables  - variable name declarations (type name initial_value)
 vector var1 0
-scalar var2 1
-scalar var3 0
+scalar var2 0
 
-## Constants - (dt=timestep[seconds]) need ranges for sliders, cannot use x,y,z
-t = 0
+## Constants - (dt=timestep[seconds]) need ranges for sliders
 dt .01
 k 2.0
 
@@ -22,5 +20,5 @@ dt .001 1 show
 var1 = grad(var1)+y+z/k;
 
 
-## files with initial values listed belowS
+## initial values set to below or all zeros with a ZEROS
 initial.txt
