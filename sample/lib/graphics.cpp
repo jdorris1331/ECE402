@@ -25,8 +25,6 @@ void Graphics::calculation(int t, mglData* x, mglData* y, mglData* z, int  n  ){
 
 
 
-
-
 void Graphics::calculation(int t, mglData* x, mglData * y, mglData * z, int  n  ){
 	int i, j,k;
 	for(i = n; i < (n+points); i++) for(j = n; j < (n + points); j++) for(k = n; k < (n + points); k++)

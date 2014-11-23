@@ -1,4 +1,5 @@
 #include "normalizer.h"
+#include<iostream>
 //show all of the scalar fields based on order of priority
 void normalize_scalar(vector<VAR> *vars, int* hide, int* priority, double* color_values,  mglData* plot_data) {
   int num_vars=vars->size();
@@ -59,4 +60,24 @@ void normalize_vector(vector<VAR> *vars, int vect_num, int scale, mglData* ex, m
   }
 }
 
-          
+         
+void dumbNormalizer(VAR &  d, mglData* ex, mglData* ey, mglData* ez, int n)
+{
+	int i, j,  k, i0;
+	for(i=0;i<n;i++)  for(j=0;j<n;j++)  for(k=0;k<n;k++)
+  	{
+    		i0 = i+n*(j+k*n);
+    		ex->a[i0]= d.vf[i][j][k][0];
+    		ey->a[i0]= d.vf[i][j][k][1];
+    		ey->a[i0]= d.vf[i][j][k][2];
+/*    		std::cout <<  d.vf[i][j][k][0] << std::endl;
+    		std::cout <<  d.vf[i][j][k][1] << std::endl;
+    		std::cout <<  d.vf[i][j][k][2] << std::endl;
+		std::cout << "i: " << i << std::endl;
+		std::cout << "j: " << j << std::endl;
+		std::cout << "k: " << k << std::endl;
+*/
+  	}
+
+		std::cout << "Returing\n" << std::endl;
+} 
