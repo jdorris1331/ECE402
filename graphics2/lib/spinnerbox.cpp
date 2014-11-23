@@ -73,7 +73,7 @@ void SpinnerBox::updatePos()
 
 	if (pos < spnPos->value()) { //demoted
 		if (pos != count) { 
-			for (pos; pos < spnPos->value(); pos++) {
+			for (; pos < spnPos->value(); pos++) {
 				if (pos != 1) last->next = next;
 				next->last = last;
 				last = next;
@@ -83,7 +83,7 @@ void SpinnerBox::updatePos()
 				last->setPos(pos);	}	}	}
 	else if (pos > spnPos->value()) { //promoted
 		if (pos != 1) {
-			for (pos; pos > spnPos->value(); pos--)	{
+			for (; pos > spnPos->value(); pos--)	{
 				if (pos != count) next->last = last;
 				last->next = next;
 				next = last;

@@ -1,13 +1,11 @@
 #include "ctrlspinners.h"
-#include <iostream>
 
 void CtrlSpinners::cb_updatePos(Fl_Widget *w, void *data) { ((CtrlSpinners*)data)->updatePos(); }
 void CtrlSpinners::updatePos()
 {
-	std::cerr << "checkupdate" << std::endl;
-
 	SpinnerBox *spinhold;
 	int ct, oldpos, newpos;
+	oldpos = -1; newpos = -1;
 
 	for (ct = 0; ct < spinners.size(); ct++)
 	{
