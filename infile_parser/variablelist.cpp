@@ -299,9 +299,9 @@ double Variablelist::get_range(const char* name, const int type, const int LorH)
 /* 
  * Set the vector of VAR's for other to use
  */
-void Variablelist::get_variables(vector<VAR>* ret_vars) {
+/*void Variablelist::get_variables(vector<VAR>* ret_vars) {
  //for(
-}
+}*/
 
 
 /*
