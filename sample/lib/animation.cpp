@@ -98,33 +98,38 @@ void Animation::beginAnimation(){
 		}
 	*/
 	//		drawDots(px, py, pz);
-  	VAR* d = new VAR;
-	d->set_type(2);
-	VAR* z = new VAR;
-	z->set_type(2);
-	initVfield(*d);
-	//VAR z = d[0];
-	gr->SetRanges(95, 100, 95, 100, 95, 100);
-	gr->Axis();
-	grad(d, z);	
-	dumbNormalizer(*d, &ex, &ey, &ez, n);
-	gr->Box();
-	gr->Vect(ex,ey,ez);	
+	
+	vector<VAR> vars;
+	vars.resize(10);
+	for(int r = 0; r < 10; r++)
+		vars[r].set_type(2);
+
+	initVfield(vars[0], vars[1]);
+	dumbNormalizer(vars[0], &ex, &ey, &ez, n);
+	gr->Vect(ex, ey, ez);
+	gr->Update();
+	dumbNormalizer(vars[1], &ex, &ey, &ez, n);
+	gr->Vect(ex, ey, ez);
 	gr->Update();
 
+
+	while(1)
+	{
+		grad(&vars[0], &vars[3]);
+		grad(&vars[1], &vars[4]);
+		
+		vars[0] = vars[3];
+		vars[1] = vars[4];
+
+
+		dumbNormalizer(vars[0], &ex, &ey, &ez, n);
+		gr->Vect(ex, ey, ez);
+		gr->Update();
 	
-		dumbNormalizer(*z, &ex, &ey, &ez, n);
-		gr->Clf();
+		dumbNormalizer(vars[1], &ex, &ey, &ez, n);
 		gr->Vect(ex, ey, ez);
 		gr->Update();
-		grad(d,z);	
-		dumbNormalizer(*z, &ex, &ey, &ez, n);
-		std::cout << "Finished!" << std::endl;
-		gr->Clf();
-		gr->Vect(ex, ey, ez);
-		gr->Update();
-
-
+	}
 
 
 	}

@@ -14,12 +14,16 @@ void initVfield(VAR & vars, VAR & vars2)
                 for(int y = 0; y < 100; y++){
                         for(int z = 0; z < 100; z++){
                                 for(int v = 0; v < 3; v++){
-                                        if((x >= 90) && (y >= 90) && (z >= 90)) vars.vf[x][y][z][v] = 100;
-                                        if((x >= 85 && x <= 90) && (y >= 85 && y <= 90) && (z >= 85 && z <= 90))  vars2.vf[x][y][z][v] = 100;
-                                        else{
+					
+					if((x >= 60 && x <= 80) && (y >= 60 && y <= 80) && (z >= 60 && z <= 80))  vars.vf[x][y][z][v] = 100;
+					else
+					{
                                                 vars.vf[x][y][z][v] = 0;
+					}
+					 if((x >= 30 && x <= 50) && (y >= 30 && y <= 50) && (z >= 30 && z <= 50))  vars2.vf[x][y][z][v] = 100;
+                                        else{
                                                 vars2.vf[x][y][z][v] = 0;
-                                        }
+					}
                                 }
                         }
                 }

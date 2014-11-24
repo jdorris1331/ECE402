@@ -48,11 +48,11 @@ void normalize_vector(vector<VAR> *vars, int vect_num, int scale, mglData* ex, m
         current = i+DIM_SIZE*(j+DIM_SIZE*k);
         if(vars->at(vect_num).type==2) {
           value=vars->at(vect_num).vf[i][j][k][0];
-          if(value >= lower && value <= upper) ex->a[current] = (value-lower)/range*scale;
+          if(value >= lower && value <= upper) ex->a[current] = value;//(value-lower)/range*scale;
           value=vars->at(vect_num).vf[i][j][k][1];
-          if(value >= lower && value <= upper) ex->a[current] = (value-lower)/range*scale;
+          if(value >= lower && value <= upper) ex->a[current] = value;//(value-lower)/range*scale;
           value=vars->at(vect_num).vf[i][j][k][2];
-          if(value >= lower && value <= upper) ex->a[current] = (value-lower)/range*scale;
+          if(value >= lower && value <= upper) ex->a[current] = value;//(value-lower)/range*scale;
         }
       }
     }

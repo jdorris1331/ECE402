@@ -5,7 +5,7 @@
 #include "variable.h"
 #include <vector>
 using namespace std;
-void initVfield(VAR & );
+void initVfield(VAR & , VAR &);
 void add(VAR* A, VAR* B, VAR* ret_val);
 void sub(VAR* A, VAR* B, VAR* ret_val);
 void mult(VAR* A, VAR* B, VAR* ret_val);
