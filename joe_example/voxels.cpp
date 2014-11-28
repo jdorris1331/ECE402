@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #include <mgl2/fltk.h>
 #include "variable.h"
 #include "normalizer.h"
@@ -149,17 +150,17 @@ int main() {
   eqs = new char*[equations->size()];
   for(int i=0;i<equations->size();i++) {
     eqs[i] = new char[255];
-    memcpy(eqs[i],test[i].c_str(),test[i].size());
-    eqs[i][test[i].size()] = 0;
+    memcpy(eqs[i],equations->at(i).c_str(),equations->at(i).size());
+    eqs[i][equations->at(i).size()] = 0;
     cout << eqs[i] << "\n";
   }
 
   prs.set_eqs(eqs, 3);
   prs.solve(vars);
 
-  mglFLTK gr(sample,"MathGL examples");
+ // mglFLTK gr(sample,"MathGL examples");
   delete equations;
   delete vars;
-  return gr.Run();
+ // return gr.Run();
   return 0;
 }
