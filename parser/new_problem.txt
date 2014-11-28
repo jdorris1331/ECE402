@@ -2,13 +2,14 @@
 vector var1 0
 scalar var2 1
 scalar var3 0
+vector var4 2
 
-## Constants - (dt=timestep[seconds]) need ranges for sliders, cannot use x,y,z
-t = 0
+## Constants - Use 't' for starting time and 'dt' for timestep do not use 'x','y','z'
+t  0
 dt .01
 k 2.0
 
-## Ranges - for x y and z
+## Ranges - Use 'warn' for setting off warning and stopping calculation and 'show' for sliders
 x 0 10 dim
 y 0 10 dim
 z 0 10 dim
@@ -20,7 +21,8 @@ dt .001 1 show
 
 ## Equation definitions (available operators: lapacian, etc)
 var1 = grad(var1)+y+z/k;
+var2 = var3!*div(var4)
 
-
-## files with initial values listed belowS
+## Initial condition files
 initial.txt
+initial2.txt

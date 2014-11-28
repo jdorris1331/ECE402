@@ -1,3 +1,12 @@
+/*********************************************************
+*     *****
+*    *~~~~~*   Partial Differential Equations Resource
+*     *o o*              (PDER)
+*     *  *
+*     * *     By: Joseph Dorris, Joey Allen, ALex Kotzman
+*    **                   and Wilson Parker
+*   *
+*********************************************************/
 
 #ifndef VARIABLE_DEF
 #define VARIABLE_DEF

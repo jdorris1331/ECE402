@@ -106,24 +106,24 @@ class Parser
         char ans_str[255];            // holds a string containing the result
                                       // of the expression
 
-        Variablelist* user_var;        // list with variables defined by user
+        //Variablelist* user_var;        // list with variables defined by user
 	Variablelist* temp_var;
 
     // private functions
     private:
         void getToken();
 
-        double parse_level1(Variablelist* vars);
-        double parse_level2(Variablelist* vars);
-        double parse_level3(Variablelist* vars);
-        double parse_level4(Variablelist* vars);
-        double parse_level5(Variablelist* vars);
-        double parse_level6(Variablelist* vars);
-        double parse_level7(Variablelist* vars);
-        double parse_level8(Variablelist* vars);
-        double parse_level9(Variablelist* vars);
-        double parse_level10(Variablelist* vars);
-        double parse_number(Variablelist* vars);
+        void parse_level1(Variablelist* vars);
+        void parse_level2(Variablelist* vars);
+        void parse_level3(Variablelist* vars);
+        void parse_level4(Variablelist* vars);
+        void parse_level5(Variablelist* vars);
+        void parse_level6(Variablelist* vars);
+        void parse_level7(Variablelist* vars);
+        void parse_level8(Variablelist* vars);
+        void parse_level9(Variablelist* vars);
+        void parse_level10(Variablelist* vars);
+        void parse_number(Variablelist* vars);
 
         int get_operator_id(const char op_name[]);
         double eval_operator(const int op_id, const double &lhs, const double &rhs);

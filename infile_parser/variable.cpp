@@ -1,3 +1,13 @@
+/*********************************************************
+*     *****
+*    *~~~~~*   Partial Differential Equations Resource
+*     *o o*              (PDER)
+*     *  *
+*     * *     By: Joseph Dorris, Joey Allen, ALex Kotzman
+*    **                   and Wilson Parker
+*   *
+*********************************************************/
+
 #include "variable.h"
 
 VAR::VAR() {

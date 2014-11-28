@@ -22,13 +22,26 @@
  * @date	2007-12-22, updated 2012-02-06
  */
 
+/*********************************************************
+*     *****
+*    *~~~~~*   Partial Differential Equations Resource
+*     *o o*              (PDER)
+*     *  *
+*     * *     By: Joseph Dorris, Joey Allen, ALex Kotzman
+*    **                   and Wilson Parker
+*   *
+*********************************************************/
+
 
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+//variable for max string lengths
 const int NAME_LEN_MAX = 30;
 const int EXPR_LEN_MAX = 255;
 const int ERR_LEN_MAX = 255;
+
+//variable describing the granularity of the space 
 const int DIM_SIZE = 100; 
 
 #endif

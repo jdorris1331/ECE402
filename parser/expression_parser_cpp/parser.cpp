@@ -50,7 +50,11 @@ Parser::Parser(int xx, int yy, int zz)
     token[0] = '\0';
     token_type = NOTHING;
  //   user_var = new Variablelist(x,y,z);
-    temp_var = new Variablelist(x,y,z);
+    temp_var = new Variablelist();
+    temp_var.add("eval_function",0);
+    temp_var.add("eval_function",0);
+    temp_var.add("eval_operator",0);
+    temp_var.add("parse_number"
 }
 
 /*
@@ -601,7 +605,7 @@ double Parser::parse_level10(Variablelist* vars)
 }
 
 
-double Parser::parse_number(Variablelist* vars)
+void Parser::parse_number(Variablelist* vars)
 {
 double ans = 0;
 

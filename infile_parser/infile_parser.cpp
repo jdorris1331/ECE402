@@ -1,3 +1,13 @@
+/*********************************************************
+*     *****
+*    *~~~~~*   Partial Differential Equations Resource
+*     *o o*              (PDER)
+*     *  *
+*     * *     By: Joseph Dorris, Joey Allen, ALex Kotzman
+*    **                   and Wilson Parker
+*   *
+*********************************************************/
+
 #include "infile_parser.h"
 
 using namespace std;
@@ -8,8 +18,7 @@ infile_parser::~infile_parser() {}
 bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) {
   ifstream infile(file);
   string line;
-  int max_vars = 50;
-  double dim_points = 100.0;		
+  double dim_points = (float)DIM_SIZE;		
   
   int dim [6];
 	

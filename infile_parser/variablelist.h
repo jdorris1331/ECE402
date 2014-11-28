@@ -21,6 +21,15 @@
  * @date	2007, updated 2012-02-06
  */
 
+/*********************************************************
+*     *****
+*    *~~~~~*   Partial Differential Equations Resource
+*     *o o*              (PDER)
+*     *  *
+*     * *     By: Joseph Dorris, Joey Allen, ALex Kotzman
+*    **                   and Wilson Parker
+*   *
+*********************************************************/
 
 #ifndef USER_VARIABLES_H
 #define USER_VARIABLES_H

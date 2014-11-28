@@ -1,4 +1,4 @@
-all: pointers
+all: strings
 
 main: parser.o error.o functions.o variablelist.o
 	g++ parser.o error.o functions.o variablelist.o -o main main.cpp

@@ -39,12 +39,11 @@ void toupper(char upper[], const char str[]);
 
 class Variablelist {
     public:
-	Variablelist(int x, int y, int z);
+	Variablelist();
 	~Variablelist();
         bool exist(const char* name);
         bool add(const char* name, const int type);
         bool del(const char* name);
-        bool copy(const char* name1, const char* name2);
 
 	int get_type(const char* name);
         bool get_value(const char* name, VAR* ret_var);
@@ -52,24 +51,17 @@ class Variablelist {
         int  get_id(const char* name);
         bool set_value(const char* name, const double value);
 	bool set_scalar_single(const char* name, int i, int j, int k, const double value);
-        bool set_scalar_field(const char* name, const double*** scalar_field);
+        bool set_scalar_field(const char* name, const double value);
 	bool set_vector_single(const char* name, int i, int j, int k, int dir, const double value);
-        bool set_vector_field(const char* name, const double**** vector_field);
+        bool set_vector_field(const char* name, const double value);
 
+        bool set_range(const char* name, const int type,const double min, const double max);
+        double get_range(const char* name, const int type, const int lorH);
 	void print();
-
+       
+        void set_varables(vector<VAR> * vars);
+        void get_variables(vector<VAR> * vars);
     private:
-	void clear(const char* name);
-	/*
-        struct VAR
-        {
-            char name[NAME_LEN_MAX+1];
-            int type;
-            double *** sf;
-            double **** vf;
-            double * val;
-        };*/
-	int x,y,z,dim;
         vector<VAR> var;
 };
 

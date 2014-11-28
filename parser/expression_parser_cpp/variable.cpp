@@ -28,7 +28,7 @@ VAR::~VAR() {
       }
       delete[] vf[j];
     }
-    delete vf;
+    delete[] vf;
   }
 }
 VAR& VAR::operator=(const VAR &rhs) {
