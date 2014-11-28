@@ -3,6 +3,8 @@
 #include "variable.h"
 #include "normalizer.h"
 #include "constants.h"
+#include "../expression_parser/parser.h"
+#include "../infile_parser/infile_parser.h"
 
 using namespace std;
 
@@ -93,7 +95,7 @@ c.Create(DIM_SIZE,DIM_SIZE,DIM_SIZE);
 normalize_scalar(&vars,hide,priority,colors,&c);
 
 mglData ex,ey,ez;
-int vect_num = 8
+int vect_num = 8;
 ex.Create(DIM_SIZE,DIM_SIZE,DIM_SIZE);
 ey.Create(DIM_SIZE,DIM_SIZE,DIM_SIZE);
 ez.Create(DIM_SIZE,DIM_SIZE,DIM_SIZE);
@@ -128,7 +130,36 @@ return 0;
 
 
 int main() {
+  infile_parser fileP;
+
+  //vector<VAR> user_vars;
+
+  Variablelist *vars = new Variablelist();
+  vector<string> *equations= new vector<string>;
+  fileP.parse("new_problem.txt", vars, equations);
+
+  //to get sliders look at each type
+  //  if 0 then set at val and have vary from show_min to show_max
+  //  else then slider at show_min*.1 to show_min*10 start at show_min
+  //   and slider at show_max*.1 to show_max*10 at show_max
+
+  Parser prs;  
+
+  char** eqs;
+  eqs = new char*[equations->size()];
+  for(int i=0;i<equations->size();i++) {
+    eqs[i] = new char[255];
+    memcpy(eqs[i],test[i].c_str(),test[i].size());
+    eqs[i][test[i].size()] = 0;
+    cout << eqs[i] << "\n";
+  }
+
+  prs.set_eqs(eqs, 3);
+  prs.solve(vars);
+
   mglFLTK gr(sample,"MathGL examples");
+  delete equations;
+  delete vars;
   return gr.Run();
   return 0;
 }
