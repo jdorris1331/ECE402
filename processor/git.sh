@@ -2,5 +2,5 @@
 
 git pull
 git add *
-git commit -m "wilson stuff poo" -a
+git commit -m "Updated the grad" -a
 git push

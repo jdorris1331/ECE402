@@ -11,7 +11,7 @@ int main() {
 	vars.resize(10);
 	vars[0].set_type(2);
 	vars[1].set_type(2);
-	
+	vars[2].set_type(2);
 	//mglData plot_data;
 	
 	for(int x = 0; x < 100; x++){
@@ -32,11 +32,13 @@ int main() {
 	for(int s = 0; s < 10; s++){
 		grad(&vars[0],&vars[2]);
 //		grad(&vars[1],&vars[3]);
+//		laplac(&vars[0],&vars[1]);
+//		add(&vars[0],&vars[1],&vars[2]);
 		vars[0] = vars[2];
 //		vars[1] = vars[3];
-		for(int x = 80; x < 100; x++){
+		for(int x = 90; x < 100; x++){
 			for(int y = 80; y < 100; y++){
-				printf("%.1f, ", vars[2].vf[x][y][97][0]);
+				printf("%.1f, ", vars[2].vf[x][y][97][1]);
 			}
 			cout << endl;
 		}
