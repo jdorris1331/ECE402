@@ -3,7 +3,7 @@
 #include <cstring>
 #include <string>
 
-#include "parser.h"
+#include "expression_parser.h"
 #include "variablelist.h"
 
 using namespace std;
@@ -13,19 +13,19 @@ Variablelist * vars = new Variablelist();
 
 Parser prs;
 
-vars->add("DT",1);
-vars->set_scalar_field("DT",.1);
+vars->add("DT",2);
+vars->set_vector_field("DT",.1);
 //vars->set_value("DT",.1);
-vars->add("T",1);
-vars->set_scalar_field("T",0);
+vars->add("T",2);
+vars->set_vector_field("T",0);
 //vars->print();
 cout << endl;
 
   string test[4]; 
   
-  test[0] = "l=5";
-  test[1] = "DT=l+3";
-  test[2] = "T=-DT";
+  test[0] = "l=T+dt";
+  test[1] = "j=t-dt*T";
+  test[2] = "T=(rand(T)%100)/100";
   
 
   //getline(cin, test);
@@ -37,7 +37,7 @@ cout << endl;
     eqs[i] = new char[255]; 
     memcpy(eqs[i],test[i].c_str(),test[i].size());
     eqs[i][test[i].size()] = 0;
-    cout << eqs[i] << "\n";
+//    cout << eqs[i] << "\n";
   }
 
   prs.set_eqs(eqs, 3);

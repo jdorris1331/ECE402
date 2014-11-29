@@ -1,16 +1,32 @@
+HOMEDIR = /Users/sidsdman13/joegit/ECE402
+VARDIR  = variable
+EXPDIR  = expression_parser
+INPDIR  = infile_parser
+NORMDIR = normalizer
+
+CFLAGS += -I$(HOMEDIR)/$(VARDIR)/include -I$(HOMEDIR)/$(EXPDIR)/include -I$(HOMEDIR)/$(INPDIR)/include -I$(HOMEDIR)/$(NORMDIR)/include
+LDFLAGS += -L$(HOMEDIR)/$(VARDIR)/lib -L$(HOMEDIR)/$(EXPDIR)/lib -L$(HOMEDIR)/$(INPDIR)/lib -L$(HOMEDIR)/$(NORMDIR)/lib
+
+SRC_FILES = variable.cpp variablelist.cpp expression_parser.cpp error.cpp operators.cpp functions.cpp infile_parser.cpp normalizer.cpp 
+
+O_FILES = $(SRC_FILES:%.cpp=%.o)
+
 all: strings
 
-main: parser.o error.o functions.o variablelist.o
-	g++ parser.o error.o functions.o variablelist.o -o main main.cpp
+strings: $(O_FILES) strings.o
+	g++ $(LDFLAGS) strings.o -o strings
 
-strings: operators.o variable.o parser.o error.o functions.o variablelist.o
-	g++ operators.o variable.o parser.o error.o functions.o variablelist.o -o strings strings.cpp
+strings.o: 
+	g++ $(CFLAGS) -c strings.cpp
 
-operators.o: operators.cpp
-	g++ -c operators.cpp
+#%.o: %.cpp
+#	$(CC) -c $(CFLAGS)  $< -o $@
 
-parser.o: parser.cpp
-	g++ -c parser.cpp
+$(HOMEDIR)/(VARDIR)/operators.o: operators.cpp
+	g++ -c $(HOMEDIR)/(VARDIR)/operators.cpp
+
+expression_parser.o: expression_parser.cpp
+	g++ -c expression_parser.cpp
 
 variable.o: variable.cpp
 	g++ -c variable.cpp

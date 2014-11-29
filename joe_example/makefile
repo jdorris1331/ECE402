@@ -1,3 +1,9 @@
+VARDIR  = variable
+EXPDIR  = expression_parser
+INPDIR  = infile_parser
+NORMDIR = normalizer
+
+
 all: voxels
 
 voxels: variable.o normalizer.o operators.o
