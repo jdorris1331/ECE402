@@ -10,50 +10,6 @@
 
 using namespace std;
 /*
-void mgls_prepare3d(VAR *a, VAR *b=0)
-{
-  int i,j,k,n=100,m=100,l=100;
-  //if(a) a->Create(n,m,l);   if(b) b->Create(n,m,l);
-  double x,y,z;
-  for(i=0;i<n;i++)  for(j=0;j<m;j++)  for(k=0;k<l;k++)
-  {
-    x=2*i/(n-1.)-1; y=2*j/(m-1.)-1; z=2*k/(l-1.)-1;
-    a->sf[i][j][k] = -2*(x*x + y*y + z*z*z*z - z*z - 0.1);
-    b->sf[i][j][k] = 1-2*tanh((x+y)*(x+y));
-  }
-}
-
-void mgls_prepare2v(mglData *a, mglData *b)
-{
-  register long i,j,n=20,m=30,i0;
-  if(a) a->Create(n,m);   if(b) b->Create(n,m);
-  mreal x,y;
-  for(i=0;i<n;i++)  for(j=0;j<m;j++)
-  {
-    x=i/(n-1.); y=j/(m-1.); i0 = i+n*j;
-    if(a) a->a[i0] = 0.6*sin(2*M_PI*x)*sin(3*M_PI*y)+0.4*cos(3*M_PI*x*y);
-    if(b) b->a[i0] = 0.6*cos(2*M_PI*x)*cos(3*M_PI*y)+0.4*cos(3*M_PI*x*y);
-  }
-}
-
-void mgls_prepare3v(VAR* A)
-{
-  int i,j,k,n=100;
-  //if(!ex || !ey || !ez) return;
-  //ex->Create(n,n,n);  ey->Create(n,n,n);  ez->Create(n,n,n);
-  double x,y,z, r1,r2;
-  
-  for(i=0;i<n;i++)  for(j=0;j<n;j++)  for(k=0;k<n;k++)
-  {
-    x=2*i/(n-1.)-1; y=2*j/(n-1.)-1; z=2*k/(n-1.)-1;
-    r1 = pow(x*x+y*y+(z-0.3)*(z-0.3)+0.03,1.5);
-    r2 = pow(x*x+y*y+(z+0.3)*(z+0.3)+0.03,1.5);
-    A->vf[i][j][k][0]=0.2*x/r1 - 0.2*x/r2;
-    A->vf[i][j][k][1]=0.2*y/r1 - 0.2*y/r2;
-    A->vf[i][j][k][2]=0.2*(z-0.3)/r1 - 0.2*(z+0.3)/r2;
-  }
-}
-
 int sample(mglGraph *gr)
 {
 vector<VAR> vars;
@@ -136,11 +92,22 @@ return 0;
 int main() {
   infile_parser fileP;
 
-  //vector<VAR> user_vars;
 
   Variablelist *vars = new Variablelist();
   vector<string> *equations= new vector<string>;
   fileP.parse("new_problem.pde", vars, equations);
+  int hide[vars->var.size()];
+  int priority[vars->var.size()];
+  double colors[vars->var.size()];
+  mglData c;
+  c.Create(DIM_SIZE,DIM_SIZE,DIM_SIZE);
+
+  
+  for(int i=0;i<vars->var.size();i++) {
+    hide[i]=0;
+    priority[i]=i;
+    colors[i] = i;
+  }
 
   //to get sliders look at each type
   //  if 0 then set at val and have vary from show_min to show_max
@@ -159,11 +126,15 @@ int main() {
   }
 
   prs.set_eqs(eqs, 3);
-  prs.solve(vars);
-  vars->print();
- // mglFLTK gr(sample,"MathGL examples");
+  for(int i=0;i<10;i++) { 
+    prs.solve(vars);
+    normalize_scalar(&(vars->var),hide,priority,colors,&c);
+    //pass math gl data to plot
+    vars->print();
+  }
+  //mglFLTK gr(sample,"MathGL examples");
   delete equations;
   delete vars;
- // return gr.Run();
+  //return gr.Run();
   return 0;
 }

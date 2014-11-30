@@ -636,26 +636,45 @@ double cdf(VAR* A, int x, int y, int z, int v, int d){ //d is the derivative res
 return 0;
 }
 
+double sdiff(VAR* A, int x, int y, int z, int d){ //sdiff is the differentiation function for scalar fields.  It's basically the same as cdf.
+
+  if(d == 0 && x != 0 && x != DIM_SIZE-1) return (A->sf[x+1][y][z] - A->sf[x-1][y][z])/2;
+  else if(d == 0 && x == 0) return (A->sf[x+1][y][z] - 0)/2;
+  else if(d == 0 && x == DIM_SIZE-1) return (0 - A->sf[x-1][y][z])/2;
+
+  if(d == 1 && y != 0 && y != DIM_SIZE-1) return (A->sf[x][y+1][z] - A->sf[x][y-1][z])/2;
+  else if(d == 1 && y == 0) return (A->sf[x][y+1][z] - 0)/2;
+  else if(d == 1 && y == DIM_SIZE-1) return (0 - A->sf[x][y-1][z])/2;
+
+  if(d == 2 && z != 0 && z != DIM_SIZE-1) return (A->sf[x][y][z+1] - A->sf[x][y][z-1])/2;
+  else if(d == 2 && z == 0) return (A->sf[x][y][z+1] - 0)/2;
+  else if(d == 2 && z == DIM_SIZE-1) return (0 - A->sf[x][y][z-1])/2;
+
+return 0;
+}
+
 VAR* grad(VAR* A) {
   VAR * ret_var = new VAR;
   int type1 = A->get_type();
-  if(type1 == 0 || type1 == 1){ ret_var->set_type(-1); }
-  else {
-  ret_var->set_type(type1);
+  if(type1 == 0 || type1 == 2){ ret_var->set_type(-1); }
+  else if(type1==1){
+  ret_var->set_type(2);
 	for(int x = 0; x < DIM_SIZE; x++){
 		for(int y = 0; y < DIM_SIZE; y++){
 			for(int z = 0; z < DIM_SIZE; z++){
 				for(int v = 0; v < 3; v++){
-					ret_var->vf[x][y][z][v] = cdf(A,x,y,z,v,v);
+					ret_var->vf[x][y][z][v] = sdiff(A,x,y,z,v);
 				}
 			}
 		}
 	}
-  } 
+  }
+	delete A; 
   return ret_var;
 }
 
-void curl(VAR* A, VAR* ret_var){
+VAR* curl(VAR* A){
+	VAR* ret_var = new VAR;
   int type1 = A->get_type();
   ret_var->set_type(type1);
 	for(int x = 0; x < DIM_SIZE; x++){
@@ -669,9 +688,12 @@ void curl(VAR* A, VAR* ret_var){
 			}
 		}
 	}
+	delete A;
+	return ret_var;
 }
 
-void diverg(VAR* A, VAR* ret_var){
+VAR* diverg(VAR* A){
+	VAR* ret_var = new VAR;
   int type1 = A->get_type();
   ret_var->set_type(type1);
 	for(int x = 0; x < DIM_SIZE; x++){
@@ -681,10 +703,14 @@ void diverg(VAR* A, VAR* ret_var){
 			}
 		}
 	}
+	delete A;
+	return ret_var;
 }
 	
-void laplac(VAR* A, VAR* ret_var){
-        VAR* temp;
-        temp = grad(A);
-	diverg(temp,ret_var);
+VAR* laplac(VAR* A){
+	VAR* temp;
+	VAR* ret_var;
+	temp = grad(A);
+	ret_var = diverg(temp);
+	return ret_var;
 }

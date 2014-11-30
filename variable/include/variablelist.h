@@ -43,35 +43,40 @@
 #include "variable.h"
 using namespace std;
 
-
+// used to set everything to uppercase (functions, variables, operators)
 void toupper(char upper[], const char str[]);
 
 class Variablelist {
     public:
-	Variablelist();
-	~Variablelist();
+        Variablelist();
+        ~Variablelist();
+        //functions for maintaining the list
         bool exist(const char* name);
         bool add(const char* name, const int type);
         bool add(const char* name, VAR * var);
         bool del(const char* name);
 
-	int get_type(const char* name);
+        // get data for variables
+        int get_type(const char* name);
         bool get_variable(const char* name, VAR* ret_var);
         bool get_variable(const int id, VAR* ret_var);
         int  get_id(const char* name);
+        
+        // set data for variables
         bool set_value(const char* name, const double value);
-	bool set_scalar_single(const char* name, int i, int j, int k, const double value);
+        bool set_scalar_single(const char* name, int i, int j, int k, const double value);
         bool set_scalar_field(const char* name, const double value);
-	bool set_vector_single(const char* name, int i, int j, int k, int dir, const double value);
+        bool set_vector_single(const char* name, int i, int j, int k, int dir, const double value);
         bool set_vector_field(const char* name, const double value);
 
+        // set and get range information
         bool set_range(const char* name, const int type,const double min, const double max);
         double get_range(const char* name, const int type, const int lorH);
-	void print();
+	
+        void print(); //debugging
        
-        vector<VAR> var;
-        //void set_varables(vector<VAR> * vars);
-        //void get_variables(vector<VAR> * vars);
+        // all variable data
+        vector<VAR> var; //TODO should be private
     private:
         //vector<VAR> var;
 };

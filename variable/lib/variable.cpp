@@ -10,11 +10,12 @@
 
 #include "variable.h"
 
+// initialize to type -1
 VAR::VAR() {
   type=-1;
 }
 
-//always DIM_SIZE right now- need to fix
+// free up all allocated memory when deleted
 VAR::~VAR() {
   if(type==0) {
     val=0;
@@ -41,6 +42,8 @@ VAR::~VAR() {
     delete[] vf;
   }
 }
+
+// copy type and whatever data is on the rhs
 VAR& VAR::operator=(const VAR &rhs) {
     int temp = rhs.get_type(); 
     set_type(temp);
@@ -68,6 +71,7 @@ VAR& VAR::operator=(const VAR &rhs) {
   return *this;
 }
 
+// free and allocate memory when switching types
 void VAR::set_type(const int typex) {
   if(type==typex) {}
   else {
@@ -92,6 +96,7 @@ void VAR::set_type(const int typex) {
       }
       delete[] vf;
     }
+    //scalar field
     if(typex==1) {
       sf = new double**[DIM_SIZE];
         for(int i=0;i<DIM_SIZE;i++) {
@@ -103,21 +108,22 @@ void VAR::set_type(const int typex) {
     }
     //vector field
     else if(typex == 2) {
-        vf = new double***[DIM_SIZE];
-        for(int i=0;i<DIM_SIZE;i++) {
-          vf[i] = new double**[DIM_SIZE];
-          for(int j=0;j<DIM_SIZE;j++) {
-            vf[i][j] = new double*[DIM_SIZE];
-            for(int k=0;k<DIM_SIZE;k++) {
-              vf[i][j][k] = new double[3];
-            }
+      vf = new double***[DIM_SIZE];
+      for(int i=0;i<DIM_SIZE;i++) {
+        vf[i] = new double**[DIM_SIZE];
+        for(int j=0;j<DIM_SIZE;j++) {
+          vf[i][j] = new double*[DIM_SIZE];
+          for(int k=0;k<DIM_SIZE;k++) {
+            vf[i][j][k] = new double[3];
           }
         }
-      }  
+      }
+    }  
   }
   type=typex;
 }
 
+// get_type function since type is private
 int VAR::get_type() const {
   return type;
 }

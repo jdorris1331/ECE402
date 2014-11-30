@@ -16,7 +16,7 @@ LIB = $(HOMEDIR)/$(VARDIR)/lib/variablelist.o $(HOMEDIR)/$(EXPDIR)/lib/expressio
 all: voxels
 
 voxels: $(O_FILES)
-	g++ -o voxels -Wall $(LDFLAGS) $(CFLAGS) $(LIB) voxels.cpp
+	g++ -o voxels -Wall $(LDFLAGS) $(CFLAGS) $(LIB) -lmgl-fltk -lmgl voxels.cpp
 
 strings.o: 
 	g++ $(LDFLAGS) -c strings.cpp

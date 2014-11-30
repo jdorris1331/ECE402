@@ -34,16 +34,15 @@
 
 #include "variablelist.h"
 #include <iostream>
+
 /*
  * Initialize the size of the space
  */
-
 Variablelist::Variablelist() {
   var.reserve(100);
 }
 
 Variablelist::~Variablelist() {
-  //std::cout << "deleted stuff\n"; 
 }
 
 /*
@@ -60,24 +59,19 @@ bool Variablelist::exist(const char* name)
  */
 bool Variablelist::add(const char* name, const int type)
 {
-    //VAR new_var;
-    
-    //strncpy(new_var.name, name, 30);
-    //new_var.set_type(type);
-
+    //see if the variable is already in the list
     int id = get_id(name);
     if (id == -1)
     {
-        //cout << "Capacity " << var.capacity() << endl;
-        //cout << "Variable vector size " << var.size() << endl;
+        //create new var
         var.resize(var.size()+1);
-        //cout << "New vector size " << var.size() << endl;
-        // variable does not yet exist
+        //name it
         strncpy(var[var.size()-1].name,name,30);
+        //set initial ranges
         id = get_id(name);
-	set_range(name,0,-99999999,9999999);
-	set_range(name,1,-99999999,9999999);
-        //cout << "id is " << id << endl;
+        set_range(name,0,-99999999,9999999);
+        set_range(name,1,-99999999,9999999);
+        // set it to desired type
         var[id].set_type(type);
     }
     else
@@ -97,24 +91,21 @@ bool Variablelist::add(const char* name, VAR * temp)
     if (id == -1)
     {
         var.resize(var.size()+1);
-        // variable does not yet exist
         strncpy(var[var.size()-1].name,name,30);
         id = get_id(name);
         var[id].set_type(temp->get_type());
-        //need to check
         var[id] = *temp;
-	set_range(name,0,-99999999,9999999);
+        set_range(name,0,-99999999,9999999);
         set_range(name,1,-99999999,9999999);
-	delete temp;
-        //cout << "new var[id]=" << var[id].val << endl;
+        delete temp;
 
     }
     else
     {
         // variable already exists. overwrite it
         var[id].set_type(temp->get_type());
-	var[id] = *temp;
-	delete temp;
+        var[id] = *temp;
+        delete temp;
     }
     return true;
 }
@@ -128,7 +119,7 @@ bool Variablelist::del(const char* name)
     if (id != -1)
     {
         var[id] = var[var.size()-1]; // move last item to deleted item
-        //need to free memory
+        // free memory
         var.pop_back();              // remove last item
         return true;
     }
@@ -162,7 +153,7 @@ int Variablelist::get_type(const char* name)
 }
 
 /*
- * Get value of variable with given name
+ * Get variable with given name
  */
 bool Variablelist::get_variable(const char* name, VAR* ret_var)
 {
@@ -177,7 +168,7 @@ bool Variablelist::get_variable(const char* name, VAR* ret_var)
 
 
 /*
- * Get value of variable with given id
+ * Get variable with given id
  */
 bool Variablelist::get_variable(const int id, VAR* ret_var)
 {
@@ -196,12 +187,9 @@ bool Variablelist::set_value(const char* name,  double value)
 {
     int id = get_id(name);
     if(var[id].get_type()!=0 && var[id].get_type()!=-1) {
-      //cout << "value not set\n";
       return false;
     }
-    //var[id].val = new double;
     var[id].val = value;
-    //cout << value << endl;	
     return true;
 }
 
@@ -228,38 +216,12 @@ bool Variablelist::set_scalar_field(const char* name, const double value) {
     for(int i=0;i<DIM_SIZE;i++) {
       for(int j=0;j<DIM_SIZE;j++) {
         for(int k=0;k<DIM_SIZE;k++) {
-          var[id].sf[i][j][k] = value;//scalar_field[i][j][k];
+          var[id].sf[i][j][k] = value;
         }
       }
     }
     return true;
   }
-
-//need to create if not type 1 and clear old memory
-/*
-  else if(var[id].get_type()==-1) {
-    //var[id].
-    var[id].set_type(1); 
-    //allocate memory
-    var[id].sf = new double**[x];
-    for(int i=0;i<x;i++) {
-      var[id].sf[i] = new double*[y];
-      for(int j=0;j<y;j++) {
-        var[id].sf[i][j] = new double[z];
-      } 
-    }
-    
-    //store values
-    for(int i=0;i<x;i++) {
-      for(int j=0;j<y;j++) {
-        for(int k=0;k<z;k++) {
-          var[id].sf[i][j][k] = scalar_field[i][j][k];
-        }
-      }
-    }
-    return true;
-  }
-*/
   else return false;
 }
 
@@ -283,7 +245,7 @@ bool Variablelist::set_vector_single(const char* name, int i, int j, int k, int 
 bool Variablelist::set_vector_field(const char* name, const double value) {
   int id = get_id(name);
   var[id].set_type(2);
-  //if(var[id].get_type()==2) {
+  if(var[id].get_type()==2) {
     for(int i=0;i<DIM_SIZE;i++) {
       for(int j=0;j<DIM_SIZE;j++) {
         for(int k=0;k<DIM_SIZE;k++) {
@@ -294,12 +256,9 @@ bool Variablelist::set_vector_field(const char* name, const double value) {
         }
       }
     }
-  return true;
-  
-  //need to create memory and clear old memory
-//}
-  //else if{
-  //return false;
+    return true;
+  }
+  else return false;
 }
 
 /*
@@ -337,13 +296,6 @@ double Variablelist::get_range(const char* name, const int type, const int LorH)
   }
   else return -1;
 }
-
-/* 
- * Set the vector of VAR's for other to use
- */
-/*void Variablelist::get_variables(vector<VAR>* ret_vars) {
- //for(
-}*/
 
 
 /*

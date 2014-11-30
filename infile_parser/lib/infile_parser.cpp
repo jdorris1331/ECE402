@@ -29,7 +29,6 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
     *******************************************/ 
     if (i==0) {
       //cout << "*****VARIABLES*****\n";
-      //int var_count=0;
       int initial=true;
    
       //read in lines
@@ -46,33 +45,33 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
         if(line.at(0)=='#') {continue;}
         
         //read in variables and types
-        //else {
-          //turn into stringstream
-          istringstream iss(line);				
-          string type, v_name;
-          double value;
-          //get type and name
-          if(!(iss >> type >> v_name >> value)) { break; }
-          //cout << type << " " << v_name << endl;
-	   char fnU[NAME_LEN_MAX+1];				
-           toupper(fnU,v_name.c_str());
-          //add to 
-          if(type=="scalar" || type=="s") {
-            vars->add(fnU,1);
-            vars->set_scalar_field(fnU,value);
-          }
-          else if(type=="vector" || type=="v") {
-            vars->add(fnU,2);
-            vars->set_vector_field(fnU,value);
-          }
-          else {
-            cerr << "Incorrect variable type in variable section: ";
-            cerr << type << endl;
-            return 1;
-          }
-          initial=false;			
+        //turn into stringstream
+        istringstream iss(line);				
+        string type, v_name;
+        double value;
+
+        //get type and name
+        if(!(iss >> type >> v_name >> value)) { break; }
+	char fnU[NAME_LEN_MAX+1];
+        
+        //make every variable uppercase	
+        toupper(fnU,v_name.c_str());
+        //add to variablelist
+        if(type=="scalar" || type=="s") {
+          vars->add(fnU,1);
+          vars->set_scalar_field(fnU,value);
         }
-        //vars->print();
+        else if(type=="vector" || type=="v") {
+          vars->add(fnU,2);
+          vars->set_vector_field(fnU,value);
+        }
+        else {
+          cerr << "Incorrect variable type in variable section: ";
+          cerr << type << endl;
+          return 1;
+        }
+        initial=false;			
+      }
     }
     /*******************************************
         Constants
@@ -94,16 +93,18 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
         if(line.at(0)=='#') {continue;}
 
         //read in variables and types
-          istringstream iss(line);
-          string c_name, val;
-          //get type and name
-          if(!(iss >> c_name >> val)) { break; }
-	  char fnU[NAME_LEN_MAX+1];
-          toupper(fnU,c_name.c_str());
-          //cout << c_name << " " << val << endl;
-          vars->add(fnU,0);
-          vars->set_value(fnU,atof(val.c_str()));
-          initial=false;
+        istringstream iss(line);
+        string c_name, val;
+          
+        //get type and name
+        if(!(iss >> c_name >> val)) { break; }
+	char fnU[NAME_LEN_MAX+1];
+        toupper(fnU,c_name.c_str());
+          
+        //add the constants
+        vars->add(fnU,0);
+        vars->set_value(fnU,atof(val.c_str()));
+        initial=false;
       }
     }
     /*******************************************
@@ -131,7 +132,8 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
           string type;
           initial=false;
           if(!(iss >> name >> lower >> upper >> type)) { break; }
-            //cout << name << " " << lower << " " << upper << endl;
+          
+          //treat dimensions differently
           if(name=="x" || name=="X") {
             dim[0] = atof(lower.c_str());
             dim[1] = atof(upper.c_str());
@@ -139,8 +141,9 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
             vars->add("X",1); 
             double tempx=dim[0];
             double dx=(dim[1]-dim[0])/dim_points;
-            //cout << "dx=" << dx << endl;
 	    vars->set_range(name.c_str(),0,atof(lower.c_str()),atof(upper.c_str()));
+
+            //fill in field with values
             for(int j=0;j<dim_points;j++) {
               for(int k=0;k<dim_points;k++) {
                 for(int l=0;l<dim_points;l++) {    
@@ -149,7 +152,6 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
               }
               tempx+=dx;
             }
-              //vars->set_scalar_field_single("X",tempx);
             }
             else if(name=="y" || name=="Y") {
               dim[2] = atof(lower.c_str());
@@ -188,6 +190,7 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
               }  
             }
             else {
+              //set ranges for varaibles
               bool valid=true;
               if(type=="show") { 
 	        if(!(vars->set_range(name.c_str(),0,atof(lower.c_str()),atof(upper.c_str())))) 
@@ -215,7 +218,6 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
         
     *******************************************/ 
     else if (i==3) {
-      //int eqs_num=0;
       bool initial=true;
       //cout << "******EQUATIONS******\n";
       while(getline(infile, line)) {
@@ -255,9 +257,8 @@ bool infile_parser::parse(string file, Variablelist *vars, vector<string>* eqs) 
         if(line.at(0)=='#' && line.at(1)=='#') break;
         if(line.at(0)=='#') {continue;}
 
-            initial_files.push_back(line);
-            //cout << initial_files[current] << endl;
-            current++;
+        initial_files.push_back(line);
+        current++;
       }
     }
   }
@@ -272,20 +273,26 @@ return 0;
 bool infile_parser::get_initial(Variablelist * vars) {
   string line;
   string var_name;
+
+  //go through every initial file
   for(int i=0;i<initial_files.size();i++) {
     vector<string> order;
     vector<int> type;
-   // cout << "OPENING " << initial_files[i] << endl;
+
+    //open file
     ifstream infile(initial_files[i]); 
     getline(infile, line);
     istringstream iss(line);
+    //read in x, y, and z
     iss >> var_name >> var_name >> var_name;
+    
+    //read in variable names
     while(iss>>var_name) {
-      //cout << var_name << endl;
       if(vars->exist(var_name.c_str())) {
         order.push_back(var_name);
         type.push_back(0);
       }
+      //check for vector initialization
       else if(vars->exist(var_name.substr(0,var_name.size()-2).c_str())) {
         //cout << var_name.substr(0,var_name.size()-2)<< endl;
         order.push_back(var_name.substr(0,var_name.size()-2));
@@ -297,26 +304,23 @@ bool infile_parser::get_initial(Variablelist * vars) {
         cerr << "Variable is incorrect\n";
         return false;
       }
-      //cout << var_name << endl;
     }
 
+    //start readin in all values
     while(getline(infile, line)) {
       istringstream iss(line);
       int x,y,z;
       double value;
       //need to change to actual xyz coordinates
       iss >> x >> y >> z;
-      //cout << x << " " << y << " " << z << " ";
       int current=0;
       while(iss >> value) {
-        //cout << value << " ";
         string temp_name=order[current];
         int vec_type = type[current]-1;
         if(type[current]==0) vars->set_scalar_single(temp_name.c_str(),x,y,z,value);
         else vars->set_vector_single(temp_name.c_str(),x,y,z,vec_type,value);
         current++;
       }
-      //cout << endl;
     }
   }
   return true;
