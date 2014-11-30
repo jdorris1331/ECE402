@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+int SpinnerBox::getIndex() { return index; }
+
 void SpinnerBox::setCount(int ct)
 {
 	count = ct;

@@ -26,6 +26,7 @@ public:
     SliderBox(int ind, const char *name, int min, int max, int val, double scl, int prc, int w = 160, int h = 35);
     Fl_Output *lblName, *lblVal;
     Fl_Slider *sld;
+	int getIndex();
 };
 
 #endif // SLIDERBOX_H
