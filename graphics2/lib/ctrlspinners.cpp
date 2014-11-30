@@ -62,8 +62,11 @@ void CtrlSpinners::redrawSpinners()
 	this->redraw();
 }
 
-CtrlSpinners::CtrlSpinners(const char *sFile) : Fl_Pack(0, 0, 520, 30, 0)
+CtrlSpinners::CtrlSpinners(Graphics *myGraph, Variablelist *myVars) : Fl_Pack(0, 0, 520, 30, 0)
 {
+    graph = myGraph;
+	vars = myVars;
+
 	this->callback(cb_updatePos, this);
 
 	this->spacing(5);

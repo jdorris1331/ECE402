@@ -1,7 +1,10 @@
 #include "ctrlsliders.h"
 
-CtrlSliders::CtrlSliders(const char *sFile) : Fl_Pack(0, 0, 160, 30, 0)
+CtrlSliders::CtrlSliders(Graphics *myGraph, Variablelist *myVars) : Fl_Pack(0, 0, 160, 30, 0)
 {
+    graph = myGraph;
+	vars = myVars;
+
 	fraSliders[0] = new Fl_Pack(0, 0, 160, 30, 0);
 	//fraSliders[0]->label("Constants");
 	fraSliders[0]->align(FL_ALIGN_LEFT);
