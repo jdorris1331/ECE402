@@ -7,6 +7,7 @@
 //#include <FL/Fl_Scroll.H>
 #include "ctrlmenubar.h"
 #include "graphics.h"
+#include "cont_data.h"
 
 class GUIView : public Fl_Window
 {
@@ -17,6 +18,8 @@ private:
 	Graphics *graph;
 	static void cb_launchGraph(Fl_Widget *w, void *data);
 	void launchGraph();
+	
+	cont_data *dat;
 
 public:
     GUIView(const char *sFile);
