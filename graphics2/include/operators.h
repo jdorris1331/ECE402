@@ -14,6 +14,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <time.h>
+#include <cmath>
 #include "variable.h"
 
 using namespace std;
@@ -30,6 +31,7 @@ VAR* curl(VAR* A);
 VAR* diverg(VAR* A);
 VAR* laplac(VAR* A);
 VAR* vmod(VAR* A,VAR* B);
+VAR* mag(VAR* A);
 
 double sdiff(VAR* A, int x, int y, int z, int d);
 double cdf(VAR* A, int x, int y, int z, int v, int d);

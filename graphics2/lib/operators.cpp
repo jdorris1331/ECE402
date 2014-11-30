@@ -714,3 +714,27 @@ VAR* laplac(VAR* A){
 	ret_var = diverg(temp);
 	return ret_var;
 }
+
+VAR* mag(VAR* A) {
+  VAR * ret_var = new VAR;
+  double temp=0;
+  int type1 = A->get_type();
+  if(type1 == 0 || type1 == 1){ ret_var->set_type(-1); }
+  else if(type1==2){
+  ret_var->set_type(1);
+  for(int x = 0; x < DIM_SIZE; x++){
+    for(int y = 0; y < DIM_SIZE; y++){
+      for(int z = 0; z < DIM_SIZE; z++){
+        for(int v = 0; v < 3; v++){
+          temp+=(A->vf[x][y][z][v])*(A->vf[x][y][z][v]);
+        }
+        ret_var->sf[x][y][z] = sqrt(temp);
+        temp=0;
+      }
+    }
+  }
+  }
+  delete A;
+  return ret_var;
+}
+
