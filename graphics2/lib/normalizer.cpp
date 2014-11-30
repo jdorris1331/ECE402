@@ -11,15 +11,25 @@
 #include "normalizer.h"
 
 //show all of the scalar fields based on order of priority
-void normalize_scalar(vector<VAR> *vars, int* hide, int* priority, double* color_values,  mglData* x, mglData* y, mglData* z, mglData* plot_data) {
-/*  int num_vars=vars->size();
+void normalize_scalar(vector<VAR> *vars, int* hide, int* priority, double* color_values,  mglData* x, mglData* y, mglData* z, mglData* c) {
+  int num_vars=vars->size();
   int current;
+  
+  cout << "normalizing\n";
 
-  vector<int> x;
-  vector<int> y;
-  vector<int> z;
-  vector<double> c;
-  srand(time(NULL));
+  delete x;
+  delete y;
+  delete z;
+  delete c;
+
+  cout << "deleting\n";
+
+  vector<int> xList;
+  vector<int> yList;
+  vector<int> zList;
+  vector<float> cList;
+
+  //srand(time(NULL));
 
   double value,lower,upper;
 
@@ -29,25 +39,44 @@ void normalize_scalar(vector<VAR> *vars, int* hide, int* priority, double* color
         //current = i+DIM_SIZE*(j+DIM_SIZE*k);
         for(int l=0;l<num_vars;l++) {
           lower=vars->at(priority[l]).show_min;
-          upper=vars->at(priority[l]).show_min;
-          if(!hide[priority[l]]) {
-            if(vars->at(priority[l]).get_type()==1) {
-              value=vars->at(priority[l]).sf[i][j][k]; 
-              //need to change color to be able to show magnitude
-              if(value >= lower && value <= upper) {
-                x.push_back(i) = color_values[priority[l]];
-            }
-          }
+          upper=vars->at(priority[l]).show_max;
+          if(hide[priority[l]]) continue;
+          if(vars->at(priority[l]).get_type()!=1) continue;
+          value=vars->at(priority[l]).sf[i][j][k]; 
+          if(value<lower || value > upper) continue;
+          xList.push_back(i);
+          yList.push_back(j);
+          zList.push_back(k);
+          cList.push_back(color_values[priority[l]]);
+          break;
         }
       }
     }
-  }*/
+  }
+  x = new mglData;
+  y = new mglData;
+  z = new mglData;
+  c = new mglData;
+  x->Create(xList.size());
+  y->Create(yList.size());
+  z->Create(zList.size());
+  c->Create(cList.size());
+  for(int i=0;i<xList.size();i++) {
+    x->a[i] = xList[i];
+    y->a[i] = yList[i];
+    z->a[i] = zList[i];
+    c->a[i] = cList[i];
+  }
 }
 
 //change vector field values to values to show on plot
 void normalize_vector(vector<VAR> *vars, int vect_num, mglData* ex, mglData* ey, mglData* ez) {
   int num_vars=vars->size();
   int current;
+
+  delete[] ex;
+  delete[] ey;
+  delete[] ez;
 
   double value,lower,upper;
   double range;
