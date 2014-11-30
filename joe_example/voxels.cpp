@@ -4,11 +4,12 @@
 #include "variable.h"
 #include "normalizer.h"
 #include "constants.h"
-#include "../expression_parser/parser.h"
-#include "../infile_parser/infile_parser.h"
+#include "expression_parser.h"
+#include "infile_parser.h"
+#include "variablelist.h"
 
 using namespace std;
-
+/*
 void mgls_prepare3d(VAR *a, VAR *b=0)
 {
   int i,j,k,n=100,m=100,l=100;
@@ -56,10 +57,11 @@ void mgls_prepare3v(VAR* A)
 int sample(mglGraph *gr)
 {
 vector<VAR> vars;
-vars.resize(10);
+vars.resize(10);*/
 /*****
  CALC 1
 ****/
+/*
 vars[0].set_type(1);
 vars[1].set_type(1);
 vars[2].set_type(1);
@@ -67,11 +69,11 @@ vars[2].set_type(1);
 //vars[1].sf;
 
 //sub(&vars[0],&vars[1],&vars[2]);
-
+*/
 /*****
  CALC 2
 *****/
-
+/*
 vars[3].set_type(1);
 vars[4].set_type(1);
 vars[5].set_type(1);
@@ -79,11 +81,11 @@ vars[5].set_type(1);
 //div(&vars[3],&vars[4],&vars[5]);
 
 mgls_prepare3d(&vars[2],&vars[5]);
-
+*/
 /****
  Calc 3  
 ***/
-
+/*
 vars[8].set_type(2);
 mgls_prepare3v(&vars[8]);
 
@@ -101,23 +103,24 @@ ex.Create(DIM_SIZE,DIM_SIZE,DIM_SIZE);
 ey.Create(DIM_SIZE,DIM_SIZE,DIM_SIZE);
 ez.Create(DIM_SIZE,DIM_SIZE,DIM_SIZE);
 normalize_vector(&vars,vect_num,&ex,&ey,&ez);
-
+*/
   /*mglData a,b,d;  mgls_prepare2v(&a,&b);  d = a;
   //for(int i=0;i<a.nx*a.ny;i++)  d.a[i] = hypot(a.a[i],b.a[i]);
   //mglData c;//  mgls_prepare3d(&c);
   */
-
+/*
   mglData v(10);  v.Fill(0,100);
 
 
   //mglData ex,ey,ez;// mgls_prepare3v(&ex,&ey,&ez);
 
   //gr->SubPlot(2,2,3); 
-  gr->Title("Surf3 + ContF3");gr->Rotate(50,60);
+  gr->Title("Surf3 + ContF3");gr->Rotate(50,60);*/
 /*  gr->Box();  gr->ContF3(v,c,"z",0);  gr->ContF3(v,c,"x");  gr->ContF3(v,c);
   gr->SetCutBox(mglPoint(-1,-1,-1), mglPoint(1,0,1.1));
   gr->ContF3(v,c,"z",c.nz-1); gr->Surf3(-0.5,c);
  */
+/*
   gr->SetCutBox(mglPoint(0), mglPoint(0));
   gr->Vect3(ex,ey,ez,"fx"); gr->Vect3(ex,ey,ez,"f");gr->Vect3(ex,ey,ez,"fz");
   gr->Grid3(ex,"Wx");   gr->Grid3(ex,"W");  gr->Grid3(ex,"Wz");  
@@ -128,7 +131,7 @@ normalize_vector(&vars,vect_num,&ex,&ey,&ez);
 
 return 0;
 }
-
+*/
 
 int main() {
   infile_parser fileP;
@@ -137,7 +140,7 @@ int main() {
 
   Variablelist *vars = new Variablelist();
   vector<string> *equations= new vector<string>;
-  fileP.parse("new_problem.txt", vars, equations);
+  fileP.parse("new_problem.pde", vars, equations);
 
   //to get sliders look at each type
   //  if 0 then set at val and have vary from show_min to show_max
@@ -157,7 +160,7 @@ int main() {
 
   prs.set_eqs(eqs, 3);
   prs.solve(vars);
-
+  vars->print();
  // mglFLTK gr(sample,"MathGL examples");
   delete equations;
   delete vars;
