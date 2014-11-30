@@ -94,13 +94,13 @@ CtrlSpinners::CtrlSpinners(Graphics *myGraph, cont_data *myDat) : Fl_Pack(0, 0, 
 	//fraSpinners[0]->align(FL_ALIGN_LEFT);
 	fraSpinners[0]->spacing(5);
 	for (int i = 0; i < vSca.size(); i++) {
-	  spinners.push_back(new SpinnerBox(vSca[i], dat->vList->var[vSca[i]], sColors[i], dat->priority[vSca[i]])); }
+	  spinners.push_back(new SpinnerBox(vSca[i], dat->vList->var[vSca[i]].name, sColors[i], dat->priority[vSca[i]])); }
 	fraSpinners[0]->end();
 
 	fraSpinners[1] = new Fl_Pack(0, 0, 260, 30, 0);
 	fraSpinners[1]->spacing(5);
 	for (int i = 0; i < vVec.size(); i++) {
-	  spinners.push_back(new SpinnerBox(vVec[i], dat->vList->var[vVec[i]], sColors[i], dat->priority[vVec[i]], 1)); }
+	  spinners.push_back(new SpinnerBox(vVec[i], dat->vList->var[vVec[i]].name, sColors[i], dat->priority[vVec[i]], 1)); }
 	fraSpinners[1]->end();
 	fraRows[0]->end();
 
