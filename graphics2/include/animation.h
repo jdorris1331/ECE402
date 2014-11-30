@@ -9,7 +9,7 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
-
+#include "cont_data.h"
 /*-------------------------------------------------------------------------
 Author: Joey Allen
 Created/last Modified: 10/5/14
@@ -32,6 +32,7 @@ class Animation
 		//If set to true, then animation will start/resume/continue
 		//If set to false, animation will stall/pause until animation_paused is 
 		//set to 1.
+		cont_data* calculator;
 		bool animation_begin;
 		//If set to false, then animation has not started. 
 		//This function will be set to 1 when ToggleAnimation is started for hte 
@@ -47,14 +48,15 @@ class Animation
 	//	virtual void calculation(){}  //I don't know what to do right here.
 		//Theoretically this will be the method that controls the calculation 
 		//Basic High-level animation controls.
-		virtual void calculation(int t, mglData* x, mglData * y, mglData * z, int n){}
+//		virtual void calculation(int t, mglData* x, mglData * y, mglData * z, int n){}
+		virtual void calculation(){}
 		void toggleAnimation(); //Toggles animation from paused to resuming.	
 					//First call to toggle will begin the animation.
 		//Getters
 		int getSpeed(){return(speed);}
 		int getPoints(){return(points);}	
 		//Setters
-
+		int setCalculator(cont_data *aCalculator){calculator = aCalculator;}
 		void RunThread();
 		void setSpeed(int s){speed = s;}
 		void setPoints(int p){points = p;}

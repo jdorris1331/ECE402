@@ -10,7 +10,7 @@
 #include <time.h> 
 class Graphics : public Animation 
 { 
-
+	friend Animation;
         private:
 		cont_data * calculator; //A pointer to the handy-dandy calculator.	
 		//The method that does calculating stuffz.
@@ -18,7 +18,7 @@ class Graphics : public Animation
 	public:
 		void axis(double x = 0 , double  y =  0 , double z = 0, double ticks = 1);
 		void calculation();
-		void calculation(int t, mglData* x, mglData* y, mglData * z, int n);
+//		void calculation(int t, mglData* x, mglData* y, mglData * z, int n);
 		void Run(){gr->Run();}
 		void begin();
 		//Graphics(){gr->zoom = true;}

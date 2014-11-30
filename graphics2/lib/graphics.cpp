@@ -8,7 +8,7 @@ void Graphics::axis(double x, double y, double z, double ticks){
 	gr->Box();
 
 }
-
+/*
 void Graphics::calculation(int t, mglData* x, mglData * y, mglData * z, int  n  ){
 	int i, j,k;
 	for(i = n; i < (n+100); i++) for(j = n; j < (n + 100); j++) for(k = n; k < (n + 100); k++)
@@ -18,15 +18,11 @@ void Graphics::calculation(int t, mglData* x, mglData * y, mglData * z, int  n  
     		z->a[k] = 0.6*t*sin(.05*k)*sin(.05*k);
 	}
 }
+*/
 
 
-
-
+/*
 void Graphics::calculation(){
-	mglData a;
-	mreal x,y,z;
-//	gr->Rotate(50,60);
-	gr->Light(true);
 //	gr->Alpha(true);
 	register long i,j,k, n = 20, m = 20, l = 20, i0;
 	a.Create(n,m,l);
@@ -70,7 +66,8 @@ void Graphics::calculation(){
 	gr->Rotate(50,60);
 }
 
-
-
-
+*/
+void Graphics::calculation(){
+	calculator->solve();
+}
 

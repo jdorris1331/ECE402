@@ -10,16 +10,12 @@ Animation::Animation(std::string title, int s, int p){
 	animation_begin = false;
 }
 
-
-
 void Animation::RunThread()
 {
 	std::thread graphThread(&Animation::Run, this);
 	graphThread.detach();
 
 }
-
-
 
 void Animation::Run(){
 	if(gr){
@@ -33,8 +29,6 @@ Animation::~Animation(){
 	}
 }
 
-
-
 void Animation::drawDots(mglData*  x, mglData *  y ,mglData *  z )
 {
 
@@ -42,7 +36,6 @@ void Animation::drawDots(mglData*  x, mglData *  y ,mglData *  z )
 	gr->Dots(*x, *y, *z);	
 	gr->Update();
 }
-
 
 void Animation::UpdatePointers(int t, mglData* & x, mglData* & y, mglData* & z)
 {
@@ -70,7 +63,7 @@ void Animation::UpdatePointers(int t, mglData* & x, mglData* & y, mglData* & z)
 	}
 }
 
-
+/*
 void Animation::beginAnimation(){
 	mglData *px = NULL, *py = NULL, *pz = NULL;
 	mglData ex , ey , ez;
@@ -87,7 +80,7 @@ void Animation::beginAnimation(){
 			drawDots(px,py,pz);	
 
 		}
-	/*			
+				
 		UpdatePointers(t, px, py, pz);
 		if(t == 0){
 			calculation(t, px, py, pz, 0);			
@@ -95,7 +88,6 @@ void Animation::beginAnimation(){
 		else{
 			calculation(t, px, py, pz, t*points);			
 		}
-	*/
 	//		drawDots(px, py, pz);
 	  for(i=0;i<n;i++)  for(j=0;j<n;j++)  for(k=0;k<n;k++)
   	{
@@ -110,32 +102,35 @@ void Animation::beginAnimation(){
 		gr->Vect3(ex,ey,ez);
 	}
 }
-/*
+*/
+
 void Animation::beginAnimation(){
 	mglData *px = NULL, *py = NULL, *pz = NULL;
 	gr->Rotate(60,50); 
 	gr->Box();
 	gr->SetRanges(-points, points, -points, points, -points, points);
-	for(int t = 0; t < points; t++)
+	while(1)	
 	{
 		while(animation_paused == true)
 		{
 			std::this_thread::yield();
-			drawDots(px,py,pz);	
+			//TODO: graph dis shit	
+			gr->Update();	
+		}
+		//TODO: DO ANOTHA CALCULATION
+		calculator->solve();
+		if(calculator->vect_num == -1)
+		{
+			//TODO:  just scalar shit in here #novectors @MrScalar14
+			drawDots(calculator->x, calculator->y, calculator->z);	
+			
+		}	
 
-		}
-		UpdatePointers(t, px, py, pz);
-		if(t == 0){
-			calculation(t, px, py, pz, 0);			
-		}
-		else{
-			calculation(t, px, py, pz, t*points);			
-		}
-			drawDots(px, py, pz);
-			gr->View(50,60);
+		//TODO: FUCKING GRAPHIT DAT SHIT 
+		//TODO: DO SOMMIN ELSE HERE I DON'T EVEN KNOW.
 	}
 }
-*/
+
 void Animation::toggleAnimation(){
 	std::cout << "called toggle animan\n";
 	if(animation_begin == false)
