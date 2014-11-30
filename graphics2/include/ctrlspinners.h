@@ -5,7 +5,9 @@
 #include <vector>
 #include <FL/Fl_Pack.H>
 #include <FL/Fl_Scroll.H>
+#include "graphics.h"
 #include "spinnerbox.h"
+#include "cont_data.h"
 
 class CtrlSpinners : public Fl_Pack
 {
@@ -17,9 +19,12 @@ private:
 	static void cb_updatePos(Fl_Widget *w, void *data);
 	void updatePos();
 	void redrawSpinners();
+	
+	Graphics *graph;
+	cont_data *dat;
 
 public:
-	CtrlSpinners(const char *sFile);
+	CtrlSpinners(Graphics *myGraph, cont_data *myDat);
 };
 
 #endif // CTRLSPINNERS_H

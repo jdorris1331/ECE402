@@ -4,8 +4,10 @@
 //#include <Windows.h>
 #include <FL/Fl_Pack.H>
 #include <FL/Fl_Scroll.H>
+#include "graphics.h"
 #include "sliderbox.h"
 #include "MglWrapper/MglWrapper.h"
+#include "cont_data.h"
 
 class CtrlSliders : public Fl_Pack
 {
@@ -14,9 +16,12 @@ private:
     Fl_Pack *fraGraph, *fraSliders[5], *fraButtons[2];
     SliderBox *omega, *theta_BA, *theta_BP, *D_BAM, *D_BPM,
             *theta_C, *T_BA, *T_BC, *T_BAM, *T_BPM;
+			
+	Graphics *graph;
+	cont_data *dat;
 
 public:
-	CtrlSliders(const char *sFile);
+	CtrlSliders(Graphics *myGraph, cont_data *myDat);
 };
 
 #endif // CTRLSLIDERS_H

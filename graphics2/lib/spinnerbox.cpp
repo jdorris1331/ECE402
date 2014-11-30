@@ -118,8 +118,9 @@ void SpinnerBox::valAtCrd()
 	//TODO
 }
 
-SpinnerBox::SpinnerBox(const char *name, const char *color, int position, int vt) : Fl_Pack(0, 0, 260, 75, 0)
+SpinnerBox::SpinnerBox(int ind, const char *name, const char *color, int position, int vt) : Fl_Pack(0, 0, 260, 75, 0)
 {
+    index = ind;
 	pos = position;
 	vartype = vt;
 
@@ -185,8 +186,8 @@ SpinnerBox::SpinnerBox(const char *name, const char *color, int position, int vt
 
 	fraSpi[2] = new Fl_Pack(0, 0, 160, 25, 0);
 	fraSpi[2]->type(Fl_Pack::HORIZONTAL);
-	sldMin = new SliderBox("Min", 1, 20, 10, 10.0, 1, 130, 20);
-	sldMax = new SliderBox("Max", 1, 20, 10, 10.0, 1, 130, 20);
+	sldMin = new SliderBox(-1, "Min", 5, 20, 10, 10.0, 1, 130, 20);
+	sldMax = new SliderBox(-1, "Max", 5, 20, 10, 10.0, 1, 130, 20);
 	fraSpi[2]->end();
 
 	txtColor->callback(cb_setColor, this);
