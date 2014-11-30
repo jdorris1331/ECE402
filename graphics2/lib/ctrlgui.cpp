@@ -65,9 +65,9 @@ CtrlGui::CtrlGui(Graphics *myGraph) : Fl_Pack(0, 0, 900, 30, 0)
 	lblRot = new Fl_Output(6, 15, 75, 25, 0);
 	lblRot->box(FL_NO_BOX);
 	lblRot->insert("Rotation:");
-	sldXRot = new SliderBox("x", 0, 359, 0, 1.0, 0, 90, 20);
-	sldYRot = new SliderBox("y", 0, 359, 0, 1.0, 0, 90, 20);
-	sldZRot = new SliderBox("z", 0, 359, 0, 1.0, 0, 90, 20);
+	sldXRot = new SliderBox(-1, "x", 0, 359, 0, 1.0, 0, 90, 20);
+	sldYRot = new SliderBox(-1, "y", 0, 359, 0, 1.0, 0, 90, 20);
+	sldZRot = new SliderBox(-1, "z", 0, 359, 0, 1.0, 0, 90, 20);
 	fraRot->end();
 	
 	/*sldSpeed = new Fl_Hor_Nice_Slider(0, 0, 100, 10, "Speed");

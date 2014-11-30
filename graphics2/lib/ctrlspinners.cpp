@@ -66,6 +66,21 @@ CtrlSpinners::CtrlSpinners(Graphics *myGraph, cont_data *myDat) : Fl_Pack(0, 0, 
 {
     graph = myGraph;
 	dat = myDat;
+	
+	std::string sColors[] =
+	{
+	  "0xff0000", "0x00ff00", "0x0000ff", "0xffff00", "0x00ffff"
+	  "0xff00ff", "0xff6600", "0x990099", "0x663333", "0x000000"
+	};
+	
+	std::vector<int> vSca, vVec;
+	for (int i = 0; i < dat->vList->var.size(); i++)
+	{
+	  if (dat->vList->var[i].get_type() == 1) {
+	    vSca.push_back(i); }
+	  else if (dat->vList->var[i].get_type() == 2) {
+	    vVec.push_back(i); }
+	}
 
 	this->callback(cb_updatePos, this);
 
@@ -78,20 +93,14 @@ CtrlSpinners::CtrlSpinners(Graphics *myGraph, cont_data *myDat) : Fl_Pack(0, 0, 
 	//fraSpinners[0]->label("Variables");
 	//fraSpinners[0]->align(FL_ALIGN_LEFT);
 	fraSpinners[0]->spacing(5);
-	spinners.push_back(new SpinnerBox("red", "0xff0000", 1));
-	spinners.push_back(new SpinnerBox("green", "0x00ff00", 2));
-	spinners.push_back(new SpinnerBox("blue", "0x0000ff", 3));
-	spinners.push_back(new SpinnerBox("yellow", "0xffff00", 4));
-	spinners.push_back(new SpinnerBox("cyan", "0x00ffff", 5));
+	for (int i = 0; i < vSca.size(); i++) {
+	  spinners.push_back(new SpinnerBox(vSca[i], dat->vList->var[vSca[i]].name, sColors[i].c_str(), dat->priority[vSca[i]])); }
 	fraSpinners[0]->end();
 
 	fraSpinners[1] = new Fl_Pack(0, 0, 260, 30, 0);
 	fraSpinners[1]->spacing(5);
-	spinners.push_back(new SpinnerBox("magenta", "0xff00ff", 6, 1));
-	spinners.push_back(new SpinnerBox("orange", "0xff6600", 7, 1));
-	spinners.push_back(new SpinnerBox("purple", "0x990099", 8, 1));
-	spinners.push_back(new SpinnerBox("brown", "0x663333", 9, 1));
-	spinners.push_back(new SpinnerBox("black", "0x000000", 10, 1));
+	for (int i = 0; i < vVec.size(); i++) {
+	  spinners.push_back(new SpinnerBox(vVec[i], dat->vList->var[vVec[i]].name, sColors[i].c_str(), dat->priority[vVec[i]], 1)); }
 	fraSpinners[1]->end();
 	fraRows[0]->end();
 

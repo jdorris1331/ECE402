@@ -8,12 +8,11 @@
 #include <sstream>
 #include <iomanip>
 #include <iostream>
-#include "cont_data.h"
 
 void GUIView::cb_launchGraph(Fl_Widget *w, void *data) { ((GUIView*)data)->launchGraph(); }
 void GUIView::launchGraph()
 {
-	graph = new Graphics();
+	graph = new Graphics(dat);
 	//graph->RunThread();
 }
 
@@ -22,7 +21,7 @@ GUIView::GUIView(const char *sFile) : Fl_Window(900, 700, "PDER Control Panel")
 	fraFrame = new Fl_Pack(0, 0, 900, 700, 0);
 	fraFrame->spacing(1);
 	
-	cont_data *dat = new cont_data();
+	dat = new cont_data();
     dat->parse(sFile);
 
 	launchGraph();
