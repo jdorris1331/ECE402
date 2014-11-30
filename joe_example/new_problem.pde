@@ -18,8 +18,8 @@ dt .001 1 show
 
 
 ## Equation definitions (available operators: lapacian, etc)
-dbox1 = laplac(box1) 
-dbox2 = laplac(box2)
+dbox1 = .1 
+dbox2 = .1
 box1 = box1 + dbox1
 box2 = box2 + dbox2
 vect = vect + .01

@@ -3,7 +3,13 @@
 cont_data::cont_data() {
   vList = new Variablelist();
   equations = new vector<string>;
-
+  x = new mglData;
+  y = new mglData;
+  z = new mglData;
+  c = new mglData;
+  ex = new mglData;
+  ey = new mglData;
+  ez = new mglData;
 }
 
 cont_data::~cont_data() {
@@ -12,6 +18,13 @@ cont_data::~cont_data() {
   delete[] hide;
   delete[] priority;
   delete[] colors;
+  /*delete x;
+  delete y;
+  delete z;
+  delete c;
+  delete ex;
+  delete ey;
+  delete ez;*/
 }
 
 int cont_data::parse(string file) {
@@ -40,8 +53,8 @@ int cont_data::solve() {
 
   prs.set_eqs(eqs, 3);
   prs.solve(vList);
-  normalize_scalar(&(vList->var),hide,priority,colors,&x,&y,&z,&c);
-  normalize_vector(&(vList->var),vect_num,&ex,&ey,&ez);
+  normalize_scalar(&(vList->var),hide,priority,colors,x,y,z,c);
+  //normalize_vector(&(vList->var),vect_num,ex,ey,ez);
   //pass math gl data to plot
   vList->print();
 }
