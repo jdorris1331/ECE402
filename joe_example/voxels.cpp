@@ -1,18 +1,21 @@
 #include <iostream>
 #include <cstring>
 #include <mgl2/fltk.h>
-#include "variable.h"
-#include "normalizer.h"
-#include "constants.h"
-#include "expression_parser.h"
-#include "infile_parser.h"
-#include "variablelist.h"
+#include "cont_data.h"
+#include <string>
 
 using namespace std;
 
-int sample(mglGraph *gr)
-{
-  infile_parser fileP;
+
+int main() {
+  cont_data cdata;
+  string file = "new_problem.pde";
+  cdata.parse(file); 
+  cdata.solve();
+  
+  return 0;
+  }
+/* infile_parser fileP;
 
 
   Variablelist *vars = new Variablelist();
@@ -70,7 +73,7 @@ int sample(mglGraph *gr)
   gr->SetOrigin(0,0,0); gr->Axis("_xyz");
   gr->Box(); gr->Dots(x,y,z,c);
   //gr->Box();  gr->Dens3(c,"x"); gr->Dens3(c); gr->Dens3(c,"z");
-
+*/
   /*gr->ContF3(v,c,"z",0);  gr->ContF3(v,c,"x");  gr->ContF3(v,c);
   gr->SetCutBox(mglPoint(-1,-1,-1), mglPoint(1,0,1.1));
   gr->ContF3(v,c,"z",c.nz-1); gr->Surf3(-0.5,c);
@@ -85,7 +88,7 @@ int sample(mglGraph *gr)
   gr->Axis("xyz");
   gr->Label('x',"X",1); gr->Label('y',"Y",1); gr->Label('z',"Z",1);*/
 
-  delete equations;
+/*  delete equations;
   delete vars;
   return 0;
 }
@@ -94,4 +97,4 @@ int main() {
   mglFLTK gr(sample,"MathGL examples");
   return gr.Run();
   return 0;
-}
+}*/

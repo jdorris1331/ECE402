@@ -11,15 +11,15 @@ SRC_FILES = variable.cpp variablelist.cpp error.cpp operators.cpp expression_par
 
 O_FILES = $(SRC_FILES:%.cpp=%.o)
 
-LIB = $(HOMEDIR)/$(VARDIR)/lib/variablelist.o $(HOMEDIR)/$(EXPDIR)/lib/expression_parser.o $(HOMEDIR)/$(VARDIR)/lib/variable.o $(HOMEDIR)/$(NORMDIR)/lib/normalizer.o $(HOMEDIR)/$(VARDIR)/lib/operators.o $(HOMEDIR)/$(EXPDIR)/lib/error.o $(HOMEDIR)/$(INPDIR)/lib/infile_parser.o 
+LIB = $(HOMEDIR)/$(VARDIR)/lib/variablelist.o $(HOMEDIR)/$(EXPDIR)/lib/expression_parser.o $(HOMEDIR)/$(VARDIR)/lib/variable.o $(HOMEDIR)/$(NORMDIR)/lib/normalizer.o $(HOMEDIR)/$(VARDIR)/lib/operators.o $(HOMEDIR)/$(EXPDIR)/lib/error.o $(HOMEDIR)/$(INPDIR)/lib/infile_parser.o cont_data.o 
 
 all: voxels
 
-voxels: $(O_FILES)
+voxels: $(O_FILES) cont_data.o
 	g++ -o voxels -Wall $(LDFLAGS) $(CFLAGS) $(LIB) -lmgl-fltk -lmgl voxels.cpp
 
-strings.o: 
-	g++ $(LDFLAGS) -c strings.cpp
+cont_data.o: cont_data.cpp
+	cd $(HOMEDIR)/joe_example; g++ $(CFLAGS) -c cont_data.cpp
 
 #%.o: %.cpp
 #	$(CC) -c $(CFLAGS)  $< -o $@
@@ -46,4 +46,4 @@ error.o: $(HOMEDIR)/$(EXPDIR)/lib/error.cpp
 	cd $(HOMEDIR)/$(EXPDIR)/lib; g++ -I$(HOMEDIR)/$(EXPDIR)/include -c error.cpp
 
 clean: 
-	rm -rf *o strings
+	rm -rf *o voxels
