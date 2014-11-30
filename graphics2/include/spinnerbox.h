@@ -50,6 +50,7 @@ public:
 	void changeWhen(uchar w);
 	SpinnerBox *last, *next;
 	void toggleVector();
+	int getIndex();
 };
 
 #endif // SPINNERBOX_H

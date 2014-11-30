@@ -1,6 +1,8 @@
 #include "sliderbox.h"
 #include <iomanip>
 
+int SliderBox::getIndex() { return index; }
+
 void SliderBox::cb_update(Fl_Widget *w, void *data) { ((SliderBox*)data)->update(); }
 void SliderBox::update()
 {
