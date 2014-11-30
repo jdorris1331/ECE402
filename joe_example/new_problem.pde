@@ -1,9 +1,10 @@
 ## Variables  - variable name declarations (type name initial_value)
-scalar var1 1
-vector var2 2
+scalar box1 0
+scalar box2 0
+vector vect 1
 
 ## Constants - (dt=timestep[seconds]) need ranges for sliders, cannot use x,y,z
-t = 0
+t 0
 dt .01
 k 2.0
 
@@ -11,17 +12,18 @@ k 2.0
 x 0 10 dim
 y 0 10 dim
 z 0 10 dim
-var1 20 30 warn
-var1 25 27 show
-var2 3.3 3.5 warn
-var2 3 4 show
+box1 0 100 show
+box2 0 100 show
 dt .001 1 show
 
 
 ## Equation definitions (available operators: lapacian, etc)
-dvar1 = 0
-var1 = var1 + dvar1
+dbox1 = laplac(box1) 
+dbox2 = laplac(box2)
+box1 = box1 + dbox1
+box2 = box2 + dbox2
+vect = vect + .01
 t=t+dt
 
 ## files with initial values listed belowS
-initial.txt
+initial_test.txt
