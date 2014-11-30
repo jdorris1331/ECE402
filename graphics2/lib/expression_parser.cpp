@@ -817,6 +817,24 @@ VAR* Parser::eval_function(const char fn_name[], VAR* value)
         if (!strcmp(fnU, "GRAD")) {
           return grad(value);
         }
+        if (!strcmp(fnU, "USTP")) {
+          return ustp(value);
+        }
+        if (!strcmp(fnU, "RAND")) {
+          return rand(value);
+        }
+        if (!strcmp(fnU, "CURL")) {
+          return curl(value);
+        }
+        if (!strcmp(fnU, "DIVERG")) {
+          return diverg(value);
+        }
+        if (!strcmp(fnU, "MAG")) {
+          return mag(value);
+        }
+        if (!strcmp(fnU, "LAPLAC")) {
+          return laplac(value);
+        }
         if (!strcmp(fnU, "RAND")) {
           return rand(value);
         }
