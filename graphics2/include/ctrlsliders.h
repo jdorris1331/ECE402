@@ -7,8 +7,7 @@
 #include "graphics.h"
 #include "sliderbox.h"
 #include "MglWrapper/MglWrapper.h"
-#include "variablelist.h"
-#include "variable.h"
+#include "cont_data.h"
 
 class CtrlSliders : public Fl_Pack
 {
@@ -19,10 +18,10 @@ private:
             *theta_C, *T_BA, *T_BC, *T_BAM, *T_BPM;
 			
 	Graphics *graph;
-	Variablelist *vars;
+	cont_data *dat;
 
 public:
-	CtrlSliders(Graphics *myGraph, Variablelist *myVars);
+	CtrlSliders(Graphics *myGraph, cont_data *myDat);
 };
 
 #endif // CTRLSLIDERS_H

@@ -8,9 +8,7 @@
 #include <sstream>
 #include <iomanip>
 #include <iostream>
-#include "infile_parser.h"
-#include "variablelist.h"
-#include "variable.h"
+#include "cont_data.h"
 
 void GUIView::cb_launchGraph(Fl_Widget *w, void *data) { ((GUIView*)data)->launchGraph(); }
 void GUIView::launchGraph()
@@ -24,10 +22,8 @@ GUIView::GUIView(const char *sFile) : Fl_Window(900, 700, "PDER Control Panel")
 	fraFrame = new Fl_Pack(0, 0, 900, 700, 0);
 	fraFrame->spacing(1);
 	
-	infile_parser fileP;
-	Variablelist *vars = new Variablelist();
-    vector<string> *equations= new vector<string>;
-    fileP.parse(sFile, vars, equations);
+	cont_data *dat = new cont_data();
+    dat->parse(sFile);
 
 	launchGraph();
 	
@@ -42,8 +38,8 @@ GUIView::GUIView(const char *sFile) : Fl_Window(900, 700, "PDER Control Panel")
 	//fraMain[2] = new CtrlCmd();
 	//fraMain[2]->end();
 
-	fraMain[1]->add(new CtrlSpinners(graph, vars));
-	fraMain[1]->add(new CtrlSliders(graph, vars));
+	fraMain[1]->add(new CtrlSpinners(graph, dat));
+	fraMain[1]->add(new CtrlSliders(graph, dat));
 
 	fraFrame->end();
 	this->resizable(fraMain[1]);

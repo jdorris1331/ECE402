@@ -7,8 +7,7 @@
 #include <FL/Fl_Scroll.H>
 #include "graphics.h"
 #include "spinnerbox.h"
-#include "variablelist.h"
-#include "variable.h"
+#include "cont_data.h"
 
 class CtrlSpinners : public Fl_Pack
 {
@@ -22,10 +21,10 @@ private:
 	void redrawSpinners();
 	
 	Graphics *graph;
-	Variablelist *vars;
+	cont_data *dat;
 
 public:
-	CtrlSpinners(Graphics *myGraph, Variablelist *myVars);
+	CtrlSpinners(Graphics *myGraph, cont_data *myDat);
 };
 
 #endif // CTRLSPINNERS_H

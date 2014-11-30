@@ -13,8 +13,9 @@ void SliderBox::update()
 	this->redraw();
 }
 
-SliderBox::SliderBox(const char *name, int min, int max, int val, double scl, int prc, int w, int h) : Fl_Pack(0, 0, w, h, 0)
+SliderBox::SliderBox(int ind, const char *name, int min, int max, int val, double scl, int prc, int w, int h) : Fl_Pack(0, 0, w, h, 0)
 {
+    index = ind;
     iPrc = prc;
     dblScl = scl;
     dblVal = val/scl;

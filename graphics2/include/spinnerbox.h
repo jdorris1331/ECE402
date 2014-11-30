@@ -28,6 +28,7 @@ private:
 	int pos;
 	int vartype = 0;
 	SliderBox *sldMin, *sldMax;
+	int index;
 
 	static void cb_setColor(Fl_Widget *w, void *data);
 	void setColor();
@@ -42,7 +43,7 @@ private:
 	void valAtCrd();
 
 public:
-    SpinnerBox(const char *name, const char *color, int position, int vt = 0);
+    SpinnerBox(int ind, const char *name, const char *color, int position, int vt = 0);
 	void setCount(int ct);
 	int getPos();
 	void setPos(int p);

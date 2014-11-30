@@ -1,9 +1,9 @@
 #include "ctrlsliders.h"
 
-CtrlSliders::CtrlSliders(Graphics *myGraph, Variablelist *myVars) : Fl_Pack(0, 0, 160, 30, 0)
+CtrlSliders::CtrlSliders(Graphics *myGraph, cont_data *myDat) : Fl_Pack(0, 0, 160, 30, 0)
 {
     graph = myGraph;
-	vars = myVars;
+	dat = myDat;
 
 	fraSliders[0] = new Fl_Pack(0, 0, 160, 30, 0);
 	//fraSliders[0]->label("Constants");
