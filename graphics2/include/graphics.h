@@ -13,7 +13,6 @@ class Graphics : public Animation
 	friend Animation;
         private:
 		//The method that does calculating stuffz.
-		
 	public:
 //		cont_data * calculator; //A pointer to the handy-dandy calculator.	
 		void axis(double x = 0 , double  y =  0 , double z = 0, double ticks = 1);

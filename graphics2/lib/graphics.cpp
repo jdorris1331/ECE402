@@ -68,6 +68,9 @@ void Graphics::calculation(){
 
 */
 void Graphics::calculation(){
+	//solveFinished = false;
 	calculator->solve();
+	//solveFinished = true;
+
 }
 

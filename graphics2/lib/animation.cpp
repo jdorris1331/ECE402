@@ -8,13 +8,22 @@ Animation::Animation(std::string title, int s, int p){
 	points = 100;  //Set Default amount of points.
 	animation_paused = false;
 	animation_begin = false;
+	gr->Rotate(60,50); 
+	gr->Box();
+	gr->SetRanges(-points, points, -points, points, -points, points);
+}
+
+void Animaton::Rotate(int arg1,int  arg2)
+{
+	animation_paused = true;
+	gr->Rotate(arg1, arg2);
+	gr->Update();
 }
 
 void Animation::RunThread()
 {
 	std::thread graphThread(&Animation::Run, this);
 	graphThread.detach();
-
 }
 
 void Animation::Run(){
@@ -31,7 +40,6 @@ Animation::~Animation(){
 
 void Animation::drawDots(mglData*  x, mglData *  y ,mglData *  z, mglData *c)
 {
-
 	gr->Clf(); //Clear the old graph.
 	gr->Box();
 	gr->Dots(*x, *y, *z, *c);	
@@ -107,22 +115,24 @@ void Animation::beginAnimation(){
 */
 
 void Animation::beginAnimation(){
-	mglData *px = NULL, *py = NULL, *pz = NULL;
-	gr->Rotate(60,50); 
-	gr->Box();
-	gr->SetRanges(-points, points, -points, points, -points, points);
 	while(1)	
 	{
+		std::cout << "Called solve\n" << std::endl;
 		calculator->solve();
+		std::cout << "solve done\n" << std::endl;
+		std::this_thread::yield();
 		while(animation_paused == true)
 		{
 			std::this_thread::yield();
-			drawDots(&calculator->x, &calculator->y, &calculator->z, &calculator->c);
+			gr->Update();	
 		}
 		if(calculator->vect_num == -1)
 		{
+		
+		std::cout << "Called dots\n" << std::endl;
 			drawDots(&calculator->x, &calculator->y, &calculator->z, &calculator->c);
-		}	
+		std::cout << "solve dots\n" << std::endl;
+		}
 
 	}
 }
@@ -135,7 +145,7 @@ void Animation::toggleAnimation(){
 		animation_begin = true;
 		std::thread animation (&Animation::beginAnimation, this);
 		animation.detach();
-		gr->Run();
+		//gr->Run();
 	}
 	else
 		animation_paused = !animation_paused;

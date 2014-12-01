@@ -62,7 +62,7 @@ class Animation
 		void setPoints(int p){points = p;}
 		void update();
 		void drawDots(mglData * , mglData* , mglData* , mglData*);
-
+		void Rotate(int arg1, int arg2);
 
 
 };
