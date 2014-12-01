@@ -35,6 +35,7 @@ void Animation::drawDots(mglData*  x, mglData *  y ,mglData *  z, mglData *c)
 	gr->Clf(); //Clear the old graph.
 	gr->Box();
 	gr->Dots(*x, *y, *z, *c);	
+	gr->SetRanges(-points, points, -points, points, -points, points);
 	gr->Update();
 }
 
