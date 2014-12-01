@@ -40,15 +40,19 @@ void normalize_scalar(vector<VAR> *vars, int* hide, int* priority, double* color
         for(int l=0;l<num_vars;l++) {
           lower=vars->at(priority[l]).show_min;
           upper=vars->at(priority[l]).show_max;
-          if(hide[priority[l]]) continue;
-          if(vars->at(priority[l]).get_type()!=1) continue;
-          value=vars->at(priority[l]).sf[i][j][k]; 
-          if(value==0 || value<lower || value > upper) continue;
-          xList.push_back(i);
-          yList.push_back(j);
-          zList.push_back(k);
-          cList.push_back(color_values[priority[l]]);
-          break;
+          if(!hide[priority[l]]) {
+            if(vars->at(priority[l]).get_type()==1) {
+              value=vars->at(priority[l]).sf[i][j][k]; 
+              if(value!=0 && value>lower && value < upper) {
+                xList.push_back(i);
+                yList.push_back(j);
+                zList.push_back(k);
+                cList.push_back(color_values[priority[l]]);
+		cout << "correct\n";
+		cout << i << " " << j << " " << k << " " << value << endl;
+              }
+            }
+          }
         }
       }
     }
