@@ -20,10 +20,10 @@ k 0.1 5.0 show
 tau 0.1 5.0 show
 
 ## Equation definitions (available operators: lapacian, etc)
-dbox1 = laplac(box1) 
-dbox2 = laplac(box2)
-box1 = box1 + k*dbox1-box1/tau
-box2 = box2 + k*dbox2-box2/tau
+dbox1 = .1 
+dbox2 = .1
+box1 = box1 + k*dbox1
+box2 = box2 + k*dbox2
 vect = vect + .01
 t=t+dt
 
