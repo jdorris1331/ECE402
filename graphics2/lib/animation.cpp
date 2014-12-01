@@ -13,7 +13,7 @@ Animation::Animation(std::string title, int s, int p){
 	gr->SetRanges(-points, points, -points, points, -points, points);
 }
 
-void Animaton::Rotate(int arg1,int  arg2)
+void Animation::rotate(int arg1,int  arg2)
 {
 	animation_paused = true;
 	gr->Rotate(arg1, arg2);
@@ -42,7 +42,9 @@ void Animation::drawDots(mglData*  x, mglData *  y ,mglData *  z, mglData *c)
 {
 	gr->Clf(); //Clear the old graph.
 	gr->Box();
-	gr->Dots(*x, *y, *z, *c);	
+//	gr->Dots(*x, *y, *z, *c);	
+	gr->Dots(*x, *y, *z, *x, *c);	
+	//gr->Tens(x,y,z,x, " .");
 	gr->SetRanges(-points, points, -points, points, -points, points);
 	gr->Update();
 }
