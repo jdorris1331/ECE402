@@ -14,13 +14,13 @@ x 0 10 dim
 y 0 10 dim
 z 0 10 dim
 box1 0 110 show
-box2 0 110 show
+box2 0 100 show
 dt .001 1 show
 k 0.1 5.0 show
 tau 0.1 5.0 show
 
 ## Equation definitions (available operators: lapacian, etc)
-dbox1 = 0
+dbox1 = laplac(box1)
 box1 = box1 + dbox1
 vect = vect + .01
 t=t+dt
