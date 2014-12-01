@@ -33,6 +33,7 @@ void Animation::drawDots(mglData*  x, mglData *  y ,mglData *  z, mglData *c)
 {
 
 	gr->Clf(); //Clear the old graph.
+	gr->Box();
 	gr->Dots(*x, *y, *z, *c);	
 	gr->Update();
 }
@@ -111,16 +112,15 @@ void Animation::beginAnimation(){
 	gr->SetRanges(-points, points, -points, points, -points, points);
 	while(1)	
 	{
+		calculator->solve();
 		while(animation_paused == true)
 		{
 			std::this_thread::yield();
-			drawDots(calculator->x, calculator->y, calculator->z, calculator->c);
+			drawDots(&calculator->x, &calculator->y, &calculator->z, &calculator->c);
 		}
-		calculator->solve();
 		if(calculator->vect_num == -1)
 		{
-			drawDots(calculator->x, calculator->y, calculator->z, calculator->c);
-			
+			drawDots(&calculator->x, &calculator->y, &calculator->z, &calculator->c);
 		}	
 
 	}
