@@ -24,7 +24,10 @@ void CtrlGui::toggleGraph()
 void CtrlGui::cb_rotateGraph(Fl_Widget *w, void *data) { ((CtrlGui*)data)->rotateGraph(); }
 void CtrlGui::rotateGraph()
 {
-	//TODO
+    int arg1, arg2;
+	arg1 = sldXRot->sld->value();
+	arg2 = sldYRot->sld->value();
+	graph->rotate(arg1, arg2);
 }
 
 CtrlGui::CtrlGui(Graphics *myGraph) : Fl_Pack(0, 0, 900, 30, 0)
@@ -67,7 +70,7 @@ CtrlGui::CtrlGui(Graphics *myGraph) : Fl_Pack(0, 0, 900, 30, 0)
 	lblRot->insert("Rotation:");
 	sldXRot = new SliderBox(-1, "x", 0, 359, 0, 1.0, 0, 90, 20);
 	sldYRot = new SliderBox(-1, "y", 0, 359, 0, 1.0, 0, 90, 20);
-	sldZRot = new SliderBox(-1, "z", 0, 359, 0, 1.0, 0, 90, 20);
+	//sldZRot = new SliderBox(-1, "z", 0, 359, 0, 1.0, 0, 90, 20);
 	fraRot->end();
 	
 	/*sldSpeed = new Fl_Hor_Nice_Slider(0, 0, 100, 10, "Speed");
@@ -88,7 +91,7 @@ CtrlGui::CtrlGui(Graphics *myGraph) : Fl_Pack(0, 0, 900, 30, 0)
 	//fraCtrlGui[1]->resizable(sldSpeed);
 
 	btnStart->callback(cb_toggleGraph, this);
-	sldXRot->callback(cb_rotateGraph, this);
-	sldYRot->callback(cb_rotateGraph, this);
-	sldZRot->callback(cb_rotateGraph, this);
+	sldXRot->sld->callback(cb_rotateGraph, this);
+	sldYRot->sld->callback(cb_rotateGraph, this);
+	//sldZRot->callback(cb_rotateGraph, this);
 }
