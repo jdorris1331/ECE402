@@ -1,5 +1,16 @@
 #include <math.h>
 #include "ctrlsliders.h"
+#include <iostream>
+
+void CtrlSliders::cb_sendPos(Fl_Widget *w, void *data) { ((CtrlSliders*)data)->sendPos(); }
+void CtrlSliders::sendPos()
+{
+  for (int i = 0; i < sliders.size(); i++) {
+    dat->vList->var[sliders[i]->getIndex()].val = sliders[i]->sld->value();
+std::cout << "\n";
+std::cout << "actual: " << dat->vList->var[sliders[i]->getIndex()].val << "\n";
+std::cout << "expected: " << sliders[i]->sld->value() << "\n";	}
+}
 
 CtrlSliders::CtrlSliders(Graphics *myGraph, cont_data *myDat) : Fl_Pack(0, 0, 160, 30, 0)
 {
@@ -36,7 +47,8 @@ CtrlSliders::CtrlSliders(Graphics *myGraph, cont_data *myDat) : Fl_Pack(0, 0, 16
 	  int max = dat->vList->var[vCon[i]].show_max * scl;
 	  int init = dat->vList->var[vCon[i]].val * scl;
 	  
-	  new SliderBox(vCon[i], dat->vList->var[vCon[i]].name, min, max, init, scl, prc);
+	  sliders.push_back(
+	    new SliderBox(vCon[i], dat->vList->var[vCon[i]].name, min, max, init, scl, prc));
 	}
 
 	/*SliderBox *slidersN[] = { omega, theta_BA, theta_BP,
@@ -47,6 +59,11 @@ CtrlSliders::CtrlSliders(Graphics *myGraph, cont_data *myDat) : Fl_Pack(0, 0, 16
 	}*/
 
 	fraSliders[0]->end();
+	
+	for (int i = 0; i < sliders.size(); i++)
+	{
+	  sliders[ct]->sld->callback(cb_sendPos, this);
+	}
 
 	this->resizable(fraSliders[0]);
 }

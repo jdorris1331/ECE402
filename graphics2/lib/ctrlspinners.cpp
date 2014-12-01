@@ -3,7 +3,7 @@
 void CtrlSpinners::cb_updatePos(Fl_Widget *w, void *data) { ((CtrlSpinners*)data)->updatePos(); }
 void CtrlSpinners::updatePos()
 {
-	/*SpinnerBox *spinhold;
+	SpinnerBox *spinhold;
 	int ct, oldpos, newpos;
 	oldpos = -1; newpos = -1;
 
@@ -41,11 +41,11 @@ void CtrlSpinners::updatePos()
 		spinners[newpos - 1]->setPos(newpos);
 		redrawSpinners();
 	}
-	else {} //false alarm*/
+	else {} //false alarm
 }
 void CtrlSpinners::redrawSpinners()
 {
-	/*int ct;
+	int ct;
 
 	for (ct = 0; ct < spinners.size(); ct++)
 	{
@@ -59,7 +59,7 @@ void CtrlSpinners::redrawSpinners()
 		spinners[ct]->show();
 	}
 
-	this->redraw();*/
+	this->redraw();
 }
 
 CtrlSpinners::CtrlSpinners(Graphics *myGraph, cont_data *myDat) : Fl_Pack(0, 0, 520, 30, 0)
