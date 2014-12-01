@@ -14,8 +14,6 @@ class CtrlSliders : public Fl_Pack
 private:
     MglWrapper *mgl;
     Fl_Pack *fraGraph, *fraSliders[5], *fraButtons[2];
-    SliderBox *omega, *theta_BA, *theta_BP, *D_BAM, *D_BPM,
-            *theta_C, *T_BA, *T_BC, *T_BAM, *T_BPM;
 			
 	Graphics *graph;
 	cont_data *dat;

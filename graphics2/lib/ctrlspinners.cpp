@@ -104,15 +104,15 @@ CtrlSpinners::CtrlSpinners(Graphics *myGraph, cont_data *myDat) : Fl_Pack(0, 0, 
 	fraSpinners[1]->end();
 	fraRows[0]->end();
 
-	spinners[0]->last = NULL;
-	spinners[0]->next = spinners[1];
-	for (int ct = 1; ct < 9; ct++)
+	if (spinners.size() > 0) { spinners[0]->last = NULL; }
+	if (spinners.size() > 1) { spinners[0]->next = spinners[1]; }
+	for (int ct = 1; ct < spinners.size()-1; ct++)
 	{
 		spinners[ct]->last = spinners[ct - 1];
 		spinners[ct]->next = spinners[ct + 1];
 	}
-	spinners[9]->last = spinners[8];
-	spinners[9]->next = NULL;
+	if (spinners.size() > 1) { spinners[spinners.size()-1]->last = spinners[spinners.size()-2]; }
+	if (spinners.size() > 0) { spinners[spinners.size()-1]->next = NULL; }
 
 	/*SliderBox *slidersN[] = { omega, theta_BA, theta_BP,
 		D_BAM, D_BPM, theta_C, T_BA, T_BC,
