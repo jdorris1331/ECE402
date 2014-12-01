@@ -61,7 +61,7 @@ class Animation
 		void setSpeed(int s){speed = s;}
 		void setPoints(int p){points = p;}
 		void update();
-		void drawDots(mglData * , mglData* , mglData* );
+		void drawDots(mglData * , mglData* , mglData* , mglData*);
 
 };
 

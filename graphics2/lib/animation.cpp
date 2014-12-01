@@ -29,11 +29,11 @@ Animation::~Animation(){
 	}
 }
 
-void Animation::drawDots(mglData*  x, mglData *  y ,mglData *  z )
+void Animation::drawDots(mglData*  x, mglData *  y ,mglData *  z, mglData *c)
 {
 
 	gr->Clf(); //Clear the old graph.
-	gr->Dots(*x, *y, *z);	
+	gr->Dots(*x, *y, *z, *c);	
 	gr->Update();
 }
 
@@ -114,20 +114,15 @@ void Animation::beginAnimation(){
 		while(animation_paused == true)
 		{
 			std::this_thread::yield();
-			//TODO: graph dis shit	
-			gr->Update();	
+			drawDots(calculator->x, calculator->y, calculator->z, calculator->c);
 		}
-		//TODO: DO ANOTHA CALCULATION
 		calculator->solve();
 		if(calculator->vect_num == -1)
 		{
-			//TODO:  just scalar shit in here #novectors @MrScalar14
-			drawDots(calculator->x, calculator->y, calculator->z);	
+			drawDots(calculator->x, calculator->y, calculator->z, calculator->c);
 			
 		}	
 
-		//TODO: FUCKING GRAPHIT DAT SHIT 
-		//TODO: DO SOMMIN ELSE HERE I DON'T EVEN KNOW.
 	}
 }
 
