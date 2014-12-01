@@ -388,7 +388,6 @@ void Parser::parse_level1()
             VAR* ans;
             getToken();
             ans = parse_level2();
-            
             if(user_var->exist(token_now)) {
               //user_var->print();
               user_var->add(token_now,ans);

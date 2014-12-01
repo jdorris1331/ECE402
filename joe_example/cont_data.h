@@ -23,8 +23,8 @@ struct cont_data {
 	int *hide;
 	int *priority;
 	double *colors;
-	mglData* x,*y,*z,*c;
-	mglData* ex,*ey,*ez; 
+	mglData x,y,z,c;
+	mglData ex,ey,ez; 
 	int vect_num;
 }; 
 

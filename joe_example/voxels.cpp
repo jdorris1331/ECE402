@@ -11,8 +11,9 @@ int main() {
   cont_data cdata;
   string file = "new_problem.pde";
   cdata.parse(file); 
-  cdata.solve();
-  
+  for(int i=0;i<10;i++) {
+    cdata.solve();
+  }
   return 0;
   }
 /* infile_parser fileP;
