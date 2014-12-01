@@ -15,14 +15,14 @@ void normalize_scalar(vector<VAR> *vars, int* hide, int* priority, double* color
   int num_vars=vars->size();
   int current;
   
-  cout << "normalizing\n";
+  //cout << "normalizing\n";
 
-  delete x;
+  /*delete x;
   delete y;
   delete z;
-  delete c;
+  delete c;*/
 
-  cout << "deleting\n";
+  //cout << "deleting\n";
 
   vector<int> xList;
   vector<int> yList;
@@ -43,7 +43,7 @@ void normalize_scalar(vector<VAR> *vars, int* hide, int* priority, double* color
           if(hide[priority[l]]) continue;
           if(vars->at(priority[l]).get_type()!=1) continue;
           value=vars->at(priority[l]).sf[i][j][k]; 
-          if(value<lower || value > upper) continue;
+          if(value==0 || value<lower || value > upper) continue;
           xList.push_back(i);
           yList.push_back(j);
           zList.push_back(k);
@@ -53,10 +53,10 @@ void normalize_scalar(vector<VAR> *vars, int* hide, int* priority, double* color
       }
     }
   }
-  x = new mglData;
+  /*x = new mglData;
   y = new mglData;
   z = new mglData;
-  c = new mglData;
+  c = new mglData;*/
   x->Create(xList.size());
   y->Create(yList.size());
   z->Create(zList.size());
@@ -74,9 +74,9 @@ void normalize_vector(vector<VAR> *vars, int vect_num, mglData* ex, mglData* ey,
   int num_vars=vars->size();
   int current;
 
-  delete[] ex;
+  /*delete[] ex;
   delete[] ey;
-  delete[] ez;
+  delete[] ez;*/
 
   double value,lower,upper;
   double range;
