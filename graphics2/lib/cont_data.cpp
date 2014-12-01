@@ -60,7 +60,10 @@ int cont_data::solve() {
   prs.set_eqs(eqs, equations->size());
   prs.solve(vList);
   normalize_scalar(&(vList->var),hide,priority,colors,&x,&y,&z,&c);
-  normalize_vector(&(vList->var),vect_num,&ex,&ey,&ez);
+  for(int i=0;i<1000;i++) {
+  //  cout << x.a[i] << " " << y.a[i] << " " << z.a[i] << " " << c.a[i] << endl;
+  }
+  //normalize_vector(&(vList->var),vect_num,&ex,&ey,&ez);
   //pass math gl data to plot
   //vList->print();
   for(int i=0;i<equations->size();i++) {

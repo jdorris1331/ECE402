@@ -695,7 +695,9 @@ VAR* curl(VAR* A){
 VAR* diverg(VAR* A){
 	VAR* ret_var = new VAR;
   int type1 = A->get_type();
-  ret_var->set_type(type1);
+  if(type1==0 || type1==1) ret_var->set_type(-1);
+  else {
+  ret_var->set_type(1);
 	for(int x = 0; x < DIM_SIZE; x++){
 		for(int y = 0; y < DIM_SIZE; y++){
 			for(int z = 0; z < DIM_SIZE; z++){
@@ -703,9 +705,45 @@ VAR* diverg(VAR* A){
 			}
 		}
 	}
+   }
 	delete A;
 	return ret_var;
 }
+
+/*double LDF(VAR* A, int x, int y, int z, int v, int d){ //d is the derivative respect
+
+        if(d == 0 && x != 0 && x != DIM_SIZE-1) return (A->vf[x+1][y][z][v] + A->vf[x-1][y][z][v] - (2*(A->vf[x][y][z][v])));
+        else if(d == 0 && x == 0) return (A->vf[x+1][y][z][v] - (2*(A->vf[x][y][z][v])));
+        else if(d == 0 && x == DIM_SIZE-1) return (A->vf[x-1][y][z][v] - (2*(A->vf[x][y][z][v])));
+
+        if(d == 1 && y != 0 && y != DIM_SIZE-1) return (A->vf[x][y+1][z][v] + A->vf[x][y-1][z][v] - (2*(A->vf[x][y][z][v])));
+        else if(d == 1 && y == 0) return (A->vf[x][y+1][z][v] - (2*(A->vf[x][y][z][v])));
+        else if(d == 1 && y == DIM_SIZE-1) return (A->vf[x][y-1][z][v] - (2*(A->vf[x][y][z][v])));
+
+        if(d == 2 && z != 0 && z != DIM_SIZE-1) return (A->vf[x][y][z+1][v] + A->vf[x][y][z-1][v] - (2*(A->vf[x][y][z][v])));
+        else if(d == 2 && z == 0) return (A->vf[x][y][z+1][v] - (2*(A->vf[x][y][z][v])));
+        else if(d == 2 && z == DIM_SIZE-1) return (A->vf[x][y][z-1][v] - (2*(A->vf[x][y][z][v])));
+
+return 0;
+}
+
+VAR* laplac(VAR* A){
+  VAR* ret_var = new VAR;
+  int type1 = A->get_type();
+  if(type1 == 0 || type1 == 1) ret_var->set_type(-1);
+  else {
+    ret_var->set_type(1);
+        for(int x = 0; x < DIM_SIZE; x++){
+                for(int y = 0; y < DIM_SIZE; y++){
+                        for(int z = 0; z < DIM_SIZE; z++){
+                                ret_var->sf[x][y][z] = LDF(A,x,y,z,0,0) + LDF(A,x,y,z,1,1) + LDF(A,x,y,z,2,2);
+                        }
+                }
+        }
+  }
+        delete A;
+        return ret_var;
+}*/
 	
 VAR* laplac(VAR* A){
 	VAR* temp;
