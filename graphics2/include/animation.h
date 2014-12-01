@@ -22,6 +22,7 @@ class Animation
 {
 	protected:
 		mglFLTK* gr;
+		cont_data* calculator;
 		void Run();
 		bool animation_paused; 
 		int points;  //The amount of point to calculate.
@@ -32,7 +33,6 @@ class Animation
 		//If set to true, then animation will start/resume/continue
 		//If set to false, animation will stall/pause until animation_paused is 
 		//set to 1.
-		cont_data* calculator;
 		bool animation_begin;
 		//If set to false, then animation has not started. 
 		//This function will be set to 1 when ToggleAnimation is started for hte 
@@ -62,6 +62,8 @@ class Animation
 		void setPoints(int p){points = p;}
 		void update();
 		void drawDots(mglData * , mglData* , mglData* , mglData*);
+
+
 
 };
 
